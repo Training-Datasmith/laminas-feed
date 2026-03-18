@@ -4,38 +4,43 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader;
 
+use function array_unique;
+
 use DOMDocument;
 use DOMXPath;
+
+use const E_NOTICE;
+use const E_USER_NOTICE;
+use const E_WARNING;
+
+use function file_get_contents;
+use function function_exists;
+use function in_array;
+use function ini_restore;
+use function ini_set;
+use function is_string;
+
 use Laminas\Cache\Storage\StorageInterface as CacheStorage;
 use Laminas\Feed\Reader\Exception\InvalidHttpClientException;
 use Laminas\Http as LaminasHttp;
 use Laminas\Stdlib\ErrorHandler;
 
-use function array_unique;
-use function file_get_contents;
-use function function_exists;
-use function gettype;
-use function in_array;
-use function ini_restore;
-use function ini_set;
-use function is_object;
-use function is_string;
 use function libxml_disable_entity_loader;
 use function libxml_get_last_error;
 use function libxml_use_internal_errors;
+
+use const LIBXML_VERSION;
+
 use function md5;
 use function serialize;
 use function sprintf;
 use function strlen;
+
 use function strpos;
 use function trigger_error;
 use function trim;
 use function unserialize;
 
-use const E_NOTICE;
-use const E_USER_NOTICE;
-use const E_WARNING;
-use const LIBXML_VERSION;
 use const XML_DOCUMENT_TYPE_NODE;
 
 class Reader implements ReaderImportInterface

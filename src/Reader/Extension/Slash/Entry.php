@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Extension\Slash;
 
-use Laminas\Feed\Reader\Extension;
-
 use function array_key_exists;
+
 use function explode;
+
+use Laminas\Feed\Reader\Extension;
 
 class Entry extends Extension\AbstractEntry
 {

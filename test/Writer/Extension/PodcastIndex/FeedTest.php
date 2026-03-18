@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Writer\Extension\PodcastIndex;
 
+use function array_diff_key;
+use function array_key_first;
+use function count;
+
 use DateTime;
+
+use function implode;
+
+use function in_array;
+
 use Laminas\Feed\Reader\Extension\PodcastIndex\AttributesReader;
 use Laminas\Feed\Writer;
 use Laminas\Feed\Writer\Extension\PodcastIndex\LiveItem;
 use PHPUnit\Framework\TestCase;
 
-use function array_diff_key;
-use function array_key_first;
-use function count;
-use function implode;
-use function in_array;
 use function time;
 
 /**
@@ -408,13 +412,13 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $srcset = [
-            "https://example.com/images/ep1/pci_avatar-massive.jpg 1500w",
-            "https://example.com/images/ep1/pci_avatar-middle.jpg 600w",
-            "https://example.com/images/ep1/pci_avatar-small.jpg 300w",
-            "https://example.com/images/ep1/pci_avatar-tiny.jpg 150w",
+            'https://example.com/images/ep1/pci_avatar-massive.jpg 1500w',
+            'https://example.com/images/ep1/pci_avatar-middle.jpg 600w',
+            'https://example.com/images/ep1/pci_avatar-small.jpg 300w',
+            'https://example.com/images/ep1/pci_avatar-tiny.jpg 150w',
         ];
         $images = [
-            'srcset' => implode(", ", $srcset), // cast to string
+            'srcset' => implode(', ', $srcset), // cast to string
         ];
 
         $feed->setPodcastIndexImages($images);
@@ -426,13 +430,13 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $srcset = [
-            "https://example.com/images/ep1/pci_avatar-massive.jpg 1500w",
-            "https://example.com/images/ep1/pci_avatar-middle.jpg 600w",
-            "https://example.com/images/ep1/pci_avatar-small.jpg 300w",
-            "https://example.com/images/ep1/pci_avatar-tiny.jpg 150w",
+            'https://example.com/images/ep1/pci_avatar-massive.jpg 1500w',
+            'https://example.com/images/ep1/pci_avatar-middle.jpg 600w',
+            'https://example.com/images/ep1/pci_avatar-small.jpg 300w',
+            'https://example.com/images/ep1/pci_avatar-tiny.jpg 150w',
         ];
         $images = [
-            'srcset'   => implode(", ", $srcset), // cast to string
+            'srcset'   => implode(', ', $srcset), // cast to string
             'unwanted' => 'data',
         ];
 
@@ -456,10 +460,10 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $srcset = [
-            "https://example.com/images/ep1/pci_avatar-massive.jpg 1500w",
-            "https://example.com/images/ep1/pci_avatar-middle.jpg 600w",
-            "https://example.com/images/ep1/pci_avatar-small.jpg 300w",
-            "https://example.com/images/ep1/pci_avatar-tiny.jpg 150w",
+            'https://example.com/images/ep1/pci_avatar-massive.jpg 1500w',
+            'https://example.com/images/ep1/pci_avatar-middle.jpg 600w',
+            'https://example.com/images/ep1/pci_avatar-small.jpg 300w',
+            'https://example.com/images/ep1/pci_avatar-tiny.jpg 150w',
         ];
         $images = [
             'srcset' => $srcset, // plain array, not allowed
@@ -475,20 +479,20 @@ class FeedTest extends TestCase
 
         $images = [
             [
-                'alt'         => "An antenna emanating signal waves",
-                'purpose'     => "artwork",
-                'type'        => "image/jpeg",
-                'aspectRatio' => "1/1",
-                'href'        => "https://example.com/images/ep1/pci_square-massive.jpg",
+                'alt'         => 'An antenna emanating signal waves',
+                'purpose'     => 'artwork',
+                'type'        => 'image/jpeg',
+                'aspectRatio' => '1/1',
+                'href'        => 'https://example.com/images/ep1/pci_square-massive.jpg',
                 'width'       => 1400,
                 'height'      => 1400,
             ],
             [
-                'alt'         => "Another antenna emanating signal waves",
-                'purpose'     => "artwork social",
-                'type'        => "image/jpeg",
-                'aspectRatio' => "16/9",
-                'href'        => "https://example.com/images/ep1/pci_landscape-massive_wide.jpg",
+                'alt'         => 'Another antenna emanating signal waves',
+                'purpose'     => 'artwork social',
+                'type'        => 'image/jpeg',
+                'aspectRatio' => '16/9',
+                'href'        => 'https://example.com/images/ep1/pci_landscape-massive_wide.jpg',
             ],
         ];
 
@@ -501,7 +505,7 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $image = [
-            'href' => "https://example.com/images/ep1/pci_square-massive.jpg",
+            'href' => 'https://example.com/images/ep1/pci_square-massive.jpg',
         ];
 
         $feed->addPodcastIndexDetailedImage($image);
@@ -515,7 +519,7 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $image = [
-            'href'     => "https://example.com/images/ep1/pci_square-massive.jpg",
+            'href'     => 'https://example.com/images/ep1/pci_square-massive.jpg',
             'unwanted' => 'data',
         ];
 
@@ -530,7 +534,7 @@ class FeedTest extends TestCase
 
         // missing href
         $image = [
-            'abc' => "https://example.com/images/ep1/pci_square-massive.jpg",
+            'abc' => 'https://example.com/images/ep1/pci_square-massive.jpg',
         ];
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
         $feed->addPodcastIndexDetailedImage($image);
@@ -541,7 +545,7 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $image = [
-            'href' => "example.com/images/ep1/pci_square-massive.jpg",
+            'href' => 'example.com/images/ep1/pci_square-massive.jpg',
         ];
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
         $feed->addPodcastIndexDetailedImage($image);
@@ -553,27 +557,27 @@ class FeedTest extends TestCase
 
         $invalidImages = [
             [
-                'href' => "https://example.com/images/ep1/pci_square-massive.jpg",
+                'href' => 'https://example.com/images/ep1/pci_square-massive.jpg',
                 'alt'  => 1234,
             ],
             [
-                'href'        => "https://example.com/images/ep1/pci_square-massive.jpg",
+                'href'        => 'https://example.com/images/ep1/pci_square-massive.jpg',
                 'aspectRatio' => 1234,
             ],
             [
-                'href'  => "https://example.com/images/ep1/pci_square-massive.jpg",
+                'href'  => 'https://example.com/images/ep1/pci_square-massive.jpg',
                 'width' => '1234',
             ],
             [
-                'href'   => "https://example.com/images/ep1/pci_square-massive.jpg",
+                'href'   => 'https://example.com/images/ep1/pci_square-massive.jpg',
                 'height' => '1234',
             ],
             [
-                'href' => "https://example.com/images/ep1/pci_square-massive.jpg",
+                'href' => 'https://example.com/images/ep1/pci_square-massive.jpg',
                 'type' => true,
             ],
             [
-                'href'    => "https://example.com/images/ep1/pci_square-massive.jpg",
+                'href'    => 'https://example.com/images/ep1/pci_square-massive.jpg',
                 'purpose' => true,
             ],
         ];
@@ -820,10 +824,10 @@ class FeedTest extends TestCase
 
         $trailer = [
             'title'   => 'Season 4: Race for the Clouds',
-            'pubdate' => "Thu, 01 Apr 2021 08:00:00 EST",
-            'url'     => "https://example.org/season4teaser.mp4",
+            'pubdate' => 'Thu, 01 Apr 2021 08:00:00 EST',
+            'url'     => 'https://example.org/season4teaser.mp4',
             'length'  => 12345678,
-            'type'    => "video/mp4",
+            'type'    => 'video/mp4',
             'season'  => 4,
         ];
 
@@ -837,10 +841,10 @@ class FeedTest extends TestCase
 
         $trailer = [
             'title'    => 'Season 4: Race for the Clouds',
-            'pubdate'  => "Thu, 01 Apr 2021 08:00:00 EST",
-            'url'      => "https://example.org/season4teaser.mp4",
+            'pubdate'  => 'Thu, 01 Apr 2021 08:00:00 EST',
+            'url'      => 'https://example.org/season4teaser.mp4',
             'length'   => 12345678,
-            'type'     => "video/mp4",
+            'type'     => 'video/mp4',
             'season'   => 4,
             'unwanted' => 'data',
         ];
@@ -855,8 +859,8 @@ class FeedTest extends TestCase
 
         $trailer = [
             'title'   => 'Season 4: Race for the Clouds',
-            'pubdate' => "Thu, 01 Apr 2021 08:00:00 EST",
-            'url'     => "https://example.org/season4teaser.mp4",
+            'pubdate' => 'Thu, 01 Apr 2021 08:00:00 EST',
+            'url'     => 'https://example.org/season4teaser.mp4',
         ];
 
         $feed->setPodcastIndexTrailer($trailer);
@@ -880,8 +884,8 @@ class FeedTest extends TestCase
 
         $trailer = [
             'title'   => 'Season 4: Race for the Clouds',
-            'pubdate' => "Thu, 01 Apr 2021 08:00:00 EST",
-            'url'     => "example.org/season4teaser.mp4",
+            'pubdate' => 'Thu, 01 Apr 2021 08:00:00 EST',
+            'url'     => 'example.org/season4teaser.mp4',
         ];
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
         $feed->setPodcastIndexTrailer($trailer);
@@ -1231,10 +1235,10 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $remoteItem = [
-            'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-            'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-            'medium'   => "podcast",
-            'title'    => "Some Example",
+            'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+            'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+            'medium'   => 'podcast',
+            'title'    => 'Some Example',
         ];
         $feed->addPodcastIndexRemoteItem($remoteItem);
 
@@ -1248,10 +1252,10 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $remoteItem = [
-            'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-            'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-            'medium'   => "podcast",
-            'title'    => "Some Example",
+            'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+            'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+            'medium'   => 'podcast',
+            'title'    => 'Some Example',
             'unwanted' => 'data',
         ];
         $feed->addPodcastIndexRemoteItem($remoteItem);
@@ -1267,16 +1271,16 @@ class FeedTest extends TestCase
 
         $remoteItems = [
             [
-                'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-                'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-                'medium'   => "podcast",
-                'title'    => "Some Example",
+                'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+                'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+                'medium'   => 'podcast',
+                'title'    => 'Some Example',
             ],
             [
-                'feedGuid' => "917393e3-xxxx-yyyy-ace4-edaa54e1f810",
-                'feedUrl'  => "https://feeds.other-example.org/917393e3-xxxx-yyyy-ace4-edaa54e1f810/rss.xml",
-                'medium'   => "podcast",
-                'title'    => "Some Other Example",
+                'feedGuid' => '917393e3-xxxx-yyyy-ace4-edaa54e1f810',
+                'feedUrl'  => 'https://feeds.other-example.org/917393e3-xxxx-yyyy-ace4-edaa54e1f810/rss.xml',
+                'medium'   => 'podcast',
+                'title'    => 'Some Other Example',
             ],
         ];
 
@@ -1290,10 +1294,10 @@ class FeedTest extends TestCase
 
         // add
         $singleRemoteItem = [
-            'feedGuid' => "917393e3-xxxx-very-news-edaa54e1f810",
-            'feedUrl'  => "https://feeds.new-other-example.org/917393e3-xxxx-news-ace4-edaa54e1f810/rss.xml",
-            'medium'   => "podcast",
-            'title'    => "New Other Example",
+            'feedGuid' => '917393e3-xxxx-very-news-edaa54e1f810',
+            'feedUrl'  => 'https://feeds.new-other-example.org/917393e3-xxxx-news-ace4-edaa54e1f810/rss.xml',
+            'medium'   => 'podcast',
+            'title'    => 'New Other Example',
         ];
         $feed->addPodcastIndexRemoteItem($singleRemoteItem);
         /** @psalm-var list<RemoteItemObject> $moreRemoteItemsSaved */
@@ -1306,10 +1310,10 @@ class FeedTest extends TestCase
         // update
         $newRemoteItems = [
             [
-                'feedGuid' => "917393e3-some-thing-else-edaa54e1f810",
-                'feedUrl'  => "https://feeds.other.org/edaa54e1f810/rss.xml",
-                'medium'   => "podcast",
-                'title'    => "Something Else",
+                'feedGuid' => '917393e3-some-thing-else-edaa54e1f810',
+                'feedUrl'  => 'https://feeds.other.org/edaa54e1f810/rss.xml',
+                'medium'   => 'podcast',
+                'title'    => 'Something Else',
             ],
         ];
         $feed->setPodcastIndexRemoteItems($newRemoteItems);
@@ -1328,7 +1332,7 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $data = [
-            'feedGuid' => "917393e3-xxxx-very-news-edaa54e1f810",
+            'feedGuid' => '917393e3-xxxx-very-news-edaa54e1f810',
         ];
         $feed->addPodcastIndexRemoteItem($data);
 
@@ -1353,7 +1357,7 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $data = [
-            'feedGuid' => "917393e3-zzzz-yyyy-gggg-edaa54e1f810",
+            'feedGuid' => '917393e3-zzzz-yyyy-gggg-edaa54e1f810',
             'feedUrl'  => 'www.google.com',
         ];
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
@@ -1365,10 +1369,10 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $remoteItem = [
-            'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-            'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-            'medium'   => "podcast",
-            'title'    => "Some Example",
+            'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+            'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+            'medium'   => 'podcast',
+            'title'    => 'Some Example',
         ];
         $feed->addPodcastIndexPodrollRemoteItem($remoteItem);
 
@@ -1382,10 +1386,10 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $remoteItem = [
-            'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-            'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-            'medium'   => "podcast",
-            'title'    => "Some Example",
+            'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+            'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+            'medium'   => 'podcast',
+            'title'    => 'Some Example',
             'unwanted' => 'data',
         ];
         $feed->addPodcastIndexPodrollRemoteItem($remoteItem);
@@ -1401,16 +1405,16 @@ class FeedTest extends TestCase
 
         $remoteItems = [
             [
-                'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-                'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-                'medium'   => "podcast",
-                'title'    => "Some Example",
+                'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+                'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+                'medium'   => 'podcast',
+                'title'    => 'Some Example',
             ],
             [
-                'feedGuid' => "917393e3-xxxx-yyyy-ace4-edaa54e1f810",
-                'feedUrl'  => "https://feeds.other-example.org/917393e3-xxxx-yyyy-ace4-edaa54e1f810/rss.xml",
-                'medium'   => "podcast",
-                'title'    => "Some Other Example",
+                'feedGuid' => '917393e3-xxxx-yyyy-ace4-edaa54e1f810',
+                'feedUrl'  => 'https://feeds.other-example.org/917393e3-xxxx-yyyy-ace4-edaa54e1f810/rss.xml',
+                'medium'   => 'podcast',
+                'title'    => 'Some Other Example',
             ],
         ];
 
@@ -1424,10 +1428,10 @@ class FeedTest extends TestCase
 
         // add
         $singleRemoteItem = [
-            'feedGuid' => "917393e3-xxxx-very-news-edaa54e1f810",
-            'feedUrl'  => "https://feeds.new-other-example.org/917393e3-xxxx-news-ace4-edaa54e1f810/rss.xml",
-            'medium'   => "podcast",
-            'title'    => "New Other Example",
+            'feedGuid' => '917393e3-xxxx-very-news-edaa54e1f810',
+            'feedUrl'  => 'https://feeds.new-other-example.org/917393e3-xxxx-news-ace4-edaa54e1f810/rss.xml',
+            'medium'   => 'podcast',
+            'title'    => 'New Other Example',
         ];
         $feed->addPodcastIndexPodrollRemoteItem($singleRemoteItem);
         /** @psalm-var list<RemoteItemObject> $moreRemoteItemsSaved */
@@ -1440,10 +1444,10 @@ class FeedTest extends TestCase
         // update
         $newRemoteItems = [
             [
-                'feedGuid' => "917393e3-some-thing-else-edaa54e1f810",
-                'feedUrl'  => "https://feeds.other.org/edaa54e1f810/rss.xml",
-                'medium'   => "podcast",
-                'title'    => "Something Else",
+                'feedGuid' => '917393e3-some-thing-else-edaa54e1f810',
+                'feedUrl'  => 'https://feeds.other.org/edaa54e1f810/rss.xml',
+                'medium'   => 'podcast',
+                'title'    => 'Something Else',
             ],
         ];
         $feed->setPodcastIndexPodroll($newRemoteItems);
@@ -1462,7 +1466,7 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $data = [
-            'feedGuid' => "917393e3-xxxx-very-news-edaa54e1f810",
+            'feedGuid' => '917393e3-xxxx-very-news-edaa54e1f810',
         ];
         $feed->addPodcastIndexPodrollRemoteItem($data);
 
@@ -1487,7 +1491,7 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $data = [
-            'feedGuid' => "917393e3-zzzz-yyyy-gggg-edaa54e1f810",
+            'feedGuid' => '917393e3-zzzz-yyyy-gggg-edaa54e1f810',
             'feedUrl'  => 'www.google.com',
         ];
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
@@ -1499,10 +1503,10 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $remoteItem = [
-            'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-            'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-            'medium'   => "podcast",
-            'title'    => "Some Example",
+            'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+            'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+            'medium'   => 'podcast',
+            'title'    => 'Some Example',
         ];
         $feed->setPodcastIndexPublisher($remoteItem);
         $this->assertEquals($remoteItem, $feed->getPodcastIndexPublisher());
@@ -1513,10 +1517,10 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $remoteItem = [
-            'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-            'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-            'medium'   => "podcast",
-            'title'    => "Some Example",
+            'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+            'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+            'medium'   => 'podcast',
+            'title'    => 'Some Example',
             'unwanted' => 'data',
         ];
         $feed->setPodcastIndexPublisher($remoteItem);
@@ -1528,7 +1532,7 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $remoteItem = [
-            'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
+            'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
         ];
         $feed->setPodcastIndexPublisher($remoteItem);
         $this->assertEquals($remoteItem, $feed->getPodcastIndexPublisher());
@@ -1539,9 +1543,9 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $remoteItem = [
-            'feedUrl' => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-            'medium'  => "podcast",
-            'title'   => "Some Example",
+            'feedUrl' => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+            'medium'  => 'podcast',
+            'title'   => 'Some Example',
         ];
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
         $feed->setPodcastIndexPublisher($remoteItem);
@@ -1552,8 +1556,8 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $remoteItem = [
-            'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-            'feedUrl'  => "feeds.example.org",
+            'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+            'feedUrl'  => 'feeds.example.org',
         ];
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
         $feed->setPodcastIndexPublisher($remoteItem);
@@ -1564,21 +1568,21 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $value           = [
-            'type'      => "lightning",
-            'method'    => "keysend",
+            'type'      => 'lightning',
+            'method'    => 'keysend',
             'suggested' => 0.00000005000,
         ];
         $valueRecipients = [
             [
-                'name'    => "Alice (Podcaster)",
-                'type'    => "node",
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'name'    => 'Alice (Podcaster)',
+                'type'    => 'node',
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
             [
-                'name'    => "Bob (Podcaster)",
-                'type'    => "node",
-                'address' => "032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508",
+                'name'    => 'Bob (Podcaster)',
+                'type'    => 'node',
+                'address' => '032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508',
                 'split'   => 60,
             ],
         ];
@@ -1595,13 +1599,13 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $value           = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
         $valueRecipients = [
             [
-                'type'    => "node",
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'type'    => 'node',
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -1618,14 +1622,14 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $value           = [
-            'type'     => "lightning",
-            'method'   => "keysend",
+            'type'     => 'lightning',
+            'method'   => 'keysend',
             'unwanted' => 'data',
         ];
         $valueRecipients = [
             [
-                'type'     => "node",
-                'address'  => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'type'     => 'node',
+                'address'  => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'    => 40,
                 'unwanted' => 'data',
             ],
@@ -1643,8 +1647,8 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $value = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
 
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
@@ -1656,12 +1660,12 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $value           = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
         $valueRecipients = [
             [
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -1675,13 +1679,13 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $value           = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
         $valueRecipients = [
             [
                 'type'    => true,
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -1695,15 +1699,15 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $value           = [
-            'type'      => "lightning",
-            'method'    => "keysend",
+            'type'      => 'lightning',
+            'method'    => 'keysend',
             'suggested' => 5.0E-8, // scientific notation for 0.00000005000
         ];
         $valueRecipients = [
             [
-                'name'    => "Alice (Podcaster)",
-                'type'    => "node",
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'name'    => 'Alice (Podcaster)',
+                'type'    => 'node',
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -1721,13 +1725,13 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $value           = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
         $valueRecipients = [
             [
-                'type'    => "node",
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'type'    => 'node',
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -1755,17 +1759,17 @@ class FeedTest extends TestCase
         $data = [
             [
                 'priority'   => 1,
-                'protocol'   => "activitypub",
-                'uri'        => "https://podcastindex.social/web/@dave/108013847520053258",
-                'accountId'  => "@dave",
-                'accountUrl' => "https://podcastindex.social/web/@dave",
+                'protocol'   => 'activitypub',
+                'uri'        => 'https://podcastindex.social/web/@dave/108013847520053258',
+                'accountId'  => '@dave',
+                'accountUrl' => 'https://podcastindex.social/web/@dave',
             ],
             [
                 'priority'   => 2,
-                'protocol'   => "twitter",
-                'uri'        => "https://twitter.com/PodcastindexOrg/status/1507120226361647115",
-                'accountId'  => "@podcastindexorg",
-                'accountUrl' => "https://twitter.com/PodcastindexOrg",
+                'protocol'   => 'twitter',
+                'uri'        => 'https://twitter.com/PodcastindexOrg/status/1507120226361647115',
+                'accountId'  => '@podcastindexorg',
+                'accountUrl' => 'https://twitter.com/PodcastindexOrg',
             ],
         ];
         $feed->setPodcastIndexSocialInteracts($data);
@@ -1781,10 +1785,10 @@ class FeedTest extends TestCase
 
         $data = [
             'priority'   => 1,
-            'protocol'   => "activitypub",
-            'uri'        => "https://podcastindex.social/web/@dave/108013847520053258",
-            'accountId'  => "@dave",
-            'accountUrl' => "https://podcastindex.social/web/@dave",
+            'protocol'   => 'activitypub',
+            'uri'        => 'https://podcastindex.social/web/@dave/108013847520053258',
+            'accountId'  => '@dave',
+            'accountUrl' => 'https://podcastindex.social/web/@dave',
             'unwanted'   => 'data',
         ];
         $feed->addPodcastIndexSocialInteract($data);
@@ -1801,10 +1805,10 @@ class FeedTest extends TestCase
         $data = [
             [
                 'priority'   => 1,
-                'protocol'   => "activitypub",
-                'uri'        => "podcastindex.social/web/@dave/108013847520053258",
-                'accountId'  => "@dave",
-                'accountUrl' => "https://podcastindex.social/web/@dave",
+                'protocol'   => 'activitypub',
+                'uri'        => 'podcastindex.social/web/@dave/108013847520053258',
+                'accountId'  => '@dave',
+                'accountUrl' => 'https://podcastindex.social/web/@dave',
             ],
         ];
 
@@ -1819,8 +1823,8 @@ class FeedTest extends TestCase
         $data = [
             [
                 'priority'  => 1,
-                'uri'       => "https://podcastindex.social/web/@dave",
-                'accountId' => "@dave",
+                'uri'       => 'https://podcastindex.social/web/@dave',
+                'accountId' => '@dave',
             ],
         ];
 
@@ -1923,10 +1927,10 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $data = [
-            'server'    => "irc.zeronode.net",
-            'protocol'  => "irc",
-            'accountId' => "@jsmith",
-            'space'     => "#myawesomepodcast",
+            'server'    => 'irc.zeronode.net',
+            'protocol'  => 'irc',
+            'accountId' => '@jsmith',
+            'space'     => '#myawesomepodcast',
         ];
 
         $feed->setPodcastIndexChat($data);
@@ -1938,10 +1942,10 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $data = [
-            'server'    => "irc.zeronode.net",
-            'protocol'  => "irc",
-            'accountId' => "@jsmith",
-            'space'     => "#myawesomepodcast",
+            'server'    => 'irc.zeronode.net',
+            'protocol'  => 'irc',
+            'accountId' => '@jsmith',
+            'space'     => '#myawesomepodcast',
             'unwanted'  => 'data',
         ];
 
@@ -1954,8 +1958,8 @@ class FeedTest extends TestCase
         $feed = new Writer\Feed();
 
         $data = [
-            'server'   => "irc.zeronode.net",
-            'protocol' => "irc",
+            'server'   => 'irc.zeronode.net',
+            'protocol' => 'irc',
         ];
 
         $feed->setPodcastIndexChat($data);
@@ -1980,9 +1984,9 @@ class FeedTest extends TestCase
 
         $data = [
             'server'    => 123,
-            'protocol'  => "irc",
-            'accountId' => "@jsmith",
-            'space'     => "#myawesomepodcast",
+            'protocol'  => 'irc',
+            'accountId' => '@jsmith',
+            'space'     => '#myawesomepodcast',
         ];
 
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
@@ -1995,8 +1999,8 @@ class FeedTest extends TestCase
 
         $data = [
             'server'    => 'server_name',
-            'protocol'  => "irc",
-            'accountId' => "@jsmith",
+            'protocol'  => 'irc',
+            'accountId' => '@jsmith',
             'space'     => true,
         ];
 

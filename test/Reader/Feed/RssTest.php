@@ -1,15 +1,20 @@
-<?php // phpcs:disable Squiz.Commenting.FunctionComment.WrongStyle
+<?php
+
+declare(strict_types=1);
+// phpcs:disable Squiz.Commenting.FunctionComment.WrongStyle
 
 namespace LaminasTest\Feed\Reader\Feed;
 
-use DateTime;
-use DateTimeInterface;
-use Laminas\Feed\Reader;
-use PHPUnit\Framework\TestCase;
-
 use function array_values;
 use function assert;
+
+use DateTime;
+use DateTimeInterface;
+
 use function file_get_contents;
+
+use Laminas\Feed\Reader;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group Laminas_Feed

@@ -4,21 +4,25 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\ITunes;
 
-use Laminas\Feed\Uri;
-use Laminas\Feed\Writer;
-use Laminas\Stdlib\StringUtils;
-use Laminas\Stdlib\StringWrapper\StringWrapperInterface;
-
 use function array_key_exists;
 use function count;
 use function ctype_alpha;
 use function ctype_digit;
+
+use const E_USER_DEPRECATED;
+
 use function get_debug_type;
 use function implode;
 use function in_array;
 use function is_array;
 use function is_bool;
 use function is_string;
+
+use Laminas\Feed\Uri;
+use Laminas\Feed\Writer;
+use Laminas\Stdlib\StringUtils;
+use Laminas\Stdlib\StringWrapper\StringWrapperInterface;
+
 use function lcfirst;
 use function method_exists;
 use function preg_match;
@@ -26,9 +30,8 @@ use function sprintf;
 use function strlen;
 use function substr;
 use function trigger_error;
-use function ucfirst;
 
-use const E_USER_DEPRECATED;
+use function ucfirst;
 
 class Feed
 {

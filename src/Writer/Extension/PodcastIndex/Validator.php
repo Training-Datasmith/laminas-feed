@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\PodcastIndex;
 
-use DateTimeInterface;
-use Laminas\Feed\Writer;
-
 use function array_flip;
 use function array_intersect_key;
+
 use function count;
 use function ctype_alpha;
+
+use DateTimeInterface;
+
+use const FILTER_VALIDATE_URL;
+
 use function filter_var;
 use function in_array;
 use function is_bool;
@@ -18,9 +21,10 @@ use function is_float;
 use function is_int;
 use function is_numeric;
 use function is_string;
-use function strlen;
 
-use const FILTER_VALIDATE_URL;
+use Laminas\Feed\Writer;
+
+use function strlen;
 
 /**
  * Validates PodcastIndex data that exists for both, Feeds and Entries.

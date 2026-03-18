@@ -4,28 +4,33 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\PubSubHubbub;
 
-use DateInterval;
-use DateTime;
-use Laminas\Feed\Uri;
-use Laminas\Http\Client;
-use Laminas\Http\Request as HttpRequest;
-use Laminas\Stdlib\ArrayUtils;
-use Traversable;
-
 use function array_key_exists;
 use function array_search;
 use function array_unique;
+
+use DateInterval;
+use DateTime;
+
 use function gettype;
 use function hash;
+
 use function implode;
 use function in_array;
 use function intval;
 use function is_array;
 use function is_string;
+
+use Laminas\Feed\Uri;
+use Laminas\Http\Client;
+use Laminas\Http\Request as HttpRequest;
+use Laminas\Stdlib\ArrayUtils;
+
 use function md5;
-use function rand;
 use function rtrim;
 use function time;
+
+use Traversable;
+
 use function uksort;
 use function uniqid;
 
@@ -635,13 +640,13 @@ class Subscriber
                     'hubUrl'   => $url,
                 ];
 
-            /**
-             * At first I thought it was needed, but the backend storage will
-             * allow tracking async without any user interference. It's left
-             * here in case the user is interested in knowing what Hubs
-             * are using async verification modes so they may update Models and
-             * move these to asynchronous processes.
-             */
+                /**
+                 * At first I thought it was needed, but the backend storage will
+                 * allow tracking async without any user interference. It's left
+                 * here in case the user is interested in knowing what Hubs
+                 * are using async verification modes so they may update Models and
+                 * move these to asynchronous processes.
+                 */
             } elseif ($response->getStatusCode() === 202) {
                 $this->asyncHubs[] = [
                     'response' => $response,

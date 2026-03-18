@@ -6,9 +6,11 @@ namespace Laminas\Feed\Writer\Extension\Slash\Renderer;
 
 use DOMDocument;
 use DOMElement;
-use Laminas\Feed\Writer\Extension;
 
 use function is_numeric;
+
+use Laminas\Feed\Writer\Extension;
+
 use function strtolower;
 
 class Entry extends Extension\AbstractRenderer

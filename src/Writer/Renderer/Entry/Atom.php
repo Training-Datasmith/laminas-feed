@@ -4,23 +4,26 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Renderer\Entry;
 
+use function array_key_exists;
+use function class_exists;
+use function date;
+
 use DateTime;
 use DOMDocument;
 use DOMElement;
 use Laminas\Feed\Uri;
 use Laminas\Feed\Writer;
+
 use Laminas\Feed\Writer\Renderer;
 use Laminas\Validator;
-use tidy;
 
-use function array_key_exists;
-use function class_exists;
-use function date;
 use function preg_match;
 use function preg_replace;
 use function str_replace;
 use function strlen;
 use function strtotime;
+
+use tidy;
 
 class Atom extends Renderer\AbstractRenderer implements Renderer\RendererInterface
 {

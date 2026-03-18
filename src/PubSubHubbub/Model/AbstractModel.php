@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\PubSubHubbub\Model;
 
+use function array_pop;
+use function explode;
+
 use Laminas\Db\TableGateway\TableGateway;
 use Laminas\Db\TableGateway\TableGatewayInterface;
 
-use function array_pop;
-use function explode;
 use function strtolower;
 
 class AbstractModel

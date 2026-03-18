@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Renderer\Feed;
 
+use function array_key_exists;
+
 use DateTime;
 use DOMDocument;
 use DOMElement;
 use Laminas\Feed\Writer;
 use Laminas\Feed\Writer\Renderer;
+
 use Laminas\Feed\Writer\Version;
 
-use function array_key_exists;
 use function strtolower;
 
 class AbstractAtom extends Renderer\AbstractRenderer

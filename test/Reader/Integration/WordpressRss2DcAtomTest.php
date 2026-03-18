@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Reader\Integration;
 
-use Laminas\Feed\Reader;
-use PHPUnit\Framework\TestCase;
-
 use function file_get_contents;
+
+use Laminas\Feed\Reader;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group Laminas_Feed

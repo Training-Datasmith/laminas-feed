@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer;
 
+use const E_USER_NOTICE;
+
 use function in_array;
 use function lcfirst;
 use function sprintf;
-use function trigger_error;
 
-use const E_USER_NOTICE;
+use function trigger_error;
 
 class Writer
 {

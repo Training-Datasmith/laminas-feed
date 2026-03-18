@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader;
 
-use Laminas\Feed\Reader\Exception\InvalidArgumentException;
-
 use function array_key_exists;
+
 use function is_a;
 use function is_string;
+
+use Laminas\Feed\Reader\Exception\InvalidArgumentException;
+
 use function sprintf;
 
 /**

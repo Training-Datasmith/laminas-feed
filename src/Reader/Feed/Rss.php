@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Feed;
 
+use function array_key_exists;
+use function array_unique;
+use function count;
+
 use DateTime;
 use DOMDocument;
+
+use function is_array;
+
 use Laminas\Feed\Reader;
 use Laminas\Feed\Reader\Collection;
 use Laminas\Feed\Reader\Exception;
 
-use function array_key_exists;
-use function array_unique;
-use function count;
-use function is_array;
 use function preg_match;
 use function strtotime;
 use function trim;

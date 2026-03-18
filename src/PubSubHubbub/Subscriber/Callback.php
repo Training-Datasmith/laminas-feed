@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\PubSubHubbub\Subscriber;
 
+use function array_key_exists;
+use function explode;
+use function hash;
+
+use function is_array;
+
 use Laminas\Feed\PubSubHubbub;
 use Laminas\Feed\PubSubHubbub\Exception;
 use Laminas\Feed\Uri;
 
-use function array_key_exists;
-use function explode;
-use function hash;
-use function is_array;
 use function rawurldecode;
 use function sprintf;
 use function stripos;
@@ -89,9 +91,9 @@ class Callback extends PubSubHubbub\AbstractCallback
         ) {
             $this->setFeedUpdate($this->_getRawBody());
             $this->getHttpResponse()->setHeader('X-Hub-On-Behalf-Of', $this->getSubscriberCount());
-        /**
-         * Handle any (un)subscribe confirmation requests
-         */
+            /**
+             * Handle any (un)subscribe confirmation requests
+             */
         } elseif ($this->isValidHubVerification($httpGetData)) {
             $this->getHttpResponse()->setContent($httpGetData['hub_challenge']);
 
@@ -114,9 +116,9 @@ class Callback extends PubSubHubbub\AbstractCallback
                         $httpGetData['hub_mode']
                     ));
             }
-        /**
-         * Hey, C'mon! We tried everything else!
-         */
+            /**
+             * Hey, C'mon! We tried everything else!
+             */
         } else {
             $this->getHttpResponse()->setStatusCode(404);
         }

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Writer\Extension\PodcastIndex;
 
-use Laminas\Feed\Reader\Extension\PodcastIndex\AttributesReader;
-use Laminas\Feed\Writer;
-use Laminas\Feed\Writer\Extension\PodcastIndex;
-use PHPUnit\Framework\TestCase;
-
 use function count;
 use function in_array;
+
+use Laminas\Feed\Reader\Extension\PodcastIndex\AttributesReader;
+use Laminas\Feed\Writer;
+
+use Laminas\Feed\Writer\Extension\PodcastIndex;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @psalm-import-type LicenseObject from AttributesReader
@@ -298,17 +299,17 @@ class LiveItemTest extends TestCase
         $data = [
             [
                 'priority'   => 1,
-                'protocol'   => "activitypub",
-                'uri'        => "https://podcastindex.social/web/@dave/108013847520053258",
-                'accountId'  => "@dave",
-                'accountUrl' => "https://podcastindex.social/web/@dave",
+                'protocol'   => 'activitypub',
+                'uri'        => 'https://podcastindex.social/web/@dave/108013847520053258',
+                'accountId'  => '@dave',
+                'accountUrl' => 'https://podcastindex.social/web/@dave',
             ],
             [
                 'priority'   => 2,
-                'protocol'   => "twitter",
-                'uri'        => "https://twitter.com/PodcastindexOrg/status/1507120226361647115",
-                'accountId'  => "@podcastindexorg",
-                'accountUrl' => "https://twitter.com/PodcastindexOrg",
+                'protocol'   => 'twitter',
+                'uri'        => 'https://twitter.com/PodcastindexOrg/status/1507120226361647115',
+                'accountId'  => '@podcastindexorg',
+                'accountUrl' => 'https://twitter.com/PodcastindexOrg',
             ],
         ];
         $this->liveItem->setPodcastIndexSocialInteracts($data);
@@ -412,10 +413,10 @@ class LiveItemTest extends TestCase
     public function testSetChat(): void
     {
         $data = [
-            'server'    => "irc.zeronode.net",
-            'protocol'  => "irc",
-            'accountId' => "@jsmith",
-            'space'     => "#myawesomepodcast",
+            'server'    => 'irc.zeronode.net',
+            'protocol'  => 'irc',
+            'accountId' => '@jsmith',
+            'space'     => '#myawesomepodcast',
         ];
 
         $this->liveItem->setPodcastIndexChat($data);
@@ -425,8 +426,8 @@ class LiveItemTest extends TestCase
     public function testSetPodcastIndexChatWithMinimalData(): void
     {
         $data = [
-            'server'   => "irc.zeronode.net",
-            'protocol' => "irc",
+            'server'   => 'irc.zeronode.net',
+            'protocol' => 'irc',
         ];
 
         $this->liveItem->setPodcastIndexChat($data);

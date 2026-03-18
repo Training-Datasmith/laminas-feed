@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Extension\PodcastIndex;
 
-use DOMElement;
-use Laminas\Feed\Reader\Extension;
-use Laminas\Feed\Reader\Extension\PodcastIndex\LiveItem as LiveItemReader;
-use stdClass;
-
 use function array_key_exists;
 use function assert;
+
+use DOMElement;
+use Laminas\Feed\Reader\Extension;
+
+use Laminas\Feed\Reader\Extension\PodcastIndex\LiveItem as LiveItemReader;
+use stdClass;
 
 /**
  * Describes PodcastIndex data of a RSS Feed

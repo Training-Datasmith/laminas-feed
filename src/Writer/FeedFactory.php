@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer;
 
-use Traversable;
-
 use function array_key_exists;
+
 use function get_debug_type;
 use function is_array;
 use function method_exists;
 use function sprintf;
 use function str_replace;
 use function strtolower;
+
+use Traversable;
 
 // phpcs:ignore WebimpressCodingStandard.NamingConventions.AbstractClass.Prefix
 abstract class FeedFactory

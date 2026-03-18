@@ -6,9 +6,10 @@ namespace Laminas\Feed\Writer\Extension\GooglePlayPodcast\Renderer;
 
 use DOMDocument;
 use DOMElement;
-use Laminas\Feed\Writer\Extension;
 
 use function is_array;
+
+use Laminas\Feed\Writer\Extension;
 
 class Feed extends Extension\AbstractRenderer
 {

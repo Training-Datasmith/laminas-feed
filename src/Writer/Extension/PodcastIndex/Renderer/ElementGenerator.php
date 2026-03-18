@@ -55,8 +55,8 @@ final class ElementGenerator
                 $element->appendChild($text);
                 continue;
             }
-            if ($key === "aspectRatio") {
-                $key = "aspect-ratio";
+            if ($key === 'aspectRatio') {
+                $key = 'aspect-ratio';
             }
             switch (gettype($value)) {
                 case 'string':

@@ -4,30 +4,36 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Reader;
 
+use function array_reduce;
+
+use const E_USER_NOTICE;
+
+use function file_get_contents;
+use function getenv;
+
 use Laminas\Feed\Reader;
 use Laminas\Feed\Reader\Exception\InvalidArgumentException;
 use Laminas\Feed\Reader\Feed\FeedInterface;
 use Laminas\Feed\Reader\FeedSet;
 use Laminas\Feed\Reader\Http\ClientInterface;
 use Laminas\Feed\Reader\Http\ResponseInterface;
-use Laminas\Http\Client as HttpClient;
 use Laminas\Http\Client\Adapter\Test as TestAdapter;
+use Laminas\Http\Client as HttpClient;
 use Laminas\Http\Response as HttpResponse;
 use My\Extension\JungleBooks\Entry;
+
 use My\Extension\JungleBooks\Feed;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use stdClass;
 
-use function array_reduce;
-use function file_get_contents;
-use function getenv;
 use function restore_error_handler;
 use function set_error_handler;
-use function str_replace;
-use function strstr;
 
-use const E_USER_NOTICE;
+use stdClass;
+
+use function str_replace;
+
+use function strstr;
 
 /**
  * @group Laminas_Feed

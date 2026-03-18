@@ -6,7 +6,6 @@ namespace Laminas\Feed;
 
 use function in_array;
 use function parse_url;
-use function strpos;
 
 class Uri
 {

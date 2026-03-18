@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer;
 
+use function array_key_exists;
+use function date;
+
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Laminas\Feed\Uri;
-use Laminas\Validator;
 
-use function array_key_exists;
-use function date;
 use function in_array;
 use function is_array;
 use function is_int;
 use function is_numeric;
 use function is_string;
+
+use Laminas\Feed\Uri;
+use Laminas\Validator;
+
 use function preg_match;
 use function sprintf;
 use function strlen;

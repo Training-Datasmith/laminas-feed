@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\PubSubHubbub;
 
+use function getenv;
+
 use Laminas\Feed\PubSubHubbub\Model\Subscription;
 use Laminas\Feed\PubSubHubbub\PubSubHubbub;
 use Laminas\Feed\PubSubHubbub\Subscriber;
-use Laminas\Http\Client as HttpClient;
 use Laminas\Http\Client\Adapter\Socket;
+use Laminas\Http\Client as HttpClient;
 use PHPUnit\Framework\MockObject\MockObject;
+
 use PHPUnit\Framework\TestCase;
 
-use function getenv;
 use function strpos;
 use function substr;
 

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Reader\Integration;
 
-use Laminas\Feed\Reader;
-use PHPUnit\Framework\TestCase;
-use stdClass;
-
 use function count;
 use function file_get_contents;
 use function implode;
+
+use Laminas\Feed\Reader;
+use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @group Laminas_Feed
@@ -146,10 +146,10 @@ class PodcastIndexRss2Test extends TestCase
         );
 
         $srcset = [
-            "https://example.com/images/ep1/pci_avatar-massive.jpg 1500w",
-            "https://example.com/images/ep1/pci_avatar-middle.jpg 600w",
-            "https://example.com/images/ep1/pci_avatar-small.jpg 300w",
-            "https://example.com/images/ep1/pci_avatar-tiny.jpg 150w",
+            'https://example.com/images/ep1/pci_avatar-massive.jpg 1500w',
+            'https://example.com/images/ep1/pci_avatar-middle.jpg 600w',
+            'https://example.com/images/ep1/pci_avatar-small.jpg 300w',
+            'https://example.com/images/ep1/pci_avatar-tiny.jpg 150w',
         ];
 
         $expected         = new stdClass();
@@ -167,22 +167,22 @@ class PodcastIndexRss2Test extends TestCase
         );
 
         $expectedA              = new stdClass();
-        $expectedA->alt         = "An antenna emanating signal waves";
-        $expectedA->purpose     = "artwork";
-        $expectedA->type        = "image/jpeg";
-        $expectedA->aspectRatio = "1/1";
-        $expectedA->href        = "https://example.com/images/ep1/pci_square-massive.jpg";
-        $expectedA->width       = "1400";
-        $expectedA->height      = "1400";
+        $expectedA->alt         = 'An antenna emanating signal waves';
+        $expectedA->purpose     = 'artwork';
+        $expectedA->type        = 'image/jpeg';
+        $expectedA->aspectRatio = '1/1';
+        $expectedA->href        = 'https://example.com/images/ep1/pci_square-massive.jpg';
+        $expectedA->width       = '1400';
+        $expectedA->height      = '1400';
 
         $expectedB              = new stdClass();
-        $expectedB->alt         = "Another antenna emanating signal waves";
-        $expectedB->purpose     = "artwork social";
-        $expectedB->type        = "image/jpeg";
-        $expectedB->aspectRatio = "16/9";
-        $expectedB->href        = "https://example.com/images/ep1/pci_landscape-massive_wide.jpg";
-        $expectedB->width       = "";
-        $expectedB->height      = "";
+        $expectedB->alt         = 'Another antenna emanating signal waves';
+        $expectedB->purpose     = 'artwork social';
+        $expectedB->type        = 'image/jpeg';
+        $expectedB->aspectRatio = '16/9';
+        $expectedB->href        = 'https://example.com/images/ep1/pci_landscape-massive_wide.jpg';
+        $expectedB->width       = '';
+        $expectedB->height      = '';
 
         $images = $feed->getPodcastIndexDetailedImages();
         $this->assertEquals($expectedA, $images[0]);
@@ -250,10 +250,10 @@ class PodcastIndexRss2Test extends TestCase
 
         $expected          = new stdClass();
         $expected->title   = 'Season 4: Race for the Clouds';
-        $expected->pubdate = "Thu, 01 Apr 2021 08:00:00 EST";
-        $expected->url     = "https://example.org/season4teaser.mp4";
+        $expected->pubdate = 'Thu, 01 Apr 2021 08:00:00 EST';
+        $expected->url     = 'https://example.org/season4teaser.mp4';
         $expected->length  = 12345678;
-        $expected->type    = "video/mp4";
+        $expected->type    = 'video/mp4';
         $expected->season  = 4;
 
         $this->assertEquals($expected, $feed->getPodcastIndexTrailer());
@@ -416,18 +416,18 @@ class PodcastIndexRss2Test extends TestCase
         );
 
         $recipA              = new stdClass();
-        $recipA->name        = "Alice (Podcaster)";
-        $recipA->type        = "node";
-        $recipA->address     = "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52";
+        $recipA->name        = 'Alice (Podcaster)';
+        $recipA->type        = 'node';
+        $recipA->address     = '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52';
         $recipA->split       = '40';
         $recipA->customKey   = '';
         $recipA->customValue = '';
         $recipA->fee         = '';
 
         $recipB              = new stdClass();
-        $recipB->name        = "Bob (Podcaster)";
-        $recipB->type        = "node";
-        $recipB->address     = "032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508";
+        $recipB->name        = 'Bob (Podcaster)';
+        $recipB->type        = 'node';
+        $recipB->address     = '032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508';
         $recipB->split       = '60';
         $recipB->customKey   = '';
         $recipB->customValue = '';
@@ -452,17 +452,17 @@ class PodcastIndexRss2Test extends TestCase
 
         $expectedA             = new stdClass();
         $expectedA->priority   = 1;
-        $expectedA->protocol   = "activitypub";
-        $expectedA->uri        = "https://podcastindex.social/web/@dave/108013847520053258";
-        $expectedA->accountId  = "@dave";
-        $expectedA->accountUrl = "https://podcastindex.social/web/@dave";
+        $expectedA->protocol   = 'activitypub';
+        $expectedA->uri        = 'https://podcastindex.social/web/@dave/108013847520053258';
+        $expectedA->accountId  = '@dave';
+        $expectedA->accountUrl = 'https://podcastindex.social/web/@dave';
 
         $expectedB             = new stdClass();
         $expectedB->priority   = 2;
-        $expectedB->protocol   = "twitter";
-        $expectedB->uri        = "https://twitter.com/PodcastindexOrg/status/1507120226361647115";
-        $expectedB->accountId  = "@podcastindexorg";
-        $expectedB->accountUrl = "https://twitter.com/PodcastindexOrg";
+        $expectedB->protocol   = 'twitter';
+        $expectedB->uri        = 'https://twitter.com/PodcastindexOrg/status/1507120226361647115';
+        $expectedB->accountId  = '@podcastindexorg';
+        $expectedB->accountUrl = 'https://twitter.com/PodcastindexOrg';
 
         $response = $feed->getPodcastIndexSocialInteracts();
         $this->assertEquals($expectedA, $response[0]);
@@ -662,17 +662,17 @@ class PodcastIndexRss2Test extends TestCase
 
         $expectedA             = new stdClass();
         $expectedA->priority   = 1;
-        $expectedA->protocol   = "activitypub";
-        $expectedA->uri        = "https://podcastindex.social/web/@dave/108013847520053258";
-        $expectedA->accountId  = "@dave";
-        $expectedA->accountUrl = "https://podcastindex.social/web/@dave";
+        $expectedA->protocol   = 'activitypub';
+        $expectedA->uri        = 'https://podcastindex.social/web/@dave/108013847520053258';
+        $expectedA->accountId  = '@dave';
+        $expectedA->accountUrl = 'https://podcastindex.social/web/@dave';
 
         $expectedB             = new stdClass();
         $expectedB->priority   = 2;
-        $expectedB->protocol   = "twitter";
-        $expectedB->uri        = "https://twitter.com/PodcastindexOrg/status/1507120226361647115";
-        $expectedB->accountId  = "@podcastindexorg";
-        $expectedB->accountUrl = "https://twitter.com/PodcastindexOrg";
+        $expectedB->protocol   = 'twitter';
+        $expectedB->uri        = 'https://twitter.com/PodcastindexOrg/status/1507120226361647115';
+        $expectedB->accountId  = '@podcastindexorg';
+        $expectedB->accountUrl = 'https://twitter.com/PodcastindexOrg';
 
         $response = $entry->getPodcastIndexSocialInteracts();
         $this->assertEquals($expectedA, $response[0]);
@@ -691,18 +691,18 @@ class PodcastIndexRss2Test extends TestCase
         // prepare value recipients as child elements of value time split
 
         $timeSplitRecipientA              = new stdClass();
-        $timeSplitRecipientA->name        = "Alice (Podcaster)";
-        $timeSplitRecipientA->type        = "node";
-        $timeSplitRecipientA->address     = "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52";
+        $timeSplitRecipientA->name        = 'Alice (Podcaster)';
+        $timeSplitRecipientA->type        = 'node';
+        $timeSplitRecipientA->address     = '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52';
         $timeSplitRecipientA->split       = '80';
         $timeSplitRecipientA->customKey   = '';
         $timeSplitRecipientA->customValue = '';
         $timeSplitRecipientA->fee         = '';
 
         $timeSplitRecipientB              = new stdClass();
-        $timeSplitRecipientB->name        = "Malcolm (Guest)";
-        $timeSplitRecipientB->type        = "node";
-        $timeSplitRecipientB->address     = "02dd306e68c46681aa21d88a436fb35355a8579dd30201581cefa17cb179fc4c15";
+        $timeSplitRecipientB->name        = 'Malcolm (Guest)';
+        $timeSplitRecipientB->type        = 'node';
+        $timeSplitRecipientB->address     = '02dd306e68c46681aa21d88a436fb35355a8579dd30201581cefa17cb179fc4c15';
         $timeSplitRecipientB->split       = '20';
         $timeSplitRecipientB->customKey   = '';
         $timeSplitRecipientB->customValue = '';
@@ -720,18 +720,18 @@ class PodcastIndexRss2Test extends TestCase
         // prepare value recipients as child elements of value
 
         $valueRecipientA              = new stdClass();
-        $valueRecipientA->name        = "Alice (Podcaster)";
-        $valueRecipientA->type        = "node";
-        $valueRecipientA->address     = "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52";
+        $valueRecipientA->name        = 'Alice (Podcaster)';
+        $valueRecipientA->type        = 'node';
+        $valueRecipientA->address     = '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52';
         $valueRecipientA->split       = '40';
         $valueRecipientA->customKey   = '';
         $valueRecipientA->customValue = '';
         $valueRecipientA->fee         = '';
 
         $valueRecipientB              = new stdClass();
-        $valueRecipientB->name        = "Bob (Podcaster)";
-        $valueRecipientB->type        = "node";
-        $valueRecipientB->address     = "032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508";
+        $valueRecipientB->name        = 'Bob (Podcaster)';
+        $valueRecipientB->type        = 'node';
+        $valueRecipientB->address     = '032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508';
         $valueRecipientB->split       = '60';
         $valueRecipientB->customKey   = '';
         $valueRecipientB->customValue = '';
@@ -762,18 +762,18 @@ class PodcastIndexRss2Test extends TestCase
         // prepare value recipients as child elements of value
 
         $valueRecipientA              = new stdClass();
-        $valueRecipientA->name        = "Alice (Podcaster)";
-        $valueRecipientA->type        = "node";
-        $valueRecipientA->address     = "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52";
+        $valueRecipientA->name        = 'Alice (Podcaster)';
+        $valueRecipientA->type        = 'node';
+        $valueRecipientA->address     = '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52';
         $valueRecipientA->split       = '40';
         $valueRecipientA->customKey   = '';
         $valueRecipientA->customValue = '';
         $valueRecipientA->fee         = '';
 
         $valueRecipientB              = new stdClass();
-        $valueRecipientB->name        = "Bob (Podcaster)";
-        $valueRecipientB->type        = "node";
-        $valueRecipientB->address     = "032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508";
+        $valueRecipientB->name        = 'Bob (Podcaster)';
+        $valueRecipientB->type        = 'node';
+        $valueRecipientB->address     = '032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508';
         $valueRecipientB->split       = '60';
         $valueRecipientB->customKey   = '';
         $valueRecipientB->customValue = '';
@@ -906,22 +906,22 @@ class PodcastIndexRss2Test extends TestCase
         $entry = $feed->current();
 
         $expectedA              = new stdClass();
-        $expectedA->alt         = "An antenna emanating signal waves";
-        $expectedA->purpose     = "artwork";
-        $expectedA->type        = "image/jpeg";
-        $expectedA->aspectRatio = "1/1";
-        $expectedA->href        = "https://example.com/images/ep1/pci_square-massive.jpg";
-        $expectedA->width       = "1400";
-        $expectedA->height      = "1400";
+        $expectedA->alt         = 'An antenna emanating signal waves';
+        $expectedA->purpose     = 'artwork';
+        $expectedA->type        = 'image/jpeg';
+        $expectedA->aspectRatio = '1/1';
+        $expectedA->href        = 'https://example.com/images/ep1/pci_square-massive.jpg';
+        $expectedA->width       = '1400';
+        $expectedA->height      = '1400';
 
         $expectedB              = new stdClass();
-        $expectedB->alt         = "Another antenna emanating signal waves";
-        $expectedB->purpose     = "artwork social";
-        $expectedB->type        = "image/jpeg";
-        $expectedB->aspectRatio = "16/9";
-        $expectedB->href        = "https://example.com/images/ep1/pci_landscape-massive_wide.jpg";
-        $expectedB->width       = "";
-        $expectedB->height      = "";
+        $expectedB->alt         = 'Another antenna emanating signal waves';
+        $expectedB->purpose     = 'artwork social';
+        $expectedB->type        = 'image/jpeg';
+        $expectedB->aspectRatio = '16/9';
+        $expectedB->href        = 'https://example.com/images/ep1/pci_landscape-massive_wide.jpg';
+        $expectedB->width       = '';
+        $expectedB->height      = '';
 
         $images = $entry->getPodcastIndexDetailedImages();
         $this->assertEquals($expectedA, $images[0]);
@@ -1015,9 +1015,9 @@ class PodcastIndexRss2Test extends TestCase
         );
 
         $expected         = new stdClass();
-        $expected->url    = "https://example.com/pc20/livestream?format=.mp3";
-        $expected->length = "312";
-        $expected->type   = "audio/mpeg";
+        $expected->url    = 'https://example.com/pc20/livestream?format=.mp3';
+        $expected->length = '312';
+        $expected->type   = 'audio/mpeg';
 
         $liveItem = $feed->getPodcastIndexLiveItems()[0];
 

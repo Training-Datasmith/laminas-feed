@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Extension\Syndication;
 
+use function array_key_exists;
+
 use DateTime;
 use Laminas\Feed\Reader;
-use Laminas\Feed\Reader\Extension;
 
-use function array_key_exists;
+use Laminas\Feed\Reader\Extension;
 
 class Feed extends Extension\AbstractFeed
 {

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\PubSubHubbub;
 
+use function is_string;
+
 use Laminas\Escaper\Escaper;
 use Laminas\Feed\Reader;
+
 use Laminas\Http;
 
-use function is_string;
 use function str_replace;
 
 class PubSubHubbub

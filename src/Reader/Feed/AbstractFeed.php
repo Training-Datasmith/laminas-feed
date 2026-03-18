@@ -4,21 +4,25 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Feed;
 
-use DOMDocument;
-use DOMElement;
-use DOMXPath;
-use Laminas\Feed\Reader;
-use Laminas\Feed\Reader\Exception;
-// phpcs:ignore SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
-use ReturnTypeWillChange;
-
 use function array_key_exists;
 use function call_user_func_array;
 use function count;
+
+use DOMDocument;
+use DOMElement;
+// phpcs:ignore SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
+use DOMXPath;
+
 use function in_array;
+
+use Laminas\Feed\Reader;
+use Laminas\Feed\Reader\Exception;
+
 use function method_exists;
+
+use ReturnTypeWillChange;
+
 use function sprintf;
-use function strpos;
 
 /**
  * @template TItem of Reader\Entry\Rss|Reader\Entry\Atom

@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Extension\DublinCore;
 
+use function array_key_exists;
+
 use DateTime;
 use DOMNodeList;
+
+use function is_array;
+
 use Laminas\Feed\Reader;
+
 use Laminas\Feed\Reader\Collection;
 use Laminas\Feed\Reader\Extension;
-
-use function array_key_exists;
-use function is_array;
 
 class Entry extends Extension\AbstractEntry
 {

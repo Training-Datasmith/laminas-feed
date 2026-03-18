@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\PodcastIndex\Renderer;
 
+use function assert;
+
 use DOMDocument;
 use DOMElement;
 use Laminas\Feed\Writer\Entry as EntryWriter;
 use Laminas\Feed\Writer\Extension;
-use Laminas\Feed\Writer\Extension\PodcastIndex\Validator;
 
-use function assert;
+use Laminas\Feed\Writer\Extension\PodcastIndex\Validator;
 
 /**
  * Renders PodcastIndex data of an entry in a RSS Feed
@@ -352,8 +353,8 @@ class Entry extends Extension\AbstractRenderer
                 $enclosureElement->appendChild($el);
             }
             if (isset($enclosure['integrity'])) {
-                    $el = ElementGenerator::createPodcastIndexElement($dom, $enclosure['integrity'], 'integrity');
-                    $enclosureElement->appendChild($el);
+                $el = ElementGenerator::createPodcastIndexElement($dom, $enclosure['integrity'], 'integrity');
+                $enclosureElement->appendChild($el);
             }
             $root->appendChild($enclosureElement);
         }

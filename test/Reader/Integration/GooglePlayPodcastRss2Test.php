@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Reader\Integration;
 
+use function file_get_contents;
+
 use Laminas\Feed\Reader;
 use PHPUnit\Framework\TestCase;
+
 use stdClass;
 
-use function file_get_contents;
 use function str_replace;
 
 class GooglePlayPodcastRss2Test extends TestCase

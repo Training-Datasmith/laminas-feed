@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\PubSubHubbub;
 
+use function array_merge;
+
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\TestCase;
-use ReflectionMethod;
 
-use function array_merge;
+use ReflectionMethod;
 
 #[BackupGlobals(true)]
 class AbstractCallbackTest extends TestCase

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Writer\TestAsset;
 
+use function array_key_exists;
+
 use Laminas\Feed\Writer\Exception\InvalidArgumentException;
 use Laminas\Feed\Writer\Extension;
+
 use Laminas\Feed\Writer\ExtensionManagerInterface;
 
-use function array_key_exists;
 use function sprintf;
 
 class CustomExtensionManager implements ExtensionManagerInterface

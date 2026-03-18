@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Http;
 
-use Laminas\Feed\Reader\Exception;
-
 use function get_debug_type;
+
 use function intval;
 use function is_numeric;
 use function is_object;
 use function is_string;
+
+use Laminas\Feed\Reader\Exception;
+
 use function method_exists;
 use function sprintf;
 use function strtolower;

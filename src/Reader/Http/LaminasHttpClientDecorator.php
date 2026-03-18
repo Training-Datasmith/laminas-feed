@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Http;
 
+use function implode;
+use function is_array;
+use function is_numeric;
+
+use function is_string;
+
 use Laminas\Feed\Reader\Exception;
 use Laminas\Http\Client as LaminasHttpClient;
 use Laminas\Http\Headers;
 
-use function gettype;
-use function implode;
-use function is_array;
-use function is_numeric;
-use function is_object;
-use function is_string;
 use function sprintf;
 
 class LaminasHttpClientDecorator implements HeaderAwareClientInterface

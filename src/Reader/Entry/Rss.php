@@ -4,29 +4,35 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Entry;
 
+use function array_key_exists;
+use function count;
+use function date_create_from_format;
+
 use DateTime;
 use DateTimeInterface;
 use DOMElement;
 use DOMNodeList;
 use DOMXPath;
+
+use function in_array;
+use function is_array;
+use function is_string;
+
 use Laminas\Feed\Reader;
 use Laminas\Feed\Reader\Exception;
 use Laminas\Feed\Reader\Exception\RuntimeException;
 use Laminas\Feed\Reader\Extension\Atom\Entry as AtomEntry;
+
 use Laminas\Feed\Reader\Extension\Content\Entry as ContentEntry;
 use Laminas\Feed\Reader\Extension\DublinCore\Entry as DublinCoreEntry;
 use Laminas\Feed\Reader\Extension\Slash\Entry as SlashEntry;
 use Laminas\Feed\Reader\Extension\Thread\Entry as ThreadEntry;
 use Laminas\Feed\Reader\Extension\WellFormedWeb\Entry as WellFormedWebEntry;
+
+use function preg_match;
+
 use stdClass;
 
-use function array_key_exists;
-use function count;
-use function date_create_from_format;
-use function in_array;
-use function is_array;
-use function is_string;
-use function preg_match;
 use function strtotime;
 use function trim;
 

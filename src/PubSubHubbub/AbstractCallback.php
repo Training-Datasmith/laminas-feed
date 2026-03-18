@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\PubSubHubbub;
 
-use Laminas\Http\PhpEnvironment\Response as PhpResponse;
-use Laminas\Stdlib\ArrayUtils;
-use Traversable;
-
 use function array_key_exists;
 use function file_get_contents;
 use function function_exists;
+
 use function gettype;
 use function intval;
 use function is_array;
 use function is_resource;
+
+use Laminas\Http\PhpEnvironment\Response as PhpResponse;
+use Laminas\Stdlib\ArrayUtils;
+
 use function sprintf;
 use function str_replace;
 use function stream_get_contents;
 use function strlen;
-use function strpos;
 use function strtoupper;
 use function substr;
+
+use Traversable;
+
 use function trim;
 
 abstract class AbstractCallback implements CallbackInterface

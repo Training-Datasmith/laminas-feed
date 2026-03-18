@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Extension\Atom;
 
+use function array_key_exists;
+use function count;
+
 use DateTime;
 use DOMDocument;
 use DOMElement;
 use DOMNodeList;
+
+use function is_string;
+
 use Laminas\Feed\Reader;
 use Laminas\Feed\Reader\Collection;
+
 use Laminas\Feed\Reader\Extension;
 use Laminas\Feed\Uri;
+
+use function preg_replace;
+
 use stdClass;
 
-use function array_key_exists;
-use function count;
-use function is_string;
-use function preg_replace;
 use function strlen;
 use function trim;
 

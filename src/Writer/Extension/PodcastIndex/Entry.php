@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\PodcastIndex;
 
+use function array_key_exists;
+use function count;
+
 use Laminas\Feed\Writer;
+
 use Laminas\Stdlib\StringUtils;
 use Laminas\Stdlib\StringWrapper\StringWrapperInterface;
 
-use function array_key_exists;
-use function count;
 use function lcfirst;
 use function method_exists;
 use function rtrim;

@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\PubSubHubbub\Model;
 
-use DateInterval;
-use DateTime;
-use Laminas\Feed\PubSubHubbub;
-
 use function array_key_exists;
 use function count;
+
+use DateInterval;
+
+use DateTime;
+
 use function is_string;
+
+use Laminas\Feed\PubSubHubbub;
 
 class Subscription extends AbstractModel implements SubscriptionPersistenceInterface
 {

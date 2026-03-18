@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Writer\Extension\ITunes;
 
+use const E_USER_DEPRECATED;
+
 use Laminas\Feed\Writer;
 use Laminas\Feed\Writer\Exception\ExceptionInterface;
+
 use PHPUnit\Framework\TestCase;
 
 use function preg_match;
 use function restore_error_handler;
 use function set_error_handler;
-use function str_repeat;
 
-use const E_USER_DEPRECATED;
+use function str_repeat;
 
 /**
  * @group Laminas_Feed
@@ -232,7 +234,7 @@ class FeedTest extends TestCase
         ];
 
         /** @psalm-suppress UnusedClosureParam */
-        set_error_handler(static fn(int $errno, string $errstr): bool =>
+        set_error_handler(static fn (int $errno, string $errstr): bool =>
             (bool) preg_match('/itunes:keywords/', $errstr), E_USER_DEPRECATED);
         $feed->setItunesKeywords($words);
         restore_error_handler();
@@ -260,7 +262,7 @@ class FeedTest extends TestCase
         ];
 
         /** @psalm-suppress UnusedClosureParam */
-        set_error_handler(static fn(int $errno, string $errstr): bool =>
+        set_error_handler(static fn (int $errno, string $errstr): bool =>
             (bool) preg_match('/itunes:keywords/', $errstr), E_USER_DEPRECATED);
 
         try {
@@ -280,7 +282,7 @@ class FeedTest extends TestCase
         ];
 
         /** @psalm-suppress UnusedClosureParam */
-        set_error_handler(static fn(int $errno, string $errstr): bool =>
+        set_error_handler(static fn (int $errno, string $errstr): bool =>
             (bool) preg_match('/itunes:keywords/', $errstr), E_USER_DEPRECATED);
 
         try {

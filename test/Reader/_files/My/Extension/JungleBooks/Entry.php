@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace My\Extension\JungleBooks;
 
-use Laminas\Feed\Reader\Extension;
-
 use function is_string;
+
+use Laminas\Feed\Reader\Extension;
 
 class Entry extends Extension\AbstractEntry
 {

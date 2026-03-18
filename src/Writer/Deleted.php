@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer;
 
+use function array_key_exists;
+
 use DateTime;
 use DateTimeInterface;
-use Laminas\Feed\Uri;
 
-use function array_key_exists;
 use function is_int;
 use function is_string;
+
+use Laminas\Feed\Uri;
 
 class Deleted
 {

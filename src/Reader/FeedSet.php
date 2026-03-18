@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader;
 
-use ArrayObject;
-use DOMElement;
-use DOMNodeList;
-use Laminas\Feed\Uri;
-// phpcs:ignore SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
-use ReturnTypeWillChange;
-
 use function array_filter;
 use function array_pop;
+
+use ArrayObject;
+use DOMElement;
+// phpcs:ignore SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
+use DOMNodeList;
+
 use function explode;
 use function implode;
+
+use Laminas\Feed\Uri;
+
 use function ltrim;
+
+use ReturnTypeWillChange;
+
 use function sprintf;
 use function strtolower;
 use function trim;

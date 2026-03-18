@@ -7,6 +7,12 @@ namespace LaminasTest\Feed\PubSubHubbub\Subscriber;
 use ArrayObject;
 use DateInterval;
 use DateTime;
+
+use function file_get_contents;
+use function fopen;
+use function fwrite;
+use function hash;
+
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\ResultSet\ResultSetInterface;
@@ -17,17 +23,16 @@ use Laminas\Feed\PubSubHubbub\HttpResponse;
 use Laminas\Feed\PubSubHubbub\Model;
 use Laminas\Feed\PubSubHubbub\Subscriber\Callback as CallbackSubscriber;
 use PHPUnit\Framework\Attributes\BackupGlobals;
+
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
-use stdClass;
 
-use function file_get_contents;
-use function fopen;
-use function fwrite;
-use function hash;
 use function rewind;
 use function sprintf;
+
+use stdClass;
+
 use function time;
 
 #[BackupGlobals(true)]
@@ -159,7 +164,7 @@ class CallbackTest extends TestCase
      */
     public function testValidatesValidHttpGetData(): void
     {
-        $mockReturnValue = new class {
+        $mockReturnValue = new class () {
             public function getArrayCopy(): array
             {
                 return ['verify_token' => hash('sha256', 'cba')];
@@ -212,7 +217,7 @@ class CallbackTest extends TestCase
 
     public function testReturnsTrueIfModeSetAsUnsubscribeFromHttpGetData(): void
     {
-        $mockReturnValue = new class {
+        $mockReturnValue = new class () {
             public function getArrayCopy(): array
             {
                 return ['verify_token' => hash('sha256', 'cba')];

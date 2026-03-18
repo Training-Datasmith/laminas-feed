@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader;
 
-use DOMDocument;
-use DOMElement;
-use DOMXPath;
-// phpcs:ignore SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
-use ReturnTypeWillChange;
-
 use function call_user_func_array;
 use function count;
+
+use DOMDocument;
+// phpcs:ignore SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
+use DOMElement;
+
+use DOMXPath;
+
 use function in_array;
 use function method_exists;
-use function strpos;
+
+use ReturnTypeWillChange;
 
 /**
  * @deprecated This (abstract) class is deprecated. Use \Laminas\Feed\Reader\Feed\AbstractFeed instead.]

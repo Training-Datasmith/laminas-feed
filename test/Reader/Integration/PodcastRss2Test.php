@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Reader\Integration;
 
-use Laminas\Feed\Reader;
-use PHPUnit\Framework\TestCase;
-use stdClass;
+use const E_USER_DEPRECATED;
 
 use function file_get_contents;
+
+use Laminas\Feed\Reader;
+
+use PHPUnit\Framework\TestCase;
+
 use function preg_match;
 use function restore_error_handler;
 use function set_error_handler;
-use function str_replace;
 
-use const E_USER_DEPRECATED;
+use stdClass;
+
+use function str_replace;
 
 /**
  * @group Laminas_Feed
@@ -250,7 +254,7 @@ class PodcastRss2Test extends TestCase
         $expected = str_replace("\r\n", "\n", $expected);
 
         /** @psalm-suppress UnusedClosureParam */
-        set_error_handler(static fn(int $errno, string $errstr): bool =>
+        set_error_handler(static fn (int $errno, string $errstr): bool =>
             (bool) preg_match('/itunes:keywords/', $errstr), E_USER_DEPRECATED);
         $keywords = $entry->getKeywords();
         restore_error_handler();

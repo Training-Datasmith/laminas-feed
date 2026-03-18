@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Feed;
 
-use DateTime;
-use DOMDocument;
-use Laminas\Feed\Reader;
-
 use function array_key_exists;
 use function count;
+
+use DateTime;
+
+use DOMDocument;
+
 use function is_array;
+
+use Laminas\Feed\Reader;
 
 /** @template-extends AbstractFeed<Reader\Entry\Atom> */
 class Atom extends AbstractFeed

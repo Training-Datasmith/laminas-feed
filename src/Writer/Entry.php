@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer;
 
+use function array_key_exists;
+
 use BadMethodCallException;
 use DateTime;
 use DateTimeInterface;
-use Laminas\Feed\Uri;
 
-use function array_key_exists;
-use function get_class;
 use function gettype;
 use function in_array;
 use function is_int;
 use function is_numeric;
 use function is_object;
 use function is_string;
+
+use Laminas\Feed\Uri;
+
 use function sprintf;
 
 class Entry

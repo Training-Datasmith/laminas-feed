@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Writer\Renderer\Entry;
 
+use function array_reduce;
+
+use const E_USER_NOTICE;
+
 use Laminas\Feed\Reader;
 use Laminas\Feed\Writer;
 use Laminas\Feed\Writer\Entry;
 use Laminas\Feed\Writer\Exception\ExceptionInterface;
 use Laminas\Feed\Writer\Renderer;
+
 use LaminasTest\Feed\Writer\TestAsset;
 use PHPUnit\Framework\TestCase;
 
-use function array_reduce;
 use function restore_error_handler;
 use function set_error_handler;
-use function strstr;
 
-use const E_USER_NOTICE;
+use function strstr;
 
 /**
  * @group Laminas_Feed

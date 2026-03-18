@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Laminas\Feed\Reader\Extension\Podcast;
 
 use DOMText;
+
+use const E_USER_DEPRECATED;
+
 use Laminas\Feed\Reader\Extension;
 
 use function trigger_error;
-
-use const E_USER_DEPRECATED;
 
 class Feed extends Extension\AbstractFeed
 {

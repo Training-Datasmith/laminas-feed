@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer;
 
+use function is_object;
+
 use Laminas\Feed\Writer\Extension\GooglePlayPodcast\Feed;
 use Laminas\Feed\Writer\Extension\ITunes\Entry;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
+
 use Laminas\ServiceManager\Factory\InvokableFactory;
 
-use function gettype;
-use function is_object;
 use function sprintf;
-use function substr;
 
 // phpcs:disable Generic.Files.LineLength.TooLong
 /**

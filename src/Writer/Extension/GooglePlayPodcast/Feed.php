@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\GooglePlayPodcast;
 
+use function array_key_exists;
+use function ctype_alpha;
+use function in_array;
+use function is_array;
+
+use function is_string;
+
 use Laminas\Feed\Uri;
 use Laminas\Feed\Writer;
 use Laminas\Stdlib\StringUtils;
 use Laminas\Stdlib\StringWrapper\StringWrapperInterface;
 
-use function array_key_exists;
-use function ctype_alpha;
-use function in_array;
-use function is_array;
-use function is_string;
 use function lcfirst;
 use function method_exists;
 use function strlen;

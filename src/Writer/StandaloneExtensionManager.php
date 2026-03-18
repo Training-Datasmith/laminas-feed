@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer;
 
-use Laminas\Feed\Writer\Exception\InvalidArgumentException;
-
 use function array_key_exists;
+
 use function is_a;
 use function is_string;
+
+use Laminas\Feed\Writer\Exception\InvalidArgumentException;
+
 use function sprintf;
-use function substr;
 
 class StandaloneExtensionManager implements ExtensionManagerInterface
 {

@@ -6,13 +6,18 @@ namespace LaminasTest\Feed\Writer\Renderer\Extension\PodcastIndex;
 
 use DateTime;
 use DateTimeInterface;
-use Laminas\Feed\Writer;
-use Laminas\Feed\Writer\Renderer;
-use PHPUnit\Framework\TestCase;
 
 use function implode;
 use function is_string;
+
+use Laminas\Feed\Writer;
+
+use Laminas\Feed\Writer\Renderer;
+
 use function number_format;
+
+use PHPUnit\Framework\TestCase;
+
 use function substr_count;
 
 class FeedTest extends TestCase
@@ -162,13 +167,13 @@ class FeedTest extends TestCase
     public function testRendersRssImagesTag(): void
     {
         $srcset = [
-            "https://example.com/images/ep1/pci_avatar-massive.jpg 1500w",
-            "https://example.com/images/ep1/pci_avatar-middle.jpg 600w",
-            "https://example.com/images/ep1/pci_avatar-small.jpg 300w",
-            "https://example.com/images/ep1/pci_avatar-tiny.jpg 150w",
+            'https://example.com/images/ep1/pci_avatar-massive.jpg 1500w',
+            'https://example.com/images/ep1/pci_avatar-middle.jpg 600w',
+            'https://example.com/images/ep1/pci_avatar-small.jpg 300w',
+            'https://example.com/images/ep1/pci_avatar-tiny.jpg 150w',
         ];
         $images = [
-            'srcset' => implode(", ", $srcset), // cast to string
+            'srcset' => implode(', ', $srcset), // cast to string
         ];
 
         $this->validWriter->setPodcastIndexImages($images);
@@ -184,20 +189,20 @@ class FeedTest extends TestCase
     {
         $images = [
             [
-                'alt'         => "An antenna emanating signal waves",
-                'purpose'     => "artwork",
-                'type'        => "image/jpeg",
-                'aspectRatio' => "1/1",
-                'href'        => "https://example.com/images/ep1/pci_square-massive.jpg",
+                'alt'         => 'An antenna emanating signal waves',
+                'purpose'     => 'artwork',
+                'type'        => 'image/jpeg',
+                'aspectRatio' => '1/1',
+                'href'        => 'https://example.com/images/ep1/pci_square-massive.jpg',
                 'width'       => 1400,
                 'height'      => 1400,
             ],
             [
-                'alt'         => "Another antenna emanating signal waves",
-                'purpose'     => "artwork social",
-                'type'        => "image/jpeg",
-                'aspectRatio' => "16/9",
-                'href'        => "https://example.com/images/ep1/pci_landscape-massive_wide.jpg",
+                'alt'         => 'Another antenna emanating signal waves',
+                'purpose'     => 'artwork social',
+                'type'        => 'image/jpeg',
+                'aspectRatio' => '16/9',
+                'href'        => 'https://example.com/images/ep1/pci_landscape-massive_wide.jpg',
             ],
         ];
 
@@ -307,8 +312,8 @@ class FeedTest extends TestCase
     {
         $trailer = [
             'title'   => 'Season 4: Race for the Clouds',
-            'pubdate' => "Thu, 01 Apr 2021 08:00:00 EST",
-            'url'     => "https://example.org/season4teaser.mp4",
+            'pubdate' => 'Thu, 01 Apr 2021 08:00:00 EST',
+            'url'     => 'https://example.org/season4teaser.mp4',
         ];
         $this->validWriter->setPodcastIndexTrailer($trailer);
 
@@ -440,10 +445,10 @@ class FeedTest extends TestCase
     public function testRendersRssRemoteItemTag(): void
     {
         $data = [
-            'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-            'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-            'medium'   => "podcast",
-            'title'    => "Some Example",
+            'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+            'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+            'medium'   => 'podcast',
+            'title'    => 'Some Example',
         ];
 
         $this->validWriter->addPodcastIndexRemoteItem($data);
@@ -462,13 +467,13 @@ class FeedTest extends TestCase
     {
         $data = [
             [
-                'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-                'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-                'medium'   => "podcast",
-                'title'    => "Some Example",
+                'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+                'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+                'medium'   => 'podcast',
+                'title'    => 'Some Example',
             ],
             [
-                'feedGuid' => "29cdca4a-xxxx-yyyy-b48b-09a011c5daa9",
+                'feedGuid' => '29cdca4a-xxxx-yyyy-b48b-09a011c5daa9',
             ],
         ];
 
@@ -493,13 +498,13 @@ class FeedTest extends TestCase
     {
         $data = [
             [
-                'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-                'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-                'medium'   => "podcast",
-                'title'    => "Some Example",
+                'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+                'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+                'medium'   => 'podcast',
+                'title'    => 'Some Example',
             ],
             [
-                'feedGuid' => "29cdca4a-xxxx-yyyy-b48b-09a011c5daa9",
+                'feedGuid' => '29cdca4a-xxxx-yyyy-b48b-09a011c5daa9',
             ],
         ];
 
@@ -524,10 +529,10 @@ class FeedTest extends TestCase
     public function testRendersRssPublisherTagWithOneChild(): void
     {
         $data = [
-            'feedGuid' => "917393e3-1b1e-5cef-ace4-edaa54e1f810",
-            'feedUrl'  => "https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml",
-            'medium'   => "podcast",
-            'title'    => "Some Example",
+            'feedGuid' => '917393e3-1b1e-5cef-ace4-edaa54e1f810',
+            'feedUrl'  => 'https://feeds.example.org/917393e3-1b1e-5cef-ace4-edaa54e1f810/rss.xml',
+            'medium'   => 'podcast',
+            'title'    => 'Some Example',
         ];
 
         $this->validWriter->setPodcastIndexPublisher($data);
@@ -546,25 +551,25 @@ class FeedTest extends TestCase
     public function testRendersRssValueTagsWithChildren(): void
     {
         $value = [
-            'type'      => "lightning",
-            'method'    => "keysend",
+            'type'      => 'lightning',
+            'method'    => 'keysend',
             'suggested' => 0.00000005000,
         ];
 
         $valueRecipients = [
             [
-                'name'        => "Alice (Podcaster)",
-                'type'        => "node",
-                'address'     => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'name'        => 'Alice (Podcaster)',
+                'type'        => 'node',
+                'address'     => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'       => 40,
                 'customKey'   => 'some_custom_key',
                 'customValue' => 'some_custom_value',
                 'fee'         => true,
             ],
             [
-                'name'    => "Bob (Podcaster)",
-                'type'    => "node",
-                'address' => "032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508",
+                'name'    => 'Bob (Podcaster)',
+                'type'    => 'node',
+                'address' => '032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508',
                 'split'   => 60,
             ],
         ];
@@ -586,21 +591,21 @@ class FeedTest extends TestCase
         $this->assertStringContainsString('fee="true"', $xml);
 
         $newValue      = [
-            'type'      => "lightning",
-            'method'    => "keysend",
+            'type'      => 'lightning',
+            'method'    => 'keysend',
             'suggested' => 0.00000005000,
         ];
         $newRecipients = [
             [
-                'name'    => "Louis (Podcaster)",
-                'type'    => "node",
-                'address' => "0345c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'name'    => 'Louis (Podcaster)',
+                'type'    => 'node',
+                'address' => '0345c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 50,
             ],
             [
-                'name'    => "Edith (Podcaster)",
-                'type'    => "node",
-                'address' => "03454ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508",
+                'name'    => 'Edith (Podcaster)',
+                'type'    => 'node',
+                'address' => '03454ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508',
                 'split'   => 50,
             ],
         ];
@@ -620,17 +625,17 @@ class FeedTest extends TestCase
         $data = [
             [
                 'priority'   => 1,
-                'protocol'   => "activitypub",
-                'uri'        => "https://podcastindex.social/web/@dave/108013847520053258",
-                'accountId'  => "@dave",
-                'accountUrl' => "https://podcastindex.social/web/@dave",
+                'protocol'   => 'activitypub',
+                'uri'        => 'https://podcastindex.social/web/@dave/108013847520053258',
+                'accountId'  => '@dave',
+                'accountUrl' => 'https://podcastindex.social/web/@dave',
             ],
             [
                 'priority'   => 2,
-                'protocol'   => "twitter",
-                'uri'        => "https://twitter.com/PodcastindexOrg/status/1507120226361647115",
-                'accountId'  => "@podcastindexorg",
-                'accountUrl' => "https://twitter.com/PodcastindexOrg",
+                'protocol'   => 'twitter',
+                'uri'        => 'https://twitter.com/PodcastindexOrg/status/1507120226361647115',
+                'accountId'  => '@podcastindexorg',
+                'accountUrl' => 'https://twitter.com/PodcastindexOrg',
             ],
         ];
 
@@ -650,10 +655,10 @@ class FeedTest extends TestCase
     public function testRendersRssChatTag(): void
     {
         $data = [
-            'server'    => "irc.zeronode.net",
-            'protocol'  => "irc",
-            'accountId' => "@jsmith",
-            'space'     => "#myawesomepodcast",
+            'server'    => 'irc.zeronode.net',
+            'protocol'  => 'irc',
+            'accountId' => '@jsmith',
+            'space'     => '#myawesomepodcast',
         ];
 
         $this->validWriter->setPodcastIndexChat($data);

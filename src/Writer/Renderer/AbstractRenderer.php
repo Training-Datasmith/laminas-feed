@@ -6,9 +6,11 @@ namespace Laminas\Feed\Writer\Renderer;
 
 use DOMDocument;
 use DOMElement;
-use Laminas\Feed\Writer;
 
 use function is_bool;
+
+use Laminas\Feed\Writer;
+
 use function stripos;
 
 class AbstractRenderer

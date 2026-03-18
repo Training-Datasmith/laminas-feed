@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\DublinCore\Renderer;
 
+use function array_key_exists;
+
 use DOMDocument;
 use DOMElement;
+
 use Laminas\Feed\Writer\Extension;
 
-use function array_key_exists;
 use function strtolower;
 
 class Entry extends Extension\AbstractRenderer

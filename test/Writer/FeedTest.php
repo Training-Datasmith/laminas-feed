@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Writer;
 
+use function array_reduce;
+
 use DateTime;
 use DateTimeImmutable;
+
+use const E_USER_NOTICE;
+
 use Laminas\Feed\Writer;
 use Laminas\Feed\Writer\Deleted;
 use Laminas\Feed\Writer\Entry;
 use Laminas\Feed\Writer\Exception\ExceptionInterface;
+
 use Laminas\Feed\Writer\Version;
 use PHPUnit\Framework\TestCase;
 
-use function array_reduce;
 use function restore_error_handler;
 use function set_error_handler;
 use function str_replace;
-use function strstr;
 
-use const E_USER_NOTICE;
+use function strstr;
 
 /**
  * @group Laminas_Feed

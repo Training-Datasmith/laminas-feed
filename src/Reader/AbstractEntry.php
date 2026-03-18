@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader;
 
+use function array_key_exists;
+use function call_user_func_array;
+
 use DOMDocument;
+
 use DOMElement;
 use DOMXPath;
 
-use function array_key_exists;
-use function call_user_func_array;
 use function in_array;
 use function method_exists;
 
@@ -51,11 +53,12 @@ abstract class AbstractEntry
     public function __construct(/**
      * Entry instance
      */
-    protected \DOMElement $entry, /**
+        protected \DOMElement $entry, /**
      * Pointer to the current entry
      */
-    protected $entryKey, $type = null)
-    {
+        protected $entryKey,
+        $type = null
+    ) {
         $this->domDocument = $this->entry->ownerDocument;
         if ($type !== null) {
             $this->data['type'] = $type;

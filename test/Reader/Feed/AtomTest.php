@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Reader\Feed;
 
+use function array_values;
+
 use DateTime;
+
+use function file_get_contents;
+
 use Laminas\Feed\Reader;
 use PHPUnit\Framework\TestCase;
-
-use function array_values;
-use function file_get_contents;
 
 /**
  * @group Laminas_Feed

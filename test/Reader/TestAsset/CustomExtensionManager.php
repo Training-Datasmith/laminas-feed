@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Reader\TestAsset;
 
-use Laminas\Feed\Reader\Extension;
-use Laminas\Feed\Reader\ExtensionManagerInterface;
-
 use function array_key_exists;
+
+use Laminas\Feed\Reader\Extension;
+
+use Laminas\Feed\Reader\ExtensionManagerInterface;
 
 /**
  * Standalone extension manager that omits any extensions added after the 2.9 series.

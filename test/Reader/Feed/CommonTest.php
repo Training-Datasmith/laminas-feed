@@ -7,11 +7,14 @@ namespace LaminasTest\Feed\Reader\Feed;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
-use Laminas\Feed\Reader;
-use Laminas\Feed\Reader\Extension\Atom\Feed;
-use PHPUnit\Framework\TestCase;
 
 use function file_get_contents;
+
+use Laminas\Feed\Reader;
+use Laminas\Feed\Reader\Extension\Atom\Feed;
+
+use PHPUnit\Framework\TestCase;
+
 use function str_replace;
 
 /**

@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer;
 
-use Countable;
-use Iterator;
-// phpcs:ignore SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
-use ReturnTypeWillChange;
-
 use function array_values;
 use function count;
+
+// phpcs:ignore SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
+use Countable;
+
+use Iterator;
+
 use function krsort;
-use function strtolower;
-use function time;
-use function ucfirst;
+
+use ReturnTypeWillChange;
 
 use const SORT_NUMERIC;
+
+use function strtolower;
+use function time;
+
+use function ucfirst;
 
 /** @template-implements Iterator<int, Entry> */
 class Feed extends AbstractFeed implements Iterator, Countable

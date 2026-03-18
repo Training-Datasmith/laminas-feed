@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\PubSubHubbub\Model;
 
+use function array_keys;
+
 use DateTime;
+
+use function extension_loaded;
+use function in_array;
+
 use Laminas\Db\Adapter\Adapter as DbAdapter;
 use Laminas\Db\TableGateway\TableGateway;
+
 use Laminas\Feed\PubSubHubbub\Model\Subscription;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
-use function array_keys;
-use function extension_loaded;
-use function in_array;
 use function uniqid;
 
 /**

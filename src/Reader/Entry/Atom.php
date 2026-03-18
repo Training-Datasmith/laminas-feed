@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Entry;
 
+use function array_key_exists;
+use function count;
+
 use DateTime;
 use DOMElement;
 use DOMXPath;
+
+use function is_array;
+use function is_string;
+
 use Laminas\Feed\Reader;
 use Laminas\Feed\Reader\Collection\Author as AuthorCollection;
+
 use Laminas\Feed\Reader\Exception\RuntimeException;
 use Laminas\Feed\Reader\Extension\Atom\Entry;
 use Laminas\Feed\Reader\Extension\DublinCore\Entry as DublinCoreEntry;
 use Laminas\Feed\Reader\Extension\Thread\Entry as ThreadEntry;
-
-use function array_key_exists;
-use function count;
-use function is_array;
-use function is_string;
 
 class Atom extends AbstractEntry implements EntryInterface
 {

@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Extension\Atom;
 
+use function array_key_exists;
+use function count;
+
 use DateTime;
 use DOMElement;
+
+use function is_string;
+
 use Laminas\Feed\Reader;
+
 use Laminas\Feed\Reader\Collection;
 use Laminas\Feed\Reader\Extension;
 use Laminas\Feed\Uri;
 
-use function array_key_exists;
-use function count;
-use function is_string;
 use function strlen;
 
 class Feed extends Extension\AbstractFeed

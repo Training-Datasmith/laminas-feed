@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Renderer\Entry\Atom;
 
+use function array_key_exists;
+
 use DateTime;
 use DOMDocument;
 use DOMElement;
 use Laminas\Feed\Writer;
-use Laminas\Feed\Writer\Renderer;
 
-use function array_key_exists;
+use Laminas\Feed\Writer\Renderer;
 
 class Deleted extends Renderer\AbstractRenderer implements Renderer\RendererInterface
 {

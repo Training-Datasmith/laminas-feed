@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace LaminasTest\Feed\Writer\Extension\PodcastIndex;
 
-use Laminas\Feed\Reader\Extension\PodcastIndex\AttributesReader;
-use Laminas\Feed\Writer;
-use PHPUnit\Framework\TestCase;
-
 use function array_diff_key;
 use function array_key_first;
 use function count;
+
 use function in_array;
+
+use Laminas\Feed\Reader\Extension\PodcastIndex\AttributesReader;
+use Laminas\Feed\Writer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @psalm-import-type LicenseObject from AttributesReader
@@ -683,17 +684,17 @@ class EntryTest extends TestCase
         $data = [
             [
                 'priority'   => 1,
-                'protocol'   => "activitypub",
-                'uri'        => "https://podcastindex.social/web/@dave/108013847520053258",
-                'accountId'  => "@dave",
-                'accountUrl' => "https://podcastindex.social/web/@dave",
+                'protocol'   => 'activitypub',
+                'uri'        => 'https://podcastindex.social/web/@dave/108013847520053258',
+                'accountId'  => '@dave',
+                'accountUrl' => 'https://podcastindex.social/web/@dave',
             ],
             [
                 'priority'   => 2,
-                'protocol'   => "twitter",
-                'uri'        => "https://twitter.com/PodcastindexOrg/status/1507120226361647115",
-                'accountId'  => "@podcastindexorg",
-                'accountUrl' => "https://twitter.com/PodcastindexOrg",
+                'protocol'   => 'twitter',
+                'uri'        => 'https://twitter.com/PodcastindexOrg/status/1507120226361647115',
+                'accountId'  => '@podcastindexorg',
+                'accountUrl' => 'https://twitter.com/PodcastindexOrg',
             ],
         ];
         $entry->setPodcastIndexSocialInteracts($data);
@@ -710,10 +711,10 @@ class EntryTest extends TestCase
         $data = [
             [
                 'priority'   => 1,
-                'protocol'   => "activitypub",
-                'uri'        => "https://podcastindex.social/web/@dave/108013847520053258",
-                'accountId'  => "@dave",
-                'accountUrl' => "https://podcastindex.social/web/@dave",
+                'protocol'   => 'activitypub',
+                'uri'        => 'https://podcastindex.social/web/@dave/108013847520053258',
+                'accountId'  => '@dave',
+                'accountUrl' => 'https://podcastindex.social/web/@dave',
                 'unwanted'   => 'data',
             ],
         ];
@@ -731,10 +732,10 @@ class EntryTest extends TestCase
         $data = [
             [
                 'priority'   => 1,
-                'protocol'   => "activitypub",
-                'uri'        => "podcastindex.social/web/@dave/108013847520053258",
-                'accountId'  => "@dave",
-                'accountUrl' => "https://podcastindex.social/web/@dave",
+                'protocol'   => 'activitypub',
+                'uri'        => 'podcastindex.social/web/@dave/108013847520053258',
+                'accountId'  => '@dave',
+                'accountUrl' => 'https://podcastindex.social/web/@dave',
             ],
         ];
 
@@ -749,8 +750,8 @@ class EntryTest extends TestCase
         $data = [
             [
                 'priority'  => 1,
-                'uri'       => "https://podcastindex.social/web/@dave",
-                'accountId' => "@dave",
+                'uri'       => 'https://podcastindex.social/web/@dave',
+                'accountId' => '@dave',
             ],
         ];
 
@@ -763,21 +764,21 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $value           = [
-            'type'      => "lightning",
-            'method'    => "keysend",
+            'type'      => 'lightning',
+            'method'    => 'keysend',
             'suggested' => 0.00000005000,
         ];
         $valueRecipients = [
             [
-                'name'    => "Alice (Podcaster)",
-                'type'    => "node",
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'name'    => 'Alice (Podcaster)',
+                'type'    => 'node',
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
             [
-                'name'    => "Bob (Podcaster)",
-                'type'    => "node",
-                'address' => "032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508",
+                'name'    => 'Bob (Podcaster)',
+                'type'    => 'node',
+                'address' => '032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508',
                 'split'   => 60,
             ],
         ];
@@ -787,18 +788,18 @@ class EntryTest extends TestCase
                 'duration'        => 388,
                 'valueRecipients' => [
                     [
-                        'name'        => "Alice (Podcaster)",
-                        'type'        => "node",
-                        'address'     => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                        'name'        => 'Alice (Podcaster)',
+                        'type'        => 'node',
+                        'address'     => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                         'split'       => 40,
-                        'customKey'   => "Some_custom_key",
-                        'customValue' => "Some_custom_value",
+                        'customKey'   => 'Some_custom_key',
+                        'customValue' => 'Some_custom_value',
                         'fee'         => true,
                     ],
                     [
-                        'name'    => "Malcolm (Guest)",
-                        'type'    => "node",
-                        'address' => "02dd306e68c46681aa21d88a436fb35355a8579dd30201581cefa17cb179fc4c15",
+                        'name'    => 'Malcolm (Guest)',
+                        'type'    => 'node',
+                        'address' => '02dd306e68c46681aa21d88a436fb35355a8579dd30201581cefa17cb179fc4c15',
                         'split'   => 20,
                         'fee'     => true,
                     ],
@@ -822,13 +823,13 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $value           = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
         $valueRecipients = [
             [
-                'type'    => "node",
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'type'    => 'node',
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -837,20 +838,20 @@ class EntryTest extends TestCase
                 'startTime'  => 82,
                 'duration'   => 200,
                 'remoteItem' => [
-                    'itemGuid' => "https://podcastindex.org/podcast/4148683#1",
-                    'feedGuid' => "a94f5cc9-8c58-55fc-91fe-a324087a655b",
-                    'medium'   => "music",
+                    'itemGuid' => 'https://podcastindex.org/podcast/4148683#1',
+                    'feedGuid' => 'a94f5cc9-8c58-55fc-91fe-a324087a655b',
+                    'medium'   => 'music',
                 ],
             ],
             [
                 'startTime'  => 134,
                 'duration'   => 123,
                 'remoteItem' => [
-                    'itemGuid' => "https://podcastindex.org/podcast/4148683#3",
-                    'feedGuid' => "b83f5cc9-8c58-55fc-91fe-a324087a644c",
-                    'medium'   => "podcast",
-                    'feedUrl'  => "https://podcastindex.org/podcast/4148683",
-                    'title'    => "My Fancy Podcast",
+                    'itemGuid' => 'https://podcastindex.org/podcast/4148683#3',
+                    'feedGuid' => 'b83f5cc9-8c58-55fc-91fe-a324087a644c',
+                    'medium'   => 'podcast',
+                    'feedUrl'  => 'https://podcastindex.org/podcast/4148683',
+                    'title'    => 'My Fancy Podcast',
                 ],
             ],
         ];
@@ -869,13 +870,13 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $value           = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
         $valueRecipients = [
             [
-                'type'    => "node",
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'type'    => 'node',
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -892,14 +893,14 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $value           = [
-            'type'     => "lightning",
-            'method'   => "keysend",
+            'type'     => 'lightning',
+            'method'   => 'keysend',
             'unwanted' => 'data',
         ];
         $valueRecipients = [
             [
-                'type'     => "node",
-                'address'  => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'type'     => 'node',
+                'address'  => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'    => 40,
                 'unwanted' => 'data',
             ],
@@ -910,9 +911,9 @@ class EntryTest extends TestCase
                 'duration'   => 200,
                 'unwanted'   => 'data',
                 'remoteItem' => [
-                    'itemGuid' => "https://podcastindex.org/podcast/4148683#1",
-                    'feedGuid' => "a94f5cc9-8c58-55fc-91fe-a324087a655b",
-                    'medium'   => "music",
+                    'itemGuid' => 'https://podcastindex.org/podcast/4148683#1',
+                    'feedGuid' => 'a94f5cc9-8c58-55fc-91fe-a324087a655b',
+                    'medium'   => 'music',
                     'unwanted' => 'data',
                 ],
             ],
@@ -934,8 +935,8 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $value = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
 
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
@@ -947,12 +948,12 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $value           = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
         $valueRecipients = [
             [
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -966,13 +967,13 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $value           = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
         $valueRecipients = [
             [
                 'type'    => true,
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -986,15 +987,15 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $value           = [
-            'type'      => "lightning",
-            'method'    => "keysend",
+            'type'      => 'lightning',
+            'method'    => 'keysend',
             'suggested' => 5.0E-8, // scientific notation for 0.00000005000
         ];
         $valueRecipients = [
             [
-                'name'    => "Alice (Podcaster)",
-                'type'    => "node",
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'name'    => 'Alice (Podcaster)',
+                'type'    => 'node',
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -1012,13 +1013,13 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $value           = [
-            'type'   => "lightning",
-            'method' => "keysend",
+            'type'   => 'lightning',
+            'method' => 'keysend',
         ];
         $valueRecipients = [
             [
-                'type'    => "node",
-                'address' => "02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52",
+                'type'    => 'node',
+                'address' => '02d5c1bf8b940dc9cadca86d1b0a3c37fbe39cee4c7e839e33bef9174531d27f52',
                 'split'   => 40,
             ],
         ];
@@ -1354,20 +1355,20 @@ class EntryTest extends TestCase
         $entry  = new Writer\Entry();
         $images = [
             [
-                'alt'         => "An antenna emanating signal waves",
-                'purpose'     => "artwork",
-                'type'        => "image/jpeg",
-                'aspectRatio' => "1/1",
-                'href'        => "https://example.com/images/ep1/pci_square-massive.jpg",
+                'alt'         => 'An antenna emanating signal waves',
+                'purpose'     => 'artwork',
+                'type'        => 'image/jpeg',
+                'aspectRatio' => '1/1',
+                'href'        => 'https://example.com/images/ep1/pci_square-massive.jpg',
                 'width'       => 1400,
                 'height'      => 1400,
             ],
             [
-                'alt'         => "Another antenna emanating signal waves",
-                'purpose'     => "artwork social",
-                'type'        => "image/jpeg",
-                'aspectRatio' => "16/9",
-                'href'        => "https://example.com/images/ep1/pci_landscape-massive_wide.jpg",
+                'alt'         => 'Another antenna emanating signal waves',
+                'purpose'     => 'artwork social',
+                'type'        => 'image/jpeg',
+                'aspectRatio' => '16/9',
+                'href'        => 'https://example.com/images/ep1/pci_landscape-massive_wide.jpg',
             ],
         ];
 
@@ -1380,11 +1381,11 @@ class EntryTest extends TestCase
         $entry  = new Writer\Entry();
         $images = [
             [
-                'alt'         => "An antenna emanating signal waves",
-                'purpose'     => "artwork",
-                'type'        => "image/jpeg",
-                'aspectRatio' => "1/1",
-                'href'        => "https://example.com/images/ep1/pci_square-massive.jpg",
+                'alt'         => 'An antenna emanating signal waves',
+                'purpose'     => 'artwork',
+                'type'        => 'image/jpeg',
+                'aspectRatio' => '1/1',
+                'href'        => 'https://example.com/images/ep1/pci_square-massive.jpg',
                 'width'       => 1400,
                 'height'      => 1400,
                 'unwanted'    => 'data',
@@ -1551,10 +1552,10 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $data = [
-            'server'    => "irc.zeronode.net",
-            'protocol'  => "irc",
-            'accountId' => "@jsmith",
-            'space'     => "#myawesomepodcast",
+            'server'    => 'irc.zeronode.net',
+            'protocol'  => 'irc',
+            'accountId' => '@jsmith',
+            'space'     => '#myawesomepodcast',
         ];
 
         $entry->setPodcastIndexChat($data);
@@ -1566,10 +1567,10 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $data = [
-            'server'    => "irc.zeronode.net",
-            'protocol'  => "irc",
-            'accountId' => "@jsmith",
-            'space'     => "#myawesomepodcast",
+            'server'    => 'irc.zeronode.net',
+            'protocol'  => 'irc',
+            'accountId' => '@jsmith',
+            'space'     => '#myawesomepodcast',
             'unwanted'  => 'data',
         ];
 
@@ -1582,8 +1583,8 @@ class EntryTest extends TestCase
         $entry = new Writer\Entry();
 
         $data = [
-            'server'   => "irc.zeronode.net",
-            'protocol' => "irc",
+            'server'   => 'irc.zeronode.net',
+            'protocol' => 'irc',
         ];
 
         $entry->setPodcastIndexChat($data);
@@ -1608,9 +1609,9 @@ class EntryTest extends TestCase
 
         $data = [
             'server'    => 123,
-            'protocol'  => "irc",
-            'accountId' => "@jsmith",
-            'space'     => "#myawesomepodcast",
+            'protocol'  => 'irc',
+            'accountId' => '@jsmith',
+            'space'     => '#myawesomepodcast',
         ];
 
         $this->expectException(Writer\Exception\InvalidArgumentException::class);
@@ -1623,8 +1624,8 @@ class EntryTest extends TestCase
 
         $data = [
             'server'    => 'server_name',
-            'protocol'  => "irc",
-            'accountId' => "@jsmith",
+            'protocol'  => 'irc',
+            'accountId' => '@jsmith',
             'space'     => true,
         ];
 

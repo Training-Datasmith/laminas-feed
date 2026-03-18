@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\PodcastIndex\Renderer;
 
+use function assert;
+
 use DOMDocument;
 use DOMElement;
 use Laminas\Feed\Writer\Extension;
 use Laminas\Feed\Writer\Extension\PodcastIndex;
-use Laminas\Feed\Writer\Feed as FeedWriter;
 
-use function assert;
+use Laminas\Feed\Writer\Feed as FeedWriter;
 
 /**
  * Renders PodcastIndex data of a RSS Feed

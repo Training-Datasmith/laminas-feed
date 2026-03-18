@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\PubSubHubbub;
 
+use function array_key_exists;
+use function array_search;
+use function array_unique;
+use function gettype;
+use function implode;
+
+use function in_array;
+use function is_array;
+use function is_string;
+
 use Laminas\Feed\Uri;
 use Laminas\Http\Client;
 use Laminas\Http\Request as HttpRequest;
 use Laminas\Stdlib\ArrayUtils;
 use Traversable;
 
-use function array_key_exists;
-use function array_search;
-use function array_unique;
-use function gettype;
-use function implode;
-use function in_array;
-use function is_array;
-use function is_string;
 use function urlencode;
 
 class Publisher

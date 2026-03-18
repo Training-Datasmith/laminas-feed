@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Renderer\Entry;
 
+use function array_key_exists;
+use function ctype_digit;
+
 use DateTime;
 use DOMDocument;
 use DOMElement;
 use Laminas\Feed\Uri;
+
 use Laminas\Feed\Writer;
 use Laminas\Feed\Writer\Renderer;
-
-use function array_key_exists;
-use function ctype_digit;
 
 class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterface
 {

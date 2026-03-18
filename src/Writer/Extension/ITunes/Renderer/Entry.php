@@ -6,9 +6,10 @@ namespace Laminas\Feed\Writer\Extension\ITunes\Renderer;
 
 use DOMDocument;
 use DOMElement;
-use Laminas\Feed\Writer\Extension;
 
 use function implode;
+
+use Laminas\Feed\Writer\Extension;
 
 class Entry extends Extension\AbstractRenderer
 {
