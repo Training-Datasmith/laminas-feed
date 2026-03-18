@@ -154,7 +154,7 @@ class Subscriber
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setOptions($options)
+    public function setOptions($options): static
     {
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
@@ -201,11 +201,10 @@ class Subscriber
      * Set the topic URL (RSS or Atom feed) to which the intended (un)subscribe
      * event will relate
      *
-     * @param  string $url
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setTopicUrl($url)
+    public function setTopicUrl(string $url): static
     {
         if (empty($url) || ! is_string($url) || ! Uri::factory($url)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -240,7 +239,7 @@ class Subscriber
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setLeaseSeconds($seconds)
+    public function setLeaseSeconds($seconds): static
     {
         $seconds = intval($seconds);
         if ($seconds <= 0) {
@@ -266,11 +265,10 @@ class Subscriber
      * Set the callback URL to be used by Hub Servers when communicating with
      * this Subscriber
      *
-     * @param  string $url
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setCallbackUrl($url)
+    public function setCallbackUrl(string $url): static
     {
         if (empty($url) || ! is_string($url) || ! Uri::factory($url)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -310,7 +308,7 @@ class Subscriber
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setPreferredVerificationMode($mode)
+    public function setPreferredVerificationMode($mode): static
     {
         if (
             $mode !== PubSubHubbub::VERIFICATION_MODE_SYNC
@@ -339,11 +337,10 @@ class Subscriber
     /**
      * Add a Hub Server URL supported by Publisher
      *
-     * @param  string $url
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function addHubUrl($url)
+    public function addHubUrl(string $url): static
     {
         if (empty($url) || ! is_string($url) || ! Uri::factory($url)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -359,7 +356,7 @@ class Subscriber
      *
      * @return $this
      */
-    public function addHubUrls(array $urls)
+    public function addHubUrls(array $urls): static
     {
         foreach ($urls as $url) {
             $this->addHubUrl($url);
@@ -373,7 +370,7 @@ class Subscriber
      * @param  string $url
      * @return $this
      */
-    public function removeHubUrl($url)
+    public function removeHubUrl($url): static
     {
         if (! in_array($url, $this->getHubUrls())) {
             return $this;
@@ -397,11 +394,10 @@ class Subscriber
     /**
      * Add authentication credentials for a given URL
      *
-     * @param  string $url
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function addAuthentication($url, array $authentication)
+    public function addAuthentication(string $url, array $authentication): static
     {
         if (empty($url) || ! is_string($url) || ! Uri::factory($url)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -417,7 +413,7 @@ class Subscriber
      *
      * @return $this
      */
-    public function addAuthentications(array $authentications)
+    public function addAuthentications(array $authentications): static
     {
         foreach ($authentications as $url => $authentication) {
             $this->addAuthentication($url, $authentication);
@@ -441,7 +437,7 @@ class Subscriber
      * @param  bool $bool
      * @return $this
      */
-    public function usePathParameter($bool = true)
+    public function usePathParameter($bool = true): static
     {
         $this->usePathParameter = $bool;
         return $this;
@@ -455,7 +451,7 @@ class Subscriber
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setParameter($name, $value = null)
+    public function setParameter($name, $value = null): static
     {
         if (is_array($name)) {
             $this->setParameters($name);
@@ -484,7 +480,7 @@ class Subscriber
      *
      * @return $this
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): static
     {
         foreach ($parameters as $name => $value) {
             $this->setParameter($name, $value);
@@ -499,7 +495,7 @@ class Subscriber
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function removeParameter($name)
+    public function removeParameter($name): static
     {
         if (empty($name) || ! is_string($name)) {
             throw new Exception\InvalidArgumentException(
@@ -528,7 +524,7 @@ class Subscriber
      *
      * @return $this
      */
-    public function setStorage(Model\SubscriptionPersistenceInterface $storage)
+    public function setStorage(Model\SubscriptionPersistenceInterface $storage): static
     {
         $this->storage = $storage;
         return $this;
@@ -553,10 +549,8 @@ class Subscriber
     /**
      * Subscribe to one or more Hub Servers using the stored Hub URLs
      * for the given Topic URL (RSS or Atom feed)
-     *
-     * @return void
      */
-    public function subscribeAll()
+    public function subscribeAll(): void
     {
         $this->_doRequest('subscribe');
     }
@@ -564,10 +558,8 @@ class Subscriber
     /**
      * Unsubscribe from one or more Hub Servers using the stored Hub URLs
      * for the given Topic URL (RSS or Atom feed)
-     *
-     * @return void
      */
-    public function unsubscribeAll()
+    public function unsubscribeAll(): void
     {
         $this->_doRequest('unsubscribe');
     }
@@ -575,10 +567,8 @@ class Subscriber
     /**
      * Returns a boolean indicator of whether the notifications to Hub
      * Servers were ALL successful. If even one failed, FALSE is returned.
-     *
-     * @return bool
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return ! $this->errors;
     }
@@ -782,18 +772,16 @@ class Subscriber
         if (! empty($this->testStaticToken)) {
             return $this->testStaticToken;
         }
-        return uniqid((string) rand(), true) . time();
+        return uniqid((string) random_int(0, mt_getrandmax()), true) . time();
     }
 
     /**
      * Simple helper to generate a verification token used in (un)subscribe
      * requests to a Hub Server.
      *
-     * @param  array  $params
      * @param  string $hubUrl The Hub Server URL for which this token will apply
-     * @return string
      */
-    protected function _generateSubscriptionKey(array $params, $hubUrl)
+    protected function _generateSubscriptionKey(array $params, string $hubUrl): string
     {
         $keyBase = $params['hub.topic'] . $hubUrl;
         return md5($keyBase);
@@ -801,11 +789,8 @@ class Subscriber
 
     /**
      * URL Encode an array of parameters
-     *
-     * @param  array $params
-     * @return array
      */
-    protected function _urlEncode(array $params)
+    protected function _urlEncode(array $params): array
     {
         $encoded = [];
         foreach ($params as $key => $value) {
@@ -824,14 +809,11 @@ class Subscriber
 
     /**
      * Order outgoing parameters
-     *
-     * @param  array $params
-     * @return string
      */
-    protected function _toByteValueOrderedString(array $params)
+    protected function _toByteValueOrderedString(array $params): string
     {
         $return = [];
-        uksort($params, 'strnatcmp');
+        uksort($params, strnatcmp(...));
         foreach ($params as $key => $value) {
             if (is_array($value)) {
                 foreach ($value as $keyduplicate) {
@@ -858,8 +840,8 @@ class Subscriber
     /**
      * @internal
      */
-    final public function setTestStaticToken(string $token)
+    final public function setTestStaticToken(string $token): void
     {
-        $this->testStaticToken = (string) $token;
+        $this->testStaticToken = $token;
     }
 }

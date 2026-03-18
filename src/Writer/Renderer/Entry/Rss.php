@@ -26,7 +26,7 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
      *
      * @return $this
      */
-    public function render()
+    public function render(): static
     {
         $this->dom                     = new DOMDocument('1.0', $this->container->getEncoding());
         $this->dom->formatOutput       = true;
@@ -74,10 +74,9 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
         $title = $dom->createElement('title');
         $root->appendChild($title);
@@ -104,10 +103,9 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
         if (! $this->getDataContainer()->getDescription()) {
             return;
@@ -193,19 +191,17 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
             $exception = new Writer\Exception\InvalidArgumentException('Enclosure "type" is not set');
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
         if (! isset($data['length'])) {
             $exception = new Writer\Exception\InvalidArgumentException('Enclosure "length" is not set');
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
         if ((int) $data['length'] < 0 || ! ctype_digit((string) $data['length'])) {
             $exception = new Writer\Exception\InvalidArgumentException(

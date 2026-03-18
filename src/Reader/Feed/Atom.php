@@ -46,7 +46,7 @@ class Atom extends AbstractFeed
      * @param  int $index
      * @return null|array<string, string>
      */
-    public function getAuthor($index = 0)
+    public function getAuthor($index = 0): ?array
     {
         $authors = $this->getAuthors();
 
@@ -392,13 +392,9 @@ class Atom extends AbstractFeed
      */
     protected function registerNamespaces()
     {
-        switch ($this->data['type']) {
-            case Reader\Reader::TYPE_ATOM_03:
-                $this->xpath->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_03);
-                break;
-            case Reader\Reader::TYPE_ATOM_10:
-            default:
-                $this->xpath->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_10);
-        }
+        match ($this->data['type']) {
+            Reader\Reader::TYPE_ATOM_03 => $this->xpath->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_03),
+            default => $this->xpath->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_10),
+        };
     }
 }

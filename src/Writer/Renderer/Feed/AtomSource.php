@@ -23,7 +23,7 @@ class AtomSource extends AbstractAtom implements Renderer\RendererInterface
      *
      * @return $this
      */
-    public function render()
+    public function render(): static
     {
         if (! $this->container->getEncoding()) {
             $this->container->setEncoding('UTF-8');

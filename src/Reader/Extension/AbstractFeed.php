@@ -153,9 +153,8 @@ abstract class AbstractFeed
      * Set the XPath prefix
      *
      * @param string $prefix
-     * @return void
      */
-    public function setXpathPrefix($prefix)
+    public function setXpathPrefix($prefix): void
     {
         $this->xpathPrefix = $prefix;
     }

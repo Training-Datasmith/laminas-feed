@@ -24,10 +24,8 @@ class Entry extends Extension\AbstractRenderer
 
     /**
      * Render entry
-     *
-     * @return void
      */
-    public function render()
+    public function render(): void
     {
         if (strtolower($this->getType()) === 'rss') {
             return; // Atom 1.0 only

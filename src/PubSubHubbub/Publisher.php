@@ -75,7 +75,7 @@ class Publisher
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setOptions($options)
+    public function setOptions($options): static
     {
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
@@ -101,11 +101,10 @@ class Publisher
     /**
      * Add a Hub Server URL supported by Publisher
      *
-     * @param  string $url
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function addHubUrl($url)
+    public function addHubUrl(string $url): static
     {
         if (empty($url) || ! is_string($url) || ! Uri::factory($url)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -121,7 +120,7 @@ class Publisher
      *
      * @return $this
      */
-    public function addHubUrls(array $urls)
+    public function addHubUrls(array $urls): static
     {
         foreach ($urls as $url) {
             $this->addHubUrl($url);
@@ -135,7 +134,7 @@ class Publisher
      * @param  string $url
      * @return $this
      */
-    public function removeHubUrl($url)
+    public function removeHubUrl($url): static
     {
         if (! in_array($url, $this->getHubUrls())) {
             return $this;
@@ -159,11 +158,10 @@ class Publisher
     /**
      * Add a URL to a topic (Atom or RSS feed) which has been updated
      *
-     * @param  string $url
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function addUpdatedTopicUrl($url)
+    public function addUpdatedTopicUrl(string $url): static
     {
         if (empty($url) || ! is_string($url) || ! Uri::factory($url)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -179,7 +177,7 @@ class Publisher
      *
      * @return $this
      */
-    public function addUpdatedTopicUrls(array $urls)
+    public function addUpdatedTopicUrls(array $urls): static
     {
         foreach ($urls as $url) {
             $this->addUpdatedTopicUrl($url);
@@ -193,7 +191,7 @@ class Publisher
      * @param  string $url
      * @return $this
      */
-    public function removeUpdatedTopicUrl($url)
+    public function removeUpdatedTopicUrl($url): static
     {
         if (! in_array($url, $this->getUpdatedTopicUrls())) {
             return $this;
@@ -218,11 +216,10 @@ class Publisher
      * Notifies a single Hub Server URL of changes
      *
      * @param  string $url The Hub Server's URL
-     * @return void
      * @throws Exception\InvalidArgumentException
      * @throws Exception\RuntimeException
      */
-    public function notifyHub($url)
+    public function notifyHub($url): void
     {
         if (empty($url) || ! is_string($url) || ! Uri::factory($url)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -248,10 +245,9 @@ class Publisher
      * the isSuccess() check will return FALSE. This method is designed not
      * to needlessly fail with an Exception/Error unless from Laminas\Http\Client.
      *
-     * @return void
      * @throws Exception\RuntimeException
      */
-    public function notifyAll()
+    public function notifyAll(): void
     {
         $client = $this->_getHttpClient();
         $hubs   = $this->getHubUrls();
@@ -282,7 +278,7 @@ class Publisher
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setParameter($name, $value = null)
+    public function setParameter($name, $value = null): static
     {
         if (is_array($name)) {
             $this->setParameters($name);
@@ -311,7 +307,7 @@ class Publisher
      *
      * @return $this
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): static
     {
         foreach ($parameters as $name => $value) {
             $this->setParameter($name, $value);
@@ -326,7 +322,7 @@ class Publisher
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function removeParameter($name)
+    public function removeParameter($name): static
     {
         if (empty($name) || ! is_string($name)) {
             throw new Exception\InvalidArgumentException(
@@ -352,10 +348,8 @@ class Publisher
     /**
      * Returns a boolean indicator of whether the notifications to Hub
      * Servers were ALL successful. If even one failed, FALSE is returned.
-     *
-     * @return bool
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return ! $this->errors;
     }
@@ -393,11 +387,11 @@ class Publisher
             throw new Exception\RuntimeException('No updated topic URLs have been set');
         }
         foreach ($topics as $topicUrl) {
-            $params[] = 'hub.url=' . urlencode($topicUrl);
+            $params[] = 'hub.url=' . urlencode((string) $topicUrl);
         }
         $optParams = $this->getParameters();
         foreach ($optParams as $name => $value) {
-            $params[] = urlencode($name) . '=' . urlencode($value);
+            $params[] = urlencode((string) $name) . '=' . urlencode((string) $value);
         }
         $paramString = implode('&', $params);
         $client->setRawBody($paramString);

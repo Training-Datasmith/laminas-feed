@@ -41,9 +41,8 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
      * Do we have the extension?
      *
      * @param  string $extension
-     * @return bool
      */
-    public function has($extension)
+    public function has($extension): bool
     {
         return array_key_exists($extension, $this->extensions);
     }
@@ -51,10 +50,9 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
     /**
      * Retrieve the extension
      *
-     * @param  string $extension
      * @return mixed
      */
-    public function get($extension)
+    public function get(string $extension)
     {
         $class = $this->extensions[$extension];
         return new $class();
@@ -63,18 +61,16 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
     /**
      * Add an extension.
      *
-     * @param string $name
      * @param string $class
      * @psalm-param class-string $class
-     * @return void
      */
-    public function add($name, $class)
+    public function add(string $name, $class): void
     {
         if (
             is_string($class)
             && (is_a($class, Extension\AbstractRenderer::class, true)
-                || 'Feed' === substr($class, -4)
-                || 'Entry' === substr($class, -5))
+                || str_ends_with($class, 'Feed')
+                || str_ends_with($class, 'Entry'))
         ) {
             $this->extensions[$name] = $class;
 
@@ -91,11 +87,8 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
 
     /**
      * Remove an extension.
-     *
-     * @param string $name
-     * @return void
      */
-    public function remove($name)
+    public function remove(string $name): void
     {
         unset($this->extensions[$name]);
     }

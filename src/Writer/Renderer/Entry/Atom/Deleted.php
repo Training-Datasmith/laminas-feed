@@ -24,7 +24,7 @@ class Deleted extends Renderer\AbstractRenderer implements Renderer\RendererInte
      *
      * @return $this
      */
-    public function render()
+    public function render(): static
     {
         $this->dom               = new DOMDocument('1.0', $this->container->getEncoding());
         $this->dom->formatOutput = true;

@@ -20,9 +20,6 @@ class AbstractRenderer
      */
     protected $extensions = [];
 
-    /** @var Writer\AbstractFeed */
-    protected $container;
-
     /** @var DOMDocument */
     protected $dom;
 
@@ -53,10 +50,9 @@ class AbstractRenderer
     /**
      * @param Writer\AbstractFeed $container
      */
-    public function __construct($container)
+    public function __construct(protected $container)
     {
-        $this->container = $container;
-        $this->setType($container->getType());
+        $this->setType($this->container->getType());
         $this->_loadExtensions();
     }
 
@@ -65,7 +61,7 @@ class AbstractRenderer
      *
      * @return string
      */
-    public function saveXml()
+    public function saveXml(): string|false
     {
         return $this->getDomDocument()->saveXML();
     }
@@ -106,7 +102,7 @@ class AbstractRenderer
      * @param  string $enc
      * @return $this
      */
-    public function setEncoding($enc)
+    public function setEncoding($enc): static
     {
         $this->encoding = $enc;
         return $this;
@@ -129,7 +125,7 @@ class AbstractRenderer
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function ignoreExceptions($bool = true)
+    public function ignoreExceptions($bool = true): static
     {
         if (! is_bool($bool)) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -156,9 +152,8 @@ class AbstractRenderer
      * on their appropriateness for the current type, e.g. renderers.
      *
      * @param string $type
-     * @return void
      */
-    public function setType($type)
+    public function setType($type): void
     {
         $this->type = $type;
     }
@@ -178,10 +173,8 @@ class AbstractRenderer
      * helps simplify the appending of namespace declarations, but also ensures
      * namespaces are added to the root element - not scattered across the entire
      * XML file - may assist namespace unsafe parsers and looks pretty ;).
-     *
-     * @return void
      */
-    public function setRootElement(DOMElement $root)
+    public function setRootElement(DOMElement $root): void
     {
         $this->rootElement = $root;
     }

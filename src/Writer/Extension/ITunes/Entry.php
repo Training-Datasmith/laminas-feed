@@ -65,7 +65,7 @@ class Entry
      * @param  string $enc
      * @return $this
      */
-    public function setEncoding($enc)
+    public function setEncoding($enc): static
     {
         $this->stringWrapper = StringUtils::getWrapper($enc);
         $this->encoding      = $enc;
@@ -87,9 +87,8 @@ class Entry
      *
      * @param string $value
      * @throws Writer\Exception\InvalidArgumentException
-     * @return void
      */
-    public function setItunesBlock($value)
+    public function setItunesBlock($value): void
     {
         if (! ctype_alpha($value) && strlen($value) > 0) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -110,7 +109,7 @@ class Entry
      *
      * @return $this
      */
-    public function addItunesAuthors(array $values)
+    public function addItunesAuthors(array $values): static
     {
         foreach ($values as $value) {
             $this->addItunesAuthor($value);
@@ -125,7 +124,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addItunesAuthor($value)
+    public function addItunesAuthor($value): static
     {
         if ($this->stringWrapper->strlen($value) > 255) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -146,7 +145,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesDuration($value)
+    public function setItunesDuration($value): static
     {
         $value = (string) $value;
         if (
@@ -171,7 +170,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesExplicit($value)
+    public function setItunesExplicit($value): static
     {
         // "yes", "no" and "clean" are valid values for a previous version
         if (! is_bool($value) && ! in_array($value, ['yes', 'no', 'clean'])) {
@@ -205,7 +204,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesKeywords(array $value)
+    public function setItunesKeywords(array $value): static
     {
         trigger_error(
             'itunes:keywords has been deprecated in the iTunes podcast RSS specification,'
@@ -237,7 +236,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesTitle($value)
+    public function setItunesTitle($value): static
     {
         if ($this->stringWrapper->strlen($value) > 255) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -255,7 +254,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesSubtitle($value)
+    public function setItunesSubtitle($value): static
     {
         if ($this->stringWrapper->strlen($value) > 255) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -273,7 +272,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesSummary($value)
+    public function setItunesSummary($value): static
     {
         if ($this->stringWrapper->strlen($value) > 4000) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -291,7 +290,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesImage($value)
+    public function setItunesImage($value): static
     {
         if (! is_string($value) || ! Uri::factory($value)->isValid()) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -318,7 +317,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesEpisode($number)
+    public function setItunesEpisode($number): static
     {
         if (! is_numeric($number) || is_float($number)) {
             throw new Writer\Exception\InvalidArgumentException(sprintf(
@@ -339,7 +338,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesEpisodeType($type)
+    public function setItunesEpisodeType($type): static
     {
         $validTypes = ['full', 'trailer', 'bonus'];
         if (! in_array($type, $validTypes, true)) {
@@ -362,7 +361,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesIsClosedCaptioned($status)
+    public function setItunesIsClosedCaptioned($status): static
     {
         if (! is_bool($status)) {
             throw new Writer\Exception\InvalidArgumentException(sprintf(
@@ -387,7 +386,7 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesSeason($number)
+    public function setItunesSeason($number): static
     {
         if (! is_numeric($number) || is_float($number)) {
             throw new Writer\Exception\InvalidArgumentException(sprintf(
@@ -404,11 +403,10 @@ class Entry
     /**
      * Overloading to itunes specific setters
      *
-     * @param  string $method
      * @return mixed
      * @throws Writer\Exception\BadMethodCallException
      */
-    public function __call($method, array $params)
+    public function __call(string $method, array $params)
     {
         $point = lcfirst(substr($method, 9));
         if (

@@ -32,13 +32,6 @@ abstract class AbstractFeed implements Feed\FeedInterface
     protected $data = [];
 
     /**
-     * Parsed feed data in the shape of a DOMDocument
-     *
-     * @var DOMDocument
-     */
-    protected $domDocument;
-
-    /**
      * An array of parsed feed entries
      *
      * @var array
@@ -54,10 +47,8 @@ abstract class AbstractFeed implements Feed\FeedInterface
 
     /**
      * The base XPath query used to retrieve feed data
-     *
-     * @var DOMXPath
      */
-    protected $xpath;
+    protected \DOMXPath $xpath;
 
     /**
      * Array of loaded extensions
@@ -77,9 +68,8 @@ abstract class AbstractFeed implements Feed\FeedInterface
      * @param DOMDocument $domDocument The DOM object for the feed's XML
      * @param null|string $type Feed type
      */
-    public function __construct(DOMDocument $domDocument, $type = null)
+    public function __construct(protected \DOMDocument $domDocument, $type = null)
     {
-        $this->domDocument = $domDocument;
         $this->xpath       = new DOMXPath($this->domDocument);
 
         if ($type !== null) {
@@ -98,9 +88,8 @@ abstract class AbstractFeed implements Feed\FeedInterface
      * a self-referencing URI.
      *
      * @param string $uri
-     * @return void
      */
-    public function setOriginalSourceUri($uri)
+    public function setOriginalSourceUri($uri): void
     {
         $this->originalSourceUri = $uri;
     }
@@ -136,7 +125,7 @@ abstract class AbstractFeed implements Feed\FeedInterface
     #[ReturnTypeWillChange]
     public function current()
     {
-        if (0 === strpos($this->getType(), 'rss')) {
+        if (str_starts_with($this->getType(), 'rss')) {
             $reader = new Entry\Rss($this->entries[$this->key()], $this->key(), $this->getType());
         } else {
             $reader = new Entry\Atom($this->entries[$this->key()], $this->key(), $this->getType());
@@ -166,7 +155,7 @@ abstract class AbstractFeed implements Feed\FeedInterface
     {
         $assumed = $this->getDomDocument()->encoding;
         if (empty($assumed)) {
-            $assumed = 'UTF-8';
+            return 'UTF-8';
         }
         return $assumed;
     }
@@ -226,7 +215,7 @@ abstract class AbstractFeed implements Feed\FeedInterface
      * Move the feed pointer forward
      */
     #[ReturnTypeWillChange]
-    public function next()
+    public function next(): void
     {
         ++$this->entriesKey;
     }
@@ -235,7 +224,7 @@ abstract class AbstractFeed implements Feed\FeedInterface
      * Reset the pointer in the feed object
      */
     #[ReturnTypeWillChange]
-    public function rewind()
+    public function rewind(): void
     {
         $this->entriesKey = 0;
     }
@@ -258,11 +247,10 @@ abstract class AbstractFeed implements Feed\FeedInterface
     }
 
     /**
-     * @param string $method
      * @param mixed[] $args
      * @return mixed
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         foreach ($this->extensions as $extension) {
             if (method_exists($extension, $method)) {
@@ -277,10 +265,9 @@ abstract class AbstractFeed implements Feed\FeedInterface
     /**
      * Return an Extension object with the matching name (postfixed with _Feed)
      *
-     * @param  string $name
      * @return null|Extension\AbstractFeed
      */
-    public function getExtension($name)
+    public function getExtension(string $name)
     {
         $extensionClass = $name . '\\Feed';
         return isset($this->extensions[$extensionClass])

@@ -76,9 +76,8 @@ class Uri
      * Useful for chained validations
      *
      * @param  string $uri
-     * @return static
      */
-    public static function factory($uri)
+    public static function factory($uri): static
     {
         return new static($uri);
     }
@@ -115,10 +114,8 @@ class Uri
 
     /**
      * Is the URI valid?
-     *
-     * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         if (false === $this->valid) {
             return false;
@@ -129,7 +126,7 @@ class Uri
         }
 
         if ($this->host) {
-            if ($this->path && 0 !== strpos($this->path, '/')) {
+            if ($this->path && !str_starts_with($this->path, '/')) {
                 return false;
             }
             return true;
@@ -142,7 +139,7 @@ class Uri
 
         if ($this->path) {
             // Check path-only (no host) URI
-            if (0 === strpos($this->path, '//')) {
+            if (str_starts_with($this->path, '//')) {
                 return false;
             }
             return true;
@@ -158,10 +155,8 @@ class Uri
 
     /**
      * Is the URI absolute?
-     *
-     * @return bool
      */
-    public function isAbsolute()
+    public function isAbsolute(): bool
     {
         return ! empty($this->scheme);
     }

@@ -146,10 +146,8 @@ class Reader implements ReaderImportInterface
 
     /**
      * Set the feed cache
-     *
-     * @return void
      */
-    public static function setCache(CacheStorage $cache)
+    public static function setCache(CacheStorage $cache): void
     {
         static::$cache = $cache;
     }
@@ -160,9 +158,8 @@ class Reader implements ReaderImportInterface
      * Sets the HTTP client object to use for retrieving the feeds.
      *
      * @param Http\ClientInterface|LaminasHttp\Client $httpClient
-     * @return void
      */
-    public static function setHttpClient($httpClient)
+    public static function setHttpClient($httpClient): void
     {
         if ($httpClient instanceof LaminasHttp\Client) {
             $httpClient = new Http\LaminasHttpClientDecorator($httpClient);
@@ -199,9 +196,8 @@ class Reader implements ReaderImportInterface
      * DELETE as appropriate.
      *
      * @param  bool $override Whether to override PUT and DELETE.
-     * @return void
      */
-    public static function setHttpMethodOverride($override = true)
+    public static function setHttpMethodOverride($override = true): void
     {
         static::$httpMethodOverride = $override;
     }
@@ -220,9 +216,8 @@ class Reader implements ReaderImportInterface
      * Set the flag indicating whether or not to use HTTP conditional GET
      *
      * @param  bool $bool
-     * @return void
      */
-    public static function useHttpConditionalGet($bool = true)
+    public static function useHttpConditionalGet($bool = true): void
     {
         static::$httpConditionalGet = $bool;
     }
@@ -241,7 +236,6 @@ class Reader implements ReaderImportInterface
         $cache   = self::getCache();
         $client  = self::getHttpClient();
         $cacheId = 'Laminas_Feed_Reader_' . md5($uri);
-
         if (static::$httpConditionalGet && $cache) {
             $headers = [];
             $data    = $cache->getItem($cacheId);
@@ -283,7 +277,9 @@ class Reader implements ReaderImportInterface
                 }
             }
             return static::importString($responseXml);
-        } elseif ($cache) {
+        }
+
+        if ($cache) {
             $data = $cache->getItem($cacheId);
             if ($data) {
                 return static::importString($data);
@@ -297,17 +293,16 @@ class Reader implements ReaderImportInterface
             $responseXml = $response->getBody();
             $cache->setItem($cacheId, $responseXml);
             return static::importString($responseXml);
-        } else {
-            $response = $client->get($uri);
-            if ((int) $response->getStatusCode() !== 200) {
-                throw new Exception\RuntimeException(
-                    'Feed failed to load, got response code ' . $response->getStatusCode()
-                );
-            }
-            $reader = static::importString($response->getBody());
-            $reader->setOriginalSourceUri($uri);
-            return $reader;
         }
+        $response = $client->get($uri);
+        if ((int) $response->getStatusCode() !== 200) {
+            throw new Exception\RuntimeException(
+                'Feed failed to load, got response code ' . $response->getStatusCode()
+            );
+        }
+        $reader = static::importString($response->getBody());
+        $reader->setOriginalSourceUri($uri);
+        return $reader;
     }
 
     /**
@@ -330,7 +325,7 @@ class Reader implements ReaderImportInterface
             throw new Exception\RuntimeException(sprintf(
                 'Did not receive a %s\Http\ResponseInterface from the provided HTTP client; received "%s"',
                 __NAMESPACE__,
-                is_object($response) ? $response::class : gettype($response)
+                get_debug_type($response)
             ));
         }
 
@@ -352,7 +347,7 @@ class Reader implements ReaderImportInterface
      * @throws Exception\InvalidArgumentException
      * @throws Exception\RuntimeException
      */
-    public static function importString($string)
+    public static function importString($string): \Laminas\Feed\Reader\Feed\Atom|\Laminas\Feed\Reader\Entry\Atom|\Laminas\Feed\Reader\Feed\Rss
     {
         $trimmed = trim($string);
         if (! is_string($string) || empty($trimmed)) {
@@ -392,11 +387,11 @@ class Reader implements ReaderImportInterface
 
         static::registerCoreExtensions();
 
-        if (0 === strpos($type, 'rss')) {
+        if (str_starts_with($type, 'rss')) {
             $reader = new Feed\Rss($dom, $type);
         } elseif (8 === strpos($type, 'entry')) {
             $reader = new Entry\Atom($dom->documentElement, 0, self::TYPE_ATOM_10);
-        } elseif (0 === strpos($type, 'atom')) {
+        } elseif (str_starts_with($type, 'atom')) {
             $reader = new Feed\Atom($dom, $type);
         } else {
             throw new Exception\RuntimeException(
@@ -429,10 +424,9 @@ class Reader implements ReaderImportInterface
      * Find feed links
      *
      * @param  string $uri
-     * @return FeedSet
      * @throws Exception\RuntimeException
      */
-    public static function findFeedLinks($uri)
+    public static function findFeedLinks($uri): \Laminas\Feed\Reader\FeedSet
     {
         $client   = static::getHttpClient();
         $response = $client->get($uri);
@@ -470,11 +464,10 @@ class Reader implements ReaderImportInterface
      *
      * @param  string|DOMDocument|Feed\AbstractFeed $feed
      * @param  bool $specOnly
-     * @return string
      * @throws Exception\InvalidArgumentException
      * @throws Exception\RuntimeException
      */
-    public static function detectType($feed, $specOnly = false)
+    public static function detectType($feed, $specOnly = false): string
     {
         if ($feed instanceof Feed\AbstractFeed) {
             $dom = $feed->getDomDocument();
@@ -518,7 +511,7 @@ class Reader implements ReaderImportInterface
             $type    = self::TYPE_RSS_ANY;
             $version = $xpath->evaluate('string(/rss/@version)');
 
-            if (strlen($version) > 0) {
+            if (strlen((string) $version) > 0) {
                 switch ($version) {
                     case '2.0':
                         $type = self::TYPE_RSS_20;
@@ -592,10 +585,8 @@ class Reader implements ReaderImportInterface
 
     /**
      * Set plugin manager for use with Extensions
-     *
-     * @return void
      */
-    public static function setExtensionManager(ExtensionManagerInterface $extensionManager)
+    public static function setExtensionManager(ExtensionManagerInterface $extensionManager): void
     {
         static::$extensionManager = $extensionManager;
     }
@@ -619,11 +610,9 @@ class Reader implements ReaderImportInterface
     /**
      * Register an Extension by name
      *
-     * @param  string $name
-     * @return void
      * @throws Exception\RuntimeException If unable to resolve Extension class.
      */
-    public static function registerExtension($name)
+    public static function registerExtension(string $name): void
     {
         if (! static::hasExtension($name)) {
             throw new Exception\RuntimeException(sprintf(
@@ -653,11 +642,8 @@ class Reader implements ReaderImportInterface
 
     /**
      * Is a given named Extension registered?
-     *
-     * @param  string $extensionName
-     * @return bool
      */
-    public static function isRegistered($extensionName)
+    public static function isRegistered(string $extensionName): bool
     {
         $feedName  = $extensionName . '\Feed';
         $entryName = $extensionName . '\Entry';
@@ -682,10 +668,8 @@ class Reader implements ReaderImportInterface
 
     /**
      * Reset class state to defaults
-     *
-     * @return void
      */
-    public static function reset()
+    public static function reset(): void
     {
         static::$cache              = null;
         static::$httpClient         = null;
@@ -761,7 +745,7 @@ class Reader implements ReaderImportInterface
      * @param TInput $array
      * @return TInput
      */
-    public static function arrayUnique(array $array)
+    public static function arrayUnique(array $array): array
     {
         foreach ($array as &$value) {
             $value = serialize($value);
@@ -784,16 +768,15 @@ class Reader implements ReaderImportInterface
      * adding new extensions in a minor release, as custom extension manager
      * implementations may not yet have an entry for the extension, which would
      * then otherwise cause registerExtension() to fail.
-     *
-     * @param  string $name
-     * @return bool
      */
-    protected static function hasExtension($name)
+    protected static function hasExtension(string $name): bool
     {
         $feedName  = $name . '\Feed';
         $entryName = $name . '\Entry';
         $manager   = static::getExtensionManager();
-
-        return $manager->has($feedName) || $manager->has($entryName);
+        if ($manager->has($feedName)) {
+            return true;
+        }
+        return (bool) $manager->has($entryName);
     }
 }

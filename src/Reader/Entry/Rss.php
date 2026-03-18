@@ -34,17 +34,13 @@ class Rss extends AbstractEntry implements EntryInterface
 {
     /**
      * XPath query for RDF
-     *
-     * @var string
      */
-    protected $xpathQueryRdf = '';
+    protected string $xpathQueryRdf;
 
     /**
      * XPath query for RSS
-     *
-     * @var string
      */
-    protected $xpathQueryRss = '';
+    protected string $xpathQueryRss;
 
     /**
      * @param string $entryKey
@@ -79,7 +75,7 @@ class Rss extends AbstractEntry implements EntryInterface
      * @param int $index
      * @return null|array<string, string>
      */
-    public function getAuthor($index = 0)
+    public function getAuthor($index = 0): ?array
     {
         $authors = $this->getAuthors();
 
@@ -120,7 +116,7 @@ class Rss extends AbstractEntry implements EntryInterface
         }
         if ($list instanceof DOMNodeList && $list->length) {
             foreach ($list as $author) {
-                $string = trim($author->nodeValue);
+                $string = trim((string) $author->nodeValue);
                 $data   = [];
                 // Pretty rough parsing - but it's a catchall
                 if (preg_match('/^.*@[^ ]*/', $string, $matches)) {
@@ -206,7 +202,7 @@ class Rss extends AbstractEntry implements EntryInterface
         ) {
             $dateModified = $this->xpath->evaluate('string(' . $this->xpathQueryRss . '/pubDate)');
             if ($dateModified) {
-                $dateModifiedParsed = strtotime($dateModified);
+                $dateModifiedParsed = strtotime((string) $dateModified);
                 if ($dateModifiedParsed) {
                     $date = new DateTime('@' . $dateModifiedParsed);
                 } else {
@@ -367,9 +363,8 @@ class Rss extends AbstractEntry implements EntryInterface
      * Get a specific link
      *
      * @param  int $index
-     * @return null|string
      */
-    public function getLink($index = 0)
+    public function getLink($index = 0): ?string
     {
         if (! array_key_exists('links', $this->data)) {
             $this->getLinks();
@@ -590,10 +585,8 @@ class Rss extends AbstractEntry implements EntryInterface
 
     /**
      * Set the XPath query (incl. on all Extensions)
-     *
-     * @return void
      */
-    public function setXpath(DOMXPath $xpath)
+    public function setXpath(DOMXPath $xpath): void
     {
         parent::setXpath($xpath);
         foreach ($this->extensions as $extension) {

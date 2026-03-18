@@ -23,10 +23,8 @@ class Entry extends Extension\AbstractRenderer
 
     /**
      * Render entry
-     *
-     * @return void
      */
-    public function render()
+    public function render(): void
     {
         if (strtolower($this->getType()) === 'atom') {
             return; // RSS 2.0 only

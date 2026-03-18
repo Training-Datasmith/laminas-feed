@@ -22,9 +22,8 @@ class Entry extends Extension\AbstractEntry
      * Get the entry license
      *
      * @param  int $index
-     * @return null|string
      */
-    public function getLicense($index = 0)
+    public function getLicense($index = 0): ?string
     {
         $licenses = $this->getLicenses();
 
@@ -35,7 +34,7 @@ class Entry extends Extension\AbstractEntry
         if (! is_string($licenses[$index])) {
             throw new RuntimeException(sprintf(
                 'Unable to retrieve license; expected string, received "%s"',
-                is_object($licenses[$index]) ? get_class($licenses[$index]) : gettype($licenses[$index])
+                get_debug_type($licenses[$index])
             ));
         }
 

@@ -65,10 +65,8 @@ class PubSubHubbub
     /**
      * Allows the external environment to make laminas-oauth use a specific
      * Client instance.
-     *
-     * @return void
      */
-    public static function setHttpClient(Http\Client $httpClient)
+    public static function setHttpClient(Http\Client $httpClient): void
     {
         static::$httpClient = $httpClient;
     }
@@ -93,10 +91,8 @@ class PubSubHubbub
     /**
      * Simple mechanism to delete the entire singleton HTTP Client instance
      * which forces a new instantiation for subsequent requests.
-     *
-     * @return void
      */
-    public static function clearHttpClient()
+    public static function clearHttpClient(): void
     {
         static::$httpClient = null;
     }
@@ -105,10 +101,8 @@ class PubSubHubbub
      * Set the Escaper instance
      *
      * If null, resets the instance
-     *
-     * @return void
      */
-    public static function setEscaper(?Escaper $escaper = null)
+    public static function setEscaper(?Escaper $escaper = null): void
     {
         static::$escaper = $escaper;
     }
@@ -134,7 +128,7 @@ class PubSubHubbub
      * @param  string $string
      * @return string
      */
-    public static function urlencode($string)
+    public static function urlencode($string): string|array
     {
         $escaper    = static::getEscaper();
         $rawencoded = $escaper->escapeUrl($string);

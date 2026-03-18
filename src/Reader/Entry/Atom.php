@@ -23,10 +23,8 @@ class Atom extends AbstractEntry implements EntryInterface
 {
     /**
      * XPath query
-     *
-     * @var string
      */
-    protected $xpathQuery = '';
+    protected string $xpathQuery;
 
     /**
      * @param int $entryKey
@@ -56,7 +54,7 @@ class Atom extends AbstractEntry implements EntryInterface
      * @param int $index
      * @return null|array<string, string>
      */
-    public function getAuthor($index = 0)
+    public function getAuthor($index = 0): ?array
     {
         $authors = $this->getAuthors();
 
@@ -195,9 +193,8 @@ class Atom extends AbstractEntry implements EntryInterface
      * Get a specific link
      *
      * @param  int $index
-     * @return null|string
      */
-    public function getLink($index = 0)
+    public function getLink($index = 0): ?string
     {
         if (! array_key_exists('links', $this->data)) {
             $this->getLinks();
@@ -354,10 +351,8 @@ class Atom extends AbstractEntry implements EntryInterface
 
     /**
      * Set the XPath query (incl. on all Extensions)
-     *
-     * @return void
      */
-    public function setXpath(DOMXPath $xpath)
+    public function setXpath(DOMXPath $xpath): void
     {
         parent::setXpath($xpath);
         foreach ($this->extensions as $extension) {

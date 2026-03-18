@@ -24,10 +24,8 @@ class Feed extends Extension\AbstractRenderer
 
     /**
      * Render feed
-     *
-     * @return void
      */
-    public function render()
+    public function render(): void
     {
         if (strtolower($this->getType()) === 'atom') {
             return;

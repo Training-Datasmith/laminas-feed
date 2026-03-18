@@ -59,10 +59,8 @@ class Writer
 
     /**
      * Set plugin loader for use with Extensions
-     *
-     * @return void
      */
-    public static function setExtensionManager(ExtensionManagerInterface $extensionManager)
+    public static function setExtensionManager(ExtensionManagerInterface $extensionManager): void
     {
         static::$extensionManager = $extensionManager;
     }
@@ -83,11 +81,9 @@ class Writer
     /**
      * Register an Extension by name
      *
-     * @param  string $name
-     * @return void
      * @throws Exception\RuntimeException If unable to resolve Extension class.
      */
-    public static function registerExtension($name)
+    public static function registerExtension(string $name): void
     {
         if (! static::hasExtension($name)) {
             throw new Exception\RuntimeException(sprintf(
@@ -126,11 +122,8 @@ class Writer
 
     /**
      * Is a given named Extension registered?
-     *
-     * @param  string $extensionName
-     * @return bool
      */
-    public static function isRegistered($extensionName)
+    public static function isRegistered(string $extensionName): bool
     {
         $feedName          = $extensionName . '\Feed';
         $entryName         = $extensionName . '\Entry';
@@ -159,10 +152,8 @@ class Writer
 
     /**
      * Reset class state to defaults
-     *
-     * @return void
      */
-    public static function reset()
+    public static function reset(): void
     {
         static::$extensionManager = null;
         static::$extensions       = [
@@ -175,10 +166,8 @@ class Writer
 
     /**
      * Register core (default) extensions
-     *
-     * @return void
      */
-    public static function registerCoreExtensions()
+    public static function registerCoreExtensions(): void
     {
         static::registerExtension('DublinCore');
         static::registerExtension('Content');
@@ -224,9 +213,8 @@ class Writer
      *     Use PHP's lcfirst function instead. @see https://php.net/manual/function.lcfirst.php
      *
      * @param  string $str
-     * @return string
      */
-    public static function lcfirst($str)
+    public static function lcfirst($str): string
     {
         return lcfirst($str);
     }
@@ -242,11 +230,8 @@ class Writer
      * adding new extensions in a minor release, as custom extension manager
      * implementations may not yet have an entry for the extension, which would
      * then otherwise cause registerExtension() to fail.
-     *
-     * @param  string $name
-     * @return bool
      */
-    protected static function hasExtension($name)
+    protected static function hasExtension(string $name): bool
     {
         $manager = static::getExtensionManager();
 
@@ -254,10 +239,15 @@ class Writer
         $entryName         = $name . '\Entry';
         $feedRendererName  = $name . '\Renderer\Feed';
         $entryRendererName = $name . '\Renderer\Entry';
-
-        return $manager->has($feedName)
-            || $manager->has($entryName)
-            || $manager->has($feedRendererName)
-            || $manager->has($entryRendererName);
+        if ($manager->has($feedName)) {
+            return true;
+        }
+        if ($manager->has($entryName)) {
+            return true;
+        }
+        if ($manager->has($feedRendererName)) {
+            return true;
+        }
+        return (bool) $manager->has($entryRendererName);
     }
 }

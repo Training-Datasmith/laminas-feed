@@ -90,7 +90,6 @@ class Entry
      * Set entry transcript
      *
      * @param TranscriptArray $value
-     * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
     public function setPodcastIndexTranscript(array $value): Entry
@@ -103,7 +102,6 @@ class Entry
      * Set entry chapters
      *
      * @param ChaptersArray $value
-     * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
     public function setPodcastIndexChapters(array $value): Entry
@@ -116,7 +114,6 @@ class Entry
      * Add multiple entry soundbites
      *
      * @param list<SoundbiteArray> $values
-     * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
     public function addPodcastIndexSoundbites(array $values): Entry
@@ -151,7 +148,6 @@ class Entry
      * Add a single entry soundbite
      *
      * @param SoundbiteArray $value
-     * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
     public function addPodcastIndexSoundbite(array $value): Entry
@@ -368,10 +364,8 @@ class Entry
             $value['valueRecipients'][] = Validator::validateValueRecipient($valueRecipient);
         }
 
-        if ($valueTimeSplits && count($valueTimeSplits) > 0) {
-            foreach ($valueTimeSplits as $split) {
-                $value['valueTimeSplits'][] = Validator::validateValueTimeSplit($split);
-            }
+        foreach ($valueTimeSplits as $split) {
+            $value['valueTimeSplits'][] = Validator::validateValueTimeSplit($split);
         }
 
         if (! isset($this->data['values'])) {

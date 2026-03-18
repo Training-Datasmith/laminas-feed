@@ -15,10 +15,9 @@ class Feed extends Extension\AbstractFeed
     /**
      * Get update period
      *
-     * @return string
      * @throws Reader\Exception\InvalidArgumentException
      */
-    public function getUpdatePeriod()
+    public function getUpdatePeriod(): string
     {
         $name   = 'updatePeriod';
         $period = $this->getData($name);
@@ -28,18 +27,13 @@ class Feed extends Extension\AbstractFeed
             return 'daily'; //Default specified by spec
         }
 
-        switch ($period) {
-            case 'hourly':
-            case 'daily':
-            case 'weekly':
-            case 'yearly':
-                return $period;
-            default:
-                throw new Reader\Exception\InvalidArgumentException(
-                    "Feed specified invalid update period: '$period'."
-                    . ' Must be one of hourly, daily, weekly or yearly'
-                );
-        }
+        return match ($period) {
+            'hourly', 'daily', 'weekly', 'yearly' => $period,
+            default => throw new Reader\Exception\InvalidArgumentException(
+                "Feed specified invalid update period: '$period'."
+                . ' Must be one of hourly, daily, weekly or yearly'
+            ),
+        };
     }
 
     /**
@@ -65,7 +59,7 @@ class Feed extends Extension\AbstractFeed
      *
      * @return int
      */
-    public function getUpdateFrequencyAsTicks()
+    public function getUpdateFrequencyAsTicks(): int|float
     {
         $name = 'updateFrequency';
         $freq = $this->getData($name, 'number');
@@ -106,21 +100,18 @@ class Feed extends Extension\AbstractFeed
     public function getUpdateBase()
     {
         $updateBase = $this->getData('updateBase');
-        $date       = null;
         if ($updateBase) {
-            $date = DateTime::createFromFormat(DateTime::W3C, $updateBase);
+            return DateTime::createFromFormat(DateTime::W3C, $updateBase);
         }
-        return $date;
+        return null;
     }
 
     /**
      * Get the entry data specified by name
      *
-     * @param  string $name
-     * @param  string $type
      * @return null|mixed
      */
-    private function getData($name, $type = 'string')
+    private function getData(string $name, string $type = 'string')
     {
         if (array_key_exists($name, $this->data)) {
             return $this->data[$name];

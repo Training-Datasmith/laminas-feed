@@ -10,7 +10,7 @@ use Laminas\Feed\Reader\Extension;
 class Entry extends Extension\AbstractEntry
 {
     /** @return string */
-    public function getContent()
+    public function getContent(): mixed
     {
         if (
             $this->getType() !== Reader\Reader::TYPE_RSS_10

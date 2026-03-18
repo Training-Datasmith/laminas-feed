@@ -67,11 +67,9 @@ final class LiveItem extends Entry\Rss
     /**
      * Load extensions from Laminas\Feed\Writer\Entry
      * Override abstract renderer method to only fetch entry extensions
-     *
-     * @return void
      */
     // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-    protected function _loadExtensions()
+    protected function _loadExtensions(): void
     {
         Writer::registerCoreExtensions();
         $manager = Writer::getExtensionManager();

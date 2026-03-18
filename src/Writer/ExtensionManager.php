@@ -15,8 +15,7 @@ use function sprintf;
  */
 class ExtensionManager implements ExtensionManagerInterface
 {
-    /** @var ExtensionManagerInterface */
-    protected $pluginManager;
+    protected ?\Laminas\Feed\Writer\ExtensionManagerInterface $pluginManager;
 
     /**
      * Seeds the extension manager with a plugin manager; if none provided,
@@ -35,12 +34,11 @@ class ExtensionManager implements ExtensionManagerInterface
      *
      * Proxy to composed ExtensionManagerInterface instance.
      *
-     * @param  string $method
      * @param  array $args
      * @return mixed
      * @throws Exception\BadMethodCallException
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         if (! method_exists($this->pluginManager, $method)) {
             throw new Exception\BadMethodCallException(sprintf(

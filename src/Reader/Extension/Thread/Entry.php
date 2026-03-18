@@ -12,10 +12,8 @@ class Entry extends Extension\AbstractEntry
 {
     /**
      * Get the "in-reply-to" value
-     *
-     * @return void
      */
-    public function getInReplyTo()
+    public function getInReplyTo(): void
     {
         // TODO: to be implemented
     }
@@ -35,10 +33,9 @@ class Entry extends Extension\AbstractEntry
     /**
      * Get the entry data specified by name
      *
-     * @param  string $name
      * @return null|mixed
      */
-    protected function getData($name)
+    protected function getData(string $name)
     {
         if (array_key_exists($name, $this->data)) {
             return $this->data[$name];

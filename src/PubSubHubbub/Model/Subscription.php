@@ -24,10 +24,9 @@ class Subscription extends AbstractModel implements SubscriptionPersistenceInter
     /**
      * Save subscription to RDMBS
      *
-     * @return bool
      * @throws PubSubHubbub\Exception\InvalidArgumentException
      */
-    public function setSubscription(array $data)
+    public function setSubscription(array $data): bool
     {
         if (! isset($data['id'])) {
             throw new PubSubHubbub\Exception\InvalidArgumentException(
@@ -83,10 +82,9 @@ class Subscription extends AbstractModel implements SubscriptionPersistenceInter
      * Determine if a subscription matching the key exists
      *
      * @param  string $key
-     * @return bool
      * @throws PubSubHubbub\Exception\InvalidArgumentException
      */
-    public function hasSubscription($key)
+    public function hasSubscription($key): bool
     {
         if (empty($key) || ! is_string($key)) {
             throw new PubSubHubbub\Exception\InvalidArgumentException(
@@ -104,9 +102,8 @@ class Subscription extends AbstractModel implements SubscriptionPersistenceInter
      * Delete a subscription
      *
      * @param  string $key
-     * @return bool
      */
-    public function deleteSubscription($key)
+    public function deleteSubscription($key): bool
     {
         $result = $this->db->select(['id' => $key]);
         if (count($result)) {
@@ -136,7 +133,7 @@ class Subscription extends AbstractModel implements SubscriptionPersistenceInter
      *
      * @return $this
      */
-    public function setNow(DateTime $now)
+    public function setNow(DateTime $now): static
     {
         $this->now = $now;
         return $this;

@@ -22,9 +22,8 @@ class Feed extends Extension\AbstractFeed
      * Get a single author
      *
      * @param  int $index
-     * @return null|string
      */
-    public function getAuthor($index = 0)
+    public function getAuthor($index = 0): ?string
     {
         $authors = $this->getAuthors();
 
@@ -443,15 +442,15 @@ class Feed extends Extension\AbstractFeed
         $nameNode  = $element->getElementsByTagName('name');
         $uriNode   = $element->getElementsByTagName('uri');
 
-        if ($emailNode->length && strlen($emailNode->item(0)->nodeValue) > 0) {
+        if ($emailNode->length && strlen((string) $emailNode->item(0)->nodeValue) > 0) {
             $author['email'] = $emailNode->item(0)->nodeValue;
         }
 
-        if ($nameNode->length && strlen($nameNode->item(0)->nodeValue) > 0) {
+        if ($nameNode->length && strlen((string) $nameNode->item(0)->nodeValue) > 0) {
             $author['name'] = $nameNode->item(0)->nodeValue;
         }
 
-        if ($uriNode->length && strlen($uriNode->item(0)->nodeValue) > 0) {
+        if ($uriNode->length && strlen((string) $uriNode->item(0)->nodeValue) > 0) {
             $author['uri'] = $uriNode->item(0)->nodeValue;
         }
 
@@ -495,14 +494,10 @@ class Feed extends Extension\AbstractFeed
             return; // pre-registered at Feed level
         }
         $atomDetected = $this->getAtomType();
-        switch ($atomDetected) {
-            case Reader\Reader::TYPE_ATOM_03:
-                $this->xpath->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_03);
-                break;
-            default:
-                $this->xpath->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_10);
-                break;
-        }
+        match ($atomDetected) {
+            Reader\Reader::TYPE_ATOM_03 => $this->xpath->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_03),
+            default => $this->xpath->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_10),
+        };
     }
 
     /**

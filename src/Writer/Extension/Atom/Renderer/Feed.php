@@ -23,10 +23,8 @@ class Feed extends Extension\AbstractRenderer
 
     /**
      * Render feed
-     *
-     * @return void
      */
-    public function render()
+    public function render(): void
     {
         /**
          * RSS 2.0 only. Used mainly to include Atom links and
@@ -69,8 +67,8 @@ class Feed extends Extension\AbstractRenderer
             return;
         }
         foreach ($flinks as $type => $href) {
-            if (strtolower($type) === $this->getType()) { // issue 2605
-                $mime  = 'application/' . strtolower($type) . '+xml';
+            if (strtolower((string) $type) === $this->getType()) { // issue 2605
+                $mime  = 'application/' . strtolower((string) $type) . '+xml';
                 $flink = $dom->createElement('atom:link');
                 $root->appendChild($flink);
                 $flink->setAttribute('rel', 'self');

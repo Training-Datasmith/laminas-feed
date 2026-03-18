@@ -29,7 +29,7 @@ class Entry extends Extension\AbstractEntry
      * @param  int $index
      * @return null|string
      */
-    public function getAuthor($index = 0)
+    public function getAuthor($index = 0): null
     {
         $authors = $this->getAuthors();
 
@@ -135,9 +135,8 @@ class Entry extends Extension\AbstractEntry
      *
      * @param  string $xhtml
      * @param  string $prefix
-     * @return mixed
      */
-    protected function collectXhtml($xhtml, $prefix)
+    protected function collectXhtml($xhtml, $prefix): string|array|null
     {
         if (! empty($prefix)) {
             $prefix .= ':';
@@ -148,7 +147,7 @@ class Entry extends Extension\AbstractEntry
         ];
         $xhtml   = preg_replace($matches, '', $xhtml);
         if (! empty($prefix)) {
-            $xhtml = preg_replace('/(<[\/]?)' . $prefix . '([a-zA-Z]+)/', '$1$2', $xhtml);
+            return preg_replace('/(<[\/]?)' . $prefix . '([a-zA-Z]+)/', '$1$2', (string) $xhtml);
         }
         return $xhtml;
     }
@@ -320,9 +319,8 @@ class Entry extends Extension\AbstractEntry
      * Get a specific link
      *
      * @param  int $index
-     * @return null|string
      */
-    public function getLink($index = 0)
+    public function getLink($index = 0): ?string
     {
         if (! array_key_exists('links', $this->data)) {
             $this->getLinks();
@@ -366,10 +364,8 @@ class Entry extends Extension\AbstractEntry
 
     /**
      * Get a permalink to the entry
-     *
-     * @return string
      */
-    public function getPermalink()
+    public function getPermalink(): string
     {
         $permalink = $this->getLink(0);
         return is_string($permalink) ? $permalink : '';
@@ -454,10 +450,9 @@ class Entry extends Extension\AbstractEntry
     /**
      * Returns a URI pointing to a feed of all comments for this entry
      *
-     * @param  string $type
      * @return string
      */
-    public function getCommentFeedLink($type = 'atom')
+    public function getCommentFeedLink(string $type = 'atom')
     {
         if (array_key_exists('commentfeedlink', $this->data)) {
             return $this->data['commentfeedlink'];
@@ -579,15 +574,15 @@ class Entry extends Extension\AbstractEntry
         $nameNode  = $element->getElementsByTagName('name');
         $uriNode   = $element->getElementsByTagName('uri');
 
-        if ($emailNode->length && strlen($emailNode->item(0)->nodeValue) > 0) {
+        if ($emailNode->length && strlen((string) $emailNode->item(0)->nodeValue) > 0) {
             $author['email'] = $emailNode->item(0)->nodeValue;
         }
 
-        if ($nameNode->length && strlen($nameNode->item(0)->nodeValue) > 0) {
+        if ($nameNode->length && strlen((string) $nameNode->item(0)->nodeValue) > 0) {
             $author['name'] = $nameNode->item(0)->nodeValue;
         }
 
-        if ($uriNode->length && strlen($uriNode->item(0)->nodeValue) > 0) {
+        if ($uriNode->length && strlen((string) $uriNode->item(0)->nodeValue) > 0) {
             $author['uri'] = $uriNode->item(0)->nodeValue;
         }
 
@@ -602,22 +597,16 @@ class Entry extends Extension\AbstractEntry
      */
     protected function registerNamespaces()
     {
-        switch ($this->getAtomType()) {
-            case Reader\Reader::TYPE_ATOM_03:
-                $this->getXpath()->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_03);
-                break;
-            default:
-                $this->getXpath()->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_10);
-                break;
-        }
+        match ($this->getAtomType()) {
+            Reader\Reader::TYPE_ATOM_03 => $this->getXpath()->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_03),
+            default => $this->getXpath()->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_10),
+        };
     }
 
     /**
      * Detect the presence of any Atom namespaces in use
-     *
-     * @return null|string
      */
-    protected function getAtomType()
+    protected function getAtomType(): ?string
     {
         $dom          = $this->getDomDocument();
         $prefixAtom03 = $dom->lookupPrefix(Reader\Reader::NAMESPACE_ATOM_03);

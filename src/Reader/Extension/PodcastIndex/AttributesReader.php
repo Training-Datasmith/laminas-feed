@@ -176,7 +176,7 @@ final class AttributesReader
      *
      * @psalm-return LicenseObject
      */
-    public static function readLicense(DOMElement $item): object
+    public static function readLicense(DOMElement $item): \stdClass
     {
         $license             = new stdClass();
         $license->identifier = $item->nodeValue;
@@ -190,7 +190,7 @@ final class AttributesReader
      *
      * @psalm-return LocationObject
      */
-    public static function readLocation(DOMElement $item): object
+    public static function readLocation(DOMElement $item): \stdClass
     {
         $location              = new stdClass();
         $location->description = $item->nodeValue;
@@ -206,7 +206,7 @@ final class AttributesReader
      *
      * @psalm-return ImagesObject
      */
-    public static function readImages(DOMElement $item): object
+    public static function readImages(DOMElement $item): \stdClass
     {
         $images         = new stdClass();
         $images->srcset = $item->getAttribute('srcset');
@@ -218,7 +218,7 @@ final class AttributesReader
      *
      * @psalm-return DetailedImageObject
      */
-    public static function readDetailedImage(DOMElement $item): object
+    public static function readDetailedImage(DOMElement $item): \stdClass
     {
         $image              = new stdClass();
         $image->href        = $item->getAttribute('href');
@@ -236,7 +236,7 @@ final class AttributesReader
      *
      * @psalm-return UpdateFrequencyObject
      */
-    public static function readUpdateFrequency(DOMElement $item): object
+    public static function readUpdateFrequency(DOMElement $item): \stdClass
     {
         $updateFrequency              = new stdClass();
         $updateFrequency->description = $item->nodeValue;
@@ -252,7 +252,7 @@ final class AttributesReader
      *
      * @psalm-return PersonObject
      */
-    public static function readPerson(DOMElement $item): object
+    public static function readPerson(DOMElement $item): \stdClass
     {
         $person        = new stdClass();
         $person->name  = $item->nodeValue;
@@ -269,7 +269,7 @@ final class AttributesReader
      *
      * @psalm-return TrailerObject
      */
-    public static function readTrailer(DOMElement $item): object
+    public static function readTrailer(DOMElement $item): \stdClass
     {
         $object          = new stdClass();
         $object->title   = $item->nodeValue;
@@ -287,7 +287,7 @@ final class AttributesReader
      *
      * @psalm-return object{value: string}
      */
-    public static function readGuid(DOMElement $item): object
+    public static function readGuid(DOMElement $item): \stdClass
     {
         $object        = new stdClass();
         $object->value = $item->nodeValue;
@@ -300,7 +300,7 @@ final class AttributesReader
      *
      * @psalm-return object{value: string}
      */
-    public static function readMedium(DOMElement $item): object
+    public static function readMedium(DOMElement $item): \stdClass
     {
         $object        = new stdClass();
         $object->value = $item->nodeValue;
@@ -312,7 +312,7 @@ final class AttributesReader
      *
      * @psalm-return BlockObject
      */
-    public static function readBlock(DOMElement $item): object
+    public static function readBlock(DOMElement $item): \stdClass
     {
         $object        = new stdClass();
         $object->value = $item->nodeValue;
@@ -325,7 +325,7 @@ final class AttributesReader
      *
      * @psalm-return TxtObject
      */
-    public static function readTxt(DOMElement $item): object
+    public static function readTxt(DOMElement $item): \stdClass
     {
         $object          = new stdClass();
         $object->value   = $item->nodeValue;
@@ -338,7 +338,7 @@ final class AttributesReader
      *
      * @psalm-return RemoteItemObject
      */
-    public static function readRemoteItem(DOMElement $item): object
+    public static function readRemoteItem(DOMElement $item): \stdClass
     {
         $object           = new stdClass();
         $object->feedGuid = $item->getAttribute('feedGuid');
@@ -355,7 +355,7 @@ final class AttributesReader
      *
      * @psalm-return ValueObject
      */
-    public static function readValue(DOMElement $item): object
+    public static function readValue(DOMElement $item): \stdClass
     {
         $valueObject            = new stdClass();
         $valueObject->type      = $item->getAttribute('type');
@@ -369,7 +369,7 @@ final class AttributesReader
      *
      * @psalm-return ValueRecipientObject
      */
-    public static function readValueRecipient(DOMElement $item): object
+    public static function readValueRecipient(DOMElement $item): \stdClass
     {
         $object              = new stdClass();
         $object->name        = $item->getAttribute('name');
@@ -385,10 +385,8 @@ final class AttributesReader
 
     /**
      * Read single value time split
-     *
-     * @return ValueTimeSplitObject
      */
-    public static function readValueTimeSplit(DOMElement $entry): object
+    public static function readValueTimeSplit(DOMElement $entry): \stdClass
     {
         $object                   = new stdClass();
         $object->startTime        = $entry->getAttribute('startTime');
@@ -404,7 +402,7 @@ final class AttributesReader
      *
      * @psalm-return SocialInteractObject
      */
-    public static function readSocialInteract(DOMElement $item): object
+    public static function readSocialInteract(DOMElement $item): \stdClass
     {
         $object             = new stdClass();
         $object->protocol   = $item->getAttribute('protocol');
@@ -420,7 +418,7 @@ final class AttributesReader
      *
      * @psalm-return AlternateEnclosureObject
      */
-    public static function readAlternateEnclosure(DOMElement $item): object
+    public static function readAlternateEnclosure(DOMElement $item): \stdClass
     {
         $object          = new stdClass();
         $object->type    = $item->getAttribute('type');
@@ -440,7 +438,7 @@ final class AttributesReader
      *
      * @psalm-return SourceObject
      */
-    public static function readSource(DOMElement $item): object
+    public static function readSource(DOMElement $item): \stdClass
     {
         $object              = new stdClass();
         $object->uri         = $item->getAttribute('uri');
@@ -453,7 +451,7 @@ final class AttributesReader
      *
      * @psalm-return SourceObject
      */
-    public static function readIntegrity(DOMElement $item): object
+    public static function readIntegrity(DOMElement $item): \stdClass
     {
         $object        = new stdClass();
         $object->type  = $item->getAttribute('type');
@@ -466,7 +464,7 @@ final class AttributesReader
      *
      * @psalm-return ContentLinkObject
      */
-    public static function readContentLink(DOMElement $item): object
+    public static function readContentLink(DOMElement $item): \stdClass
     {
         $object              = new stdClass();
         $object->href        = $item->getAttribute('href');
@@ -479,7 +477,7 @@ final class AttributesReader
      *
      * @psalm-return FundingObject
      */
-    public static function readFunding(DOMElement $item): object
+    public static function readFunding(DOMElement $item): \stdClass
     {
         $object        = new stdClass();
         $object->url   = $item->getAttribute('url');
@@ -492,7 +490,7 @@ final class AttributesReader
      *
      * @psalm-return ChatObject
      */
-    public static function readChat(DOMElement $item): object
+    public static function readChat(DOMElement $item): \stdClass
     {
         $object            = new stdClass();
         $object->server    = $item->getAttribute('server');

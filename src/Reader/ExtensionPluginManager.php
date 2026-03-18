@@ -200,7 +200,7 @@ class ExtensionPluginManager extends AbstractPluginManager implements ExtensionM
     protected $sharedByDefault = false;
 
     /** @inheritDoc */
-    public function validate(mixed $instance)
+    public function validate(mixed $instance): void
     {
         if (
             $instance instanceof AbstractEntry
@@ -212,7 +212,7 @@ class ExtensionPluginManager extends AbstractPluginManager implements ExtensionM
 
         throw new InvalidServiceException(sprintf(
             'Plugin of type %s is invalid; must implement %s or %s',
-            is_object($instance) ? $instance::class : gettype($instance),
+            get_debug_type($instance),
             AbstractEntry::class,
             AbstractFeed::class
         ));
@@ -225,17 +225,16 @@ class ExtensionPluginManager extends AbstractPluginManager implements ExtensionM
      *             This method will be removed in version 3.0 of this component
      *
      * @param  mixed $plugin
-     * @return void
      * @throws Exception\InvalidArgumentException If invalid.
      */
-    public function validatePlugin($plugin)
+    public function validatePlugin($plugin): void
     {
         try {
             $this->validate($plugin);
-        } catch (InvalidServiceException $e) {
+        } catch (InvalidServiceException) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Plugin of type %s is invalid; must implement %s or %s',
-                is_object($plugin) ? $plugin::class : gettype($plugin),
+                get_debug_type($plugin),
                 AbstractEntry::class,
                 AbstractFeed::class
             ));

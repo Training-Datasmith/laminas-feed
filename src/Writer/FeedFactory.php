@@ -78,8 +78,7 @@ abstract class FeedFactory
      */
     protected static function convertKey($key)
     {
-        $key = str_replace('_', '', strtolower($key));
-        return $key;
+        return str_replace('_', '', strtolower($key));
     }
 
     /**

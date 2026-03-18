@@ -11,19 +11,14 @@ use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
  */
 class Psr7ResponseDecorator implements HeaderAwareResponseInterface
 {
-    private Psr7ResponseInterface $decoratedResponse;
-
-    public function __construct(Psr7ResponseInterface $response)
+    public function __construct(private readonly Psr7ResponseInterface $decoratedResponse)
     {
-        $this->decoratedResponse = $response;
     }
 
     /**
      * Return the original PSR-7 response being decorated.
-     *
-     * @return Psr7ResponseInterface
      */
-    public function getDecoratedResponse()
+    public function getDecoratedResponse(): \Psr\Http\Message\ResponseInterface
     {
         return $this->decoratedResponse;
     }
@@ -31,7 +26,7 @@ class Psr7ResponseDecorator implements HeaderAwareResponseInterface
     /**
      * {@inheritDoc}
      */
-    public function getBody()
+    public function getBody(): string
     {
         return (string) $this->decoratedResponse->getBody();
     }

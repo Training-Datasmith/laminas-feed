@@ -39,10 +39,8 @@ class Feed extends AbstractFeed implements Iterator, Countable
      * Creates a new Laminas\Feed\Writer\Entry data container for use. This is NOT
      * added to the current feed automatically, but is necessary to create a
      * container with some initial values preset based on the current feed data.
-     *
-     * @return Entry
      */
-    public function createEntry()
+    public function createEntry(): \Laminas\Feed\Writer\Entry
     {
         $entry = new Entry();
         if ($this->getEncoding()) {
@@ -55,10 +53,8 @@ class Feed extends AbstractFeed implements Iterator, Countable
     /**
      * Appends a Laminas\Feed\Writer\Deleted object representing a new entry tombstone
      * to the feed data container's internal group of entries.
-     *
-     * @return void
      */
-    public function addTombstone(Deleted $deleted)
+    public function addTombstone(Deleted $deleted): void
     {
         $this->entries[] = $deleted;
     }
@@ -67,10 +63,8 @@ class Feed extends AbstractFeed implements Iterator, Countable
      * Creates a new Laminas\Feed\Writer\Deleted data container for use. This is NOT
      * added to the current feed automatically, but is necessary to create a
      * container with some initial values preset based on the current feed data.
-     *
-     * @return Deleted
      */
-    public function createTombstone()
+    public function createTombstone(): \Laminas\Feed\Writer\Deleted
     {
         $deleted  = new Deleted();
         $encoding = $this->getEncoding();
@@ -87,7 +81,7 @@ class Feed extends AbstractFeed implements Iterator, Countable
      *
      * @return $this
      */
-    public function addEntry(Entry $entry)
+    public function addEntry(Entry $entry): static
     {
         $this->entries[] = $entry;
         return $this;
@@ -101,7 +95,7 @@ class Feed extends AbstractFeed implements Iterator, Countable
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function removeEntry($index)
+    public function removeEntry($index): static
     {
         if (! isset($this->entries[$index])) {
             throw new Exception\InvalidArgumentException('Undefined index: ' . $index . '. Entry does not exist.');
@@ -136,7 +130,7 @@ class Feed extends AbstractFeed implements Iterator, Countable
      *
      * @return $this
      */
-    public function orderByDate()
+    public function orderByDate(): static
     {
         /**
          * Could do with some improvement for performance perhaps
@@ -193,22 +187,18 @@ class Feed extends AbstractFeed implements Iterator, Countable
 
     /**
      * Move the feed pointer forward
-     *
-     * @return void
      */
     #[ReturnTypeWillChange]
-    public function next()
+    public function next(): void
     {
         ++$this->entriesKey;
     }
 
     /**
      * Reset the pointer in the feed object
-     *
-     * @return void
      */
     #[ReturnTypeWillChange]
-    public function rewind()
+    public function rewind(): void
     {
         $this->entriesKey = 0;
     }

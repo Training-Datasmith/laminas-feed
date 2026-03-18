@@ -64,7 +64,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException If any value of $author not follow the format.
      */
-    public function addAuthor(array $author)
+    public function addAuthor(array $author): static
     {
         // Check array values
         if (
@@ -107,7 +107,7 @@ class Entry
      *
      * @return $this
      */
-    public function addAuthors(array $authors)
+    public function addAuthors(array $authors): static
     {
         foreach ($authors as $author) {
             $this->addAuthor($author);
@@ -123,7 +123,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setEncoding($encoding)
+    public function setEncoding($encoding): static
     {
         if (empty($encoding) || ! is_string($encoding)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -153,7 +153,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setCopyright($copyright)
+    public function setCopyright($copyright): static
     {
         if (empty($copyright) || ! is_string($copyright)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -170,7 +170,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setContent($content)
+    public function setContent($content): static
     {
         if (empty($content) || ! is_string($content)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -187,7 +187,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setDateCreated($date = null)
+    public function setDateCreated($date = null): static
     {
         if ($date === null) {
             $date = new DateTime();
@@ -212,7 +212,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setDateModified($date = null)
+    public function setDateModified($date = null): static
     {
         if ($date === null) {
             $date = new DateTime();
@@ -237,7 +237,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setDescription($description)
+    public function setDescription($description): static
     {
         if (empty($description) || ! is_string($description)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -254,7 +254,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setId($id)
+    public function setId($id): static
     {
         if (empty($id) || ! is_string($id)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -271,7 +271,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setLink($link)
+    public function setLink($link): static
     {
         if (empty($link) || ! is_string($link) || ! Uri::factory($link)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -290,7 +290,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setCommentCount($count)
+    public function setCommentCount($count): static
     {
         // phpcs:ignore SlevomatCodingStandard.Operators.DisallowEqualOperators.DisallowedNotEqualOperator
         if (! is_numeric($count) || (int) $count != $count || (int) $count < 0) {
@@ -310,7 +310,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setCommentLink($link)
+    public function setCommentLink($link): static
     {
         if (empty($link) || ! is_string($link) || ! Uri::factory($link)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -328,7 +328,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setCommentFeedLink(array $link)
+    public function setCommentFeedLink(array $link): static
     {
         if (! isset($link['uri']) || ! is_string($link['uri']) || ! Uri::factory($link['uri'])->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -355,7 +355,7 @@ class Entry
      *
      * @return $this
      */
-    public function setCommentFeedLinks(array $links)
+    public function setCommentFeedLinks(array $links): static
     {
         foreach ($links as $link) {
             $this->setCommentFeedLink($link);
@@ -371,7 +371,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setTitle($title)
+    public function setTitle($title): static
     {
         if ((empty($title) && ! is_numeric($title)) || ! is_string($title)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -557,7 +557,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function addCategory(array $category)
+    public function addCategory(array $category): static
     {
         if (! isset($category['term'])) {
             throw new Exception\InvalidArgumentException(
@@ -589,7 +589,7 @@ class Entry
      *
      * @return $this
      */
-    public function addCategories(array $categories)
+    public function addCategories(array $categories): static
     {
         foreach ($categories as $category) {
             $this->addCategory($category);
@@ -620,7 +620,7 @@ class Entry
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setEnclosure(array $enclosure)
+    public function setEnclosure(array $enclosure): static
     {
         if (! isset($enclosure['uri'])) {
             throw new Exception\InvalidArgumentException('Enclosure "uri" is not set');
@@ -652,7 +652,7 @@ class Entry
      * @param  string $name
      * @return $this
      */
-    public function remove($name)
+    public function remove($name): static
     {
         if (isset($this->data[$name])) {
             unset($this->data[$name]);
@@ -673,11 +673,8 @@ class Entry
 
     /**
      * Return an Extension object with the matching name (postfixed with _Entry)
-     *
-     * @param  string $name
-     * @return null|object
      */
-    public function getExtension($name)
+    public function getExtension(string $name): ?object
     {
         $extensionClassName = $name . '\\Entry';
         if (! isset($this->extensions[$extensionClassName])) {
@@ -702,7 +699,7 @@ class Entry
      * @param  string $type
      * @return $this
      */
-    public function setType($type)
+    public function setType($type): static
     {
         $this->type = $type;
         return $this;
@@ -721,18 +718,17 @@ class Entry
     /**
      * Method overloading: call given method on first extension implementing it
      *
-     * @param  string $method
      * @param  array $args
      * @return mixed
      * @throws Exception\BadMethodCallException If no extensions implements the method.
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         foreach ($this->extensions as $extension) {
             try {
                 $callback = [$extension, $method];
                 return $callback(...$args);
-            } catch (BadMethodCallException $e) {
+            } catch (BadMethodCallException) {
             }
         }
         throw new Exception\BadMethodCallException(
@@ -744,10 +740,8 @@ class Entry
      * Creates a new Laminas\Feed\Writer\Source data container for use. This is NOT
      * added to the current feed automatically, but is necessary to create a
      * container with some initial values preset based on the current feed data.
-     *
-     * @return Source
      */
-    public function createSource()
+    public function createSource(): \Laminas\Feed\Writer\Source
     {
         $source = new Source();
         if ($this->getEncoding()) {
@@ -763,16 +757,13 @@ class Entry
      *
      * @return $this
      */
-    public function setSource(Source $source)
+    public function setSource(Source $source): static
     {
         $this->data['source'] = $source;
         return $this;
     }
 
-    /**
-     * @return null|Source
-     */
-    public function getSource()
+    public function getSource(): ?\Laminas\Feed\Writer\Source
     {
         if (! isset($this->data['source'])) {
             return null;
@@ -781,7 +772,7 @@ class Entry
         if (! $this->data['source'] instanceof Source) {
             throw new Exception\RuntimeException(sprintf(
                 'Entry source is of invalid type ("%s")',
-                is_object($this->data['source']) ? get_class($this->data['source']) : gettype($this->data['source'])
+                get_debug_type($this->data['source'])
             ));
         }
 

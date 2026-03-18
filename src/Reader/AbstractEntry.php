@@ -27,24 +27,8 @@ abstract class AbstractEntry
 
     /**
      * DOM document object
-     *
-     * @var DOMDocument
      */
-    protected $domDocument;
-
-    /**
-     * Entry instance
-     *
-     * @var DOMElement
-     */
-    protected $entry;
-
-    /**
-     * Pointer to the current entry
-     *
-     * @var int
-     */
-    protected $entryKey = 0;
+    protected ?\DOMDocument $domDocument;
 
     /**
      * XPath object
@@ -64,15 +48,19 @@ abstract class AbstractEntry
      * @param int $entryKey
      * @param null|string $type
      */
-    public function __construct(DOMElement $entry, $entryKey, $type = null)
+    public function __construct(/**
+     * Entry instance
+     */
+    protected \DOMElement $entry, /**
+     * Pointer to the current entry
+     */
+    protected $entryKey, $type = null)
     {
-        $this->entry       = $entry;
-        $this->entryKey    = $entryKey;
-        $this->domDocument = $entry->ownerDocument;
+        $this->domDocument = $this->entry->ownerDocument;
         if ($type !== null) {
             $this->data['type'] = $type;
         } else {
-            $this->data['type'] = Reader::detectType($entry);
+            $this->data['type'] = Reader::detectType($this->entry);
         }
         $this->_loadExtensions();
     }
@@ -106,7 +94,7 @@ abstract class AbstractEntry
     {
         $assumed = $this->getDomDocument()->encoding;
         if (empty($assumed)) {
-            $assumed = 'UTF-8';
+            return 'UTF-8';
         }
         return $assumed;
     }
@@ -171,10 +159,9 @@ abstract class AbstractEntry
     /**
      * Return an Extension object with the matching name (postfixed with _Entry)
      *
-     * @param  string $name
      * @return null|Extension\AbstractEntry
      */
-    public function getExtension($name)
+    public function getExtension(string $name)
     {
         if (array_key_exists($name . '\Entry', $this->extensions)) {
             return $this->extensions[$name . '\Entry'];
@@ -186,12 +173,11 @@ abstract class AbstractEntry
     /**
      * Method overloading: call given method on first extension implementing it
      *
-     * @param  string $method
      * @param  array $args
      * @return mixed
      * @throws Exception\BadMethodCallException If no extensions implements the method.
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         foreach ($this->extensions as $extension) {
             if (method_exists($extension, $method)) {

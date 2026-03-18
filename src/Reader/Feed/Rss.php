@@ -61,7 +61,7 @@ class Rss extends AbstractFeed
      * @param  int $index
      * @return null|array<string, string>
      */
-    public function getAuthor($index = 0)
+    public function getAuthor($index = 0): ?array
     {
         $authors = $this->getAuthors();
 
@@ -105,7 +105,7 @@ class Rss extends AbstractFeed
         }
         if ($list->length) {
             foreach ($list as $author) {
-                $string = trim($author->nodeValue);
+                $string = trim((string) $author->nodeValue);
                 $data   = [];
                 // Pretty rough parsing - but it's a catchall
                 if (preg_match('/^.*@[^ ]*/', $string, $matches)) {
@@ -205,7 +205,7 @@ class Rss extends AbstractFeed
                 $dateModified = $this->xpath->evaluate('string(/rss/channel/lastBuildDate)');
             }
             if ($dateModified) {
-                $dateModifiedParsed = strtotime($dateModified);
+                $dateModifiedParsed = strtotime((string) $dateModified);
                 if ($dateModifiedParsed) {
                     $date = new DateTime('@' . $dateModifiedParsed);
                 } else {
@@ -270,7 +270,7 @@ class Rss extends AbstractFeed
         ) {
             $lastBuildDate = $this->xpath->evaluate('string(/rss/channel/lastBuildDate)');
             if ($lastBuildDate) {
-                $lastBuildDateParsed = strtotime($lastBuildDate);
+                $lastBuildDateParsed = strtotime((string) $lastBuildDate);
                 if ($lastBuildDateParsed) {
                     $date = new DateTime('@' . $lastBuildDateParsed);
                 } else {

@@ -64,7 +64,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException If any value of $author not follow the format.
      */
-    public function addAuthor(array $author)
+    public function addAuthor(array $author): static
     {
         // Check array values
         if (
@@ -108,7 +108,7 @@ class AbstractFeed
      *
      * @return $this
      */
-    public function addAuthors(array $authors)
+    public function addAuthors(array $authors): static
     {
         foreach ($authors as $author) {
             $this->addAuthor($author);
@@ -124,7 +124,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setCopyright($copyright)
+    public function setCopyright($copyright): static
     {
         if (empty($copyright) || ! is_string($copyright)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -141,7 +141,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setDateCreated($date = null)
+    public function setDateCreated($date = null): static
     {
         if ($date === null) {
             $date = new DateTime();
@@ -166,7 +166,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setDateModified($date = null)
+    public function setDateModified($date = null): static
     {
         if ($date === null) {
             $date = new DateTime();
@@ -191,7 +191,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setLastBuildDate($date = null)
+    public function setLastBuildDate($date = null): static
     {
         if ($date === null) {
             $date = new DateTime();
@@ -216,7 +216,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setDescription($description)
+    public function setDescription($description): static
     {
         if (empty($description) || ! is_string($description)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -235,7 +235,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setGenerator($name, $version = null, $uri = null)
+    public function setGenerator($name, $version = null, $uri = null): static
     {
         if (is_array($name)) {
             $data = $name;
@@ -293,7 +293,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setId($id)
+    public function setId($id): static
     {
         // phpcs:disable Generic.Files.LineLength.TooLong
         if (
@@ -321,7 +321,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setImage(array $data)
+    public function setImage(array $data): static
     {
         if (
             empty($data['uri']) || ! is_string($data['uri'])
@@ -343,7 +343,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setLanguage($language)
+    public function setLanguage($language): static
     {
         if (empty($language) || ! is_string($language)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -360,7 +360,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setLink($link)
+    public function setLink($link): static
     {
         if (empty($link) || ! is_string($link) || ! Uri::factory($link)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -380,7 +380,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setFeedLink($link, $type)
+    public function setFeedLink($link, $type): static
     {
         if (empty($link) || ! is_string($link) || ! Uri::factory($link)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -404,7 +404,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setTitle($title)
+    public function setTitle($title): static
     {
         if ((empty($title) && ! is_numeric($title)) || ! is_string($title)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -421,7 +421,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setEncoding($encoding)
+    public function setEncoding($encoding): static
     {
         if (empty($encoding) || ! is_string($encoding)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -438,7 +438,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setBaseUrl($url)
+    public function setBaseUrl($url): static
     {
         if (empty($url) || ! is_string($url) || ! Uri::factory($url)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -457,7 +457,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function addHub($url)
+    public function addHub($url): static
     {
         if (empty($url) || ! is_string($url) || ! Uri::factory($url)->isValid()) {
             throw new Exception\InvalidArgumentException(
@@ -477,7 +477,7 @@ class AbstractFeed
      *
      * @return $this
      */
-    public function addHubs(array $urls)
+    public function addHubs(array $urls): static
     {
         foreach ($urls as $url) {
             $this->addHub($url);
@@ -492,7 +492,7 @@ class AbstractFeed
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function addCategory(array $category)
+    public function addCategory(array $category): static
     {
         if (! isset($category['term'])) {
             throw new Exception\InvalidArgumentException(
@@ -524,7 +524,7 @@ class AbstractFeed
      *
      * @return $this
      */
-    public function addCategories(array $categories)
+    public function addCategories(array $categories): static
     {
         foreach ($categories as $category) {
             $this->addCategory($category);
@@ -541,11 +541,7 @@ class AbstractFeed
      */
     public function getAuthor($index = 0)
     {
-        if (isset($this->data['authors'][$index])) {
-            return $this->data['authors'][$index];
-        }
-
-        return null;
+        return $this->data['authors'][$index] ?? null;
     }
 
     /**
@@ -787,10 +783,8 @@ class AbstractFeed
 
     /**
      * Resets the instance and deletes all data
-     *
-     * @return void
      */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
@@ -803,7 +797,7 @@ class AbstractFeed
      * @param  string $type
      * @return $this
      */
-    public function setType($type)
+    public function setType($type): static
     {
         $this->type = $type;
         return $this;
@@ -825,7 +819,7 @@ class AbstractFeed
      * @param  string $name
      * @return $this
      */
-    public function remove($name)
+    public function remove($name): static
     {
         if (isset($this->data[$name])) {
             unset($this->data[$name]);
@@ -836,18 +830,17 @@ class AbstractFeed
     /**
      * Method overloading: call given method on first extension implementing it
      *
-     * @param  string $method
      * @param  array $args
      * @return mixed
      * @throws Exception\BadMethodCallException If no extensions implements the method.
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         foreach ($this->extensions as $extension) {
             try {
                 $callback = [$extension, $method];
                 return $callback(...$args);
-            } catch (Exception\BadMethodCallException $e) {
+            } catch (Exception\BadMethodCallException) {
             }
         }
         throw new Exception\BadMethodCallException(

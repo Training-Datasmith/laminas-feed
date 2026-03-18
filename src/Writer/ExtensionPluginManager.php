@@ -235,19 +235,19 @@ class ExtensionPluginManager extends AbstractPluginManager implements ExtensionM
     protected $sharedByDefault = false;
 
     /** @inheritDoc */
-    public function validate(mixed $instance)
+    public function validate(mixed $instance): void
     {
         if ($instance instanceof Extension\AbstractRenderer) {
             // we're okay
             return;
         }
 
-        if (is_object($instance) && 'Feed' === substr($instance::class, -4)) {
+        if (is_object($instance) && str_ends_with($instance::class, 'Feed')) {
             // we're okay
             return;
         }
 
-        if (is_object($instance) && 'Entry' === substr($instance::class, -5)) {
+        if (is_object($instance) && str_ends_with($instance::class, 'Entry')) {
             // we're okay
             return;
         }
@@ -255,7 +255,7 @@ class ExtensionPluginManager extends AbstractPluginManager implements ExtensionM
         throw new InvalidServiceException(sprintf(
             'Plugin of type %s is invalid; must implement %s\Extension\RendererInterface '
             . 'or the classname must end in "Feed" or "Entry"',
-            is_object($instance) ? $instance::class : gettype($instance),
+            get_debug_type($instance),
             __NAMESPACE__
         ));
     }
@@ -264,18 +264,17 @@ class ExtensionPluginManager extends AbstractPluginManager implements ExtensionM
      * Validate plugin (v2)
      *
      * @param  mixed $plugin
-     * @return void
      * @throws Exception\InvalidArgumentException When invalid.
      */
-    public function validatePlugin($plugin)
+    public function validatePlugin($plugin): void
     {
         try {
             $this->validate($plugin);
-        } catch (InvalidServiceException $e) {
+        } catch (InvalidServiceException) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Plugin of type %s is invalid; must implement %s\Extension\RendererInterface '
                 . 'or the classname must end in "Feed" or "Entry"',
-                is_object($plugin) ? $plugin::class : gettype($plugin),
+                get_debug_type($plugin),
                 __NAMESPACE__
             ));
         }

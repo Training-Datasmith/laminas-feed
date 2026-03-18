@@ -34,7 +34,7 @@ class Atom extends Renderer\AbstractRenderer implements Renderer\RendererInterfa
      *
      * @return $this
      */
-    public function render()
+    public function render(): static
     {
         $this->dom               = new DOMDocument('1.0', $this->container->getEncoding());
         $this->dom->formatOutput = true;
@@ -79,10 +79,9 @@ class Atom extends Renderer\AbstractRenderer implements Renderer\RendererInterfa
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
         $title = $dom->createElement('title');
         $root->appendChild($title);
@@ -124,10 +123,9 @@ class Atom extends Renderer\AbstractRenderer implements Renderer\RendererInterfa
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
 
         $updated = $dom->createElement('updated');
@@ -250,10 +248,9 @@ class Atom extends Renderer\AbstractRenderer implements Renderer\RendererInterfa
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
 
         if (! $this->getDataContainer()->getId()) {
@@ -265,7 +262,7 @@ class Atom extends Renderer\AbstractRenderer implements Renderer\RendererInterfa
             ! Uri::factory($this->getDataContainer()->getId())->isValid()
             && ! preg_match(
                 "#^urn:[a-zA-Z0-9][a-zA-Z0-9\-]{1,31}:([a-zA-Z0-9\(\)\+\,\.\:\=\@\;\$\_\!\*\-]|%[0-9a-fA-F]{2})*#",
-                $this->getDataContainer()->getId()
+                (string) $this->getDataContainer()->getId()
             )
             && ! $this->_validateTagUri($this->getDataContainer()->getId())
         ) {
@@ -330,10 +327,9 @@ class Atom extends Renderer\AbstractRenderer implements Renderer\RendererInterfa
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
         if (! $content) {
             return;
@@ -352,7 +348,7 @@ class Atom extends Renderer\AbstractRenderer implements Renderer\RendererInterfa
      * @param string $content
      * @return DOMElement
      */
-    protected function _loadXhtml($content)
+    protected function _loadXhtml($content): ?\DOMElement
     {
         if (class_exists(tidy::class, false)) {
             $tidy     = new tidy();
@@ -370,7 +366,7 @@ class Atom extends Renderer\AbstractRenderer implements Renderer\RendererInterfa
         }
         $xhtml = preg_replace([
             '/(<[\/]?)([a-zA-Z]+)/',
-        ], '$1xhtml:$2', $xhtml);
+        ], '$1xhtml:$2', (string) $xhtml);
         $dom   = new DOMDocument('1.0', $this->getEncoding());
         $dom->loadXML(
             '<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">'

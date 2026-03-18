@@ -116,7 +116,6 @@ class Feed
      * @deprecated Use `setPodcastIndexFundings()` or `addPodcastIndexFunding()` instead.
      *
      * @param FundingArray $value
-     * @return $this
      */
     public function setPodcastIndexFunding(array $value): Feed
     {
@@ -644,7 +643,7 @@ class Feed
      * @return $this
      * @throws InvalidArgumentException
      */
-    public function removePodcastIndexLiveItem($index)
+    public function removePodcastIndexLiveItem($index): static
     {
         if (! isset($this->liveItems[$index])) {
             throw new InvalidArgumentException('Undefined index: ' . $index . '. LiveItem does not exist.');

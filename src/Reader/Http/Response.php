@@ -18,11 +18,11 @@ use function trim;
 
 class Response implements HeaderAwareResponseInterface
 {
-    private string $body;
+    private readonly string $body;
 
     private array $headers;
 
-    private int $statusCode;
+    private readonly int $statusCode;
 
     /**
      * @param  int $statusCode
@@ -43,7 +43,7 @@ class Response implements HeaderAwareResponseInterface
     /**
      * {@inheritDoc}
      */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -51,7 +51,7 @@ class Response implements HeaderAwareResponseInterface
     /**
      * {@inheritDoc}
      */
-    public function getBody()
+    public function getBody(): string
     {
         return $this->body;
     }
@@ -71,9 +71,8 @@ class Response implements HeaderAwareResponseInterface
      * @param int $statusCode
      * @throws Exception\InvalidArgumentException For arguments not castable
      *     to integer HTTP status codes.
-     * @return void
      */
-    private function validateStatusCode($statusCode)
+    private function validateStatusCode($statusCode): void
     {
         if (! is_numeric($statusCode) || (is_string($statusCode) && trim($statusCode) !== $statusCode)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -106,9 +105,8 @@ class Response implements HeaderAwareResponseInterface
      * @param mixed $body
      * @throws Exception\InvalidArgumentException For arguments not castable
      *     to strings.
-     * @return void
      */
-    private function validateBody($body)
+    private function validateBody($body): void
     {
         if (is_string($body)) {
             return;
@@ -129,9 +127,8 @@ class Response implements HeaderAwareResponseInterface
      * Validate header values.
      *
      * @throws Exception\InvalidArgumentException
-     * @return void
      */
-    private function validateHeaders(array $headers)
+    private function validateHeaders(array $headers): void
     {
         foreach ($headers as $name => $value) {
             if (! is_string($name) || is_numeric($name) || empty($name)) {
@@ -155,14 +152,12 @@ class Response implements HeaderAwareResponseInterface
 
     /**
      * Normalize header names to lowercase.
-     *
-     * @return array
      */
-    private function normalizeHeaders(array $headers)
+    private function normalizeHeaders(array $headers): array
     {
         $normalized = [];
         foreach ($headers as $name => $value) {
-            $normalized[strtolower($name)] = $value;
+            $normalized[strtolower((string) $name)] = $value;
         }
         return $normalized;
     }

@@ -23,10 +23,8 @@ class Feed extends Extension\AbstractRenderer
 
     /**
      * Render feed
-     *
-     * @return void
      */
-    public function render()
+    public function render(): void
     {
         $this->_setAuthors($this->dom, $this->base);
         $this->_setBlock($this->dom, $this->base);

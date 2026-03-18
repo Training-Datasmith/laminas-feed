@@ -37,10 +37,8 @@ class HttpResponse
 
     /**
      * Send the response, including all headers
-     *
-     * @return void
      */
-    public function send()
+    public function send(): void
     {
         $this->sendHeaders();
         echo $this->getContent();
@@ -51,10 +49,8 @@ class HttpResponse
      *
      * Sends any headers specified. If an {@link setHttpResponseCode() HTTP response code}
      * has been specified, it is sent with the first header.
-     *
-     * @return void
      */
-    public function sendHeaders()
+    public function sendHeaders(): void
     {
         if (200 === $this->statusCode) {
             return;
@@ -89,7 +85,7 @@ class HttpResponse
      * @param  bool $replace
      * @return $this
      */
-    public function setHeader($name, $value, $replace = false)
+    public function setHeader($name, $value, $replace = false): static
     {
         $name  = $this->_normalizeHeader($name);
         $value = (string) $value;
@@ -139,10 +135,9 @@ class HttpResponse
      * Can we send headers?
      *
      * @param  bool $throw Whether or not to throw an exception if headers have been sent; defaults to false
-     * @return bool
      * @throws Exception\RuntimeException
      */
-    public function canSendHeaders($throw = false)
+    public function canSendHeaders($throw = false): bool
     {
         $ok = headers_sent($file, $line);
         if ($ok && $throw) {
@@ -160,7 +155,7 @@ class HttpResponse
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setStatusCode($code)
+    public function setStatusCode($code): static
     {
         if (! is_int($code) || (100 > $code) || (599 < $code)) {
             throw new Exception\InvalidArgumentException('Invalid HTTP response code: ' . $code);
@@ -185,7 +180,7 @@ class HttpResponse
      * @param  string $content
      * @return $this
      */
-    public function setContent($content)
+    public function setContent($content): static
     {
         $this->content = (string) $content;
         $this->setHeader('content-length', strlen($content));
@@ -206,14 +201,12 @@ class HttpResponse
      * Normalizes a header name to X-Capitalized-Names
      *
      * @param  string $name
-     * @return string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _normalizeHeader($name)
+    protected function _normalizeHeader($name): string
     {
         $filtered = str_replace(['-', '_'], ' ', (string) $name);
         $filtered = ucwords(strtolower($filtered));
-        $filtered = str_replace(' ', '-', $filtered);
-        return $filtered;
+        return str_replace(' ', '-', $filtered);
     }
 }

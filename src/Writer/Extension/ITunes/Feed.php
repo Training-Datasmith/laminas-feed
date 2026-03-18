@@ -64,7 +64,7 @@ class Feed
      * @param  string $enc
      * @return $this
      */
-    public function setEncoding($enc)
+    public function setEncoding($enc): static
     {
         $this->stringWrapper = StringUtils::getWrapper($enc);
         $this->encoding      = $enc;
@@ -88,7 +88,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesBlock($value)
+    public function setItunesBlock($value): static
     {
         if (! ctype_alpha($value) && strlen($value) > 0) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -109,7 +109,7 @@ class Feed
      *
      * @return $this
      */
-    public function addItunesAuthors(array $values)
+    public function addItunesAuthors(array $values): static
     {
         foreach ($values as $value) {
             $this->addItunesAuthor($value);
@@ -124,7 +124,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addItunesAuthor($value)
+    public function addItunesAuthor($value): static
     {
         if ($this->stringWrapper->strlen($value) > 255) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -144,7 +144,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesCategories(array $values)
+    public function setItunesCategories(array $values): static
     {
         if (! isset($this->data['categories'])) {
             $this->data['categories'] = [];
@@ -184,7 +184,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesImage($value)
+    public function setItunesImage($value): static
     {
         if (! is_string($value) || ! Uri::factory($value)->isValid()) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -209,7 +209,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesDuration($value)
+    public function setItunesDuration($value): static
     {
         $value = (string) $value;
         if (
@@ -234,7 +234,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesExplicit($value)
+    public function setItunesExplicit($value): static
     {
         // "yes", "no" and "clean" are valid values for a previous version
         if (! is_bool($value) && ! in_array($value, ['yes', 'no', 'clean'])) {
@@ -268,7 +268,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesKeywords(array $value)
+    public function setItunesKeywords(array $value): static
     {
         trigger_error(
             'itunes:keywords has been deprecated in the iTunes podcast RSS specification,'
@@ -300,7 +300,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesNewFeedUrl($value)
+    public function setItunesNewFeedUrl($value): static
     {
         if (! Uri::factory($value)->isValid()) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -316,7 +316,7 @@ class Feed
      *
      * @return $this
      */
-    public function addItunesOwners(array $values)
+    public function addItunesOwners(array $values): static
     {
         foreach ($values as $value) {
             $this->addItunesOwner($value);
@@ -330,7 +330,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addItunesOwner(array $value)
+    public function addItunesOwner(array $value): static
     {
         if (! isset($value['name']) || ! isset($value['email'])) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -360,7 +360,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesSubtitle($value)
+    public function setItunesSubtitle($value): static
     {
         if ($this->stringWrapper->strlen($value) > 255) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -378,7 +378,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesSummary($value)
+    public function setItunesSummary($value): static
     {
         if ($this->stringWrapper->strlen($value) > 4000) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -396,7 +396,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesType($type)
+    public function setItunesType($type): static
     {
         $validTypes = ['episodic', 'serial'];
         if (! in_array($type, $validTypes, true)) {
@@ -417,7 +417,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesComplete($status)
+    public function setItunesComplete($status): static
     {
         if (! is_bool($status)) {
             throw new Writer\Exception\InvalidArgumentException(sprintf(
@@ -437,11 +437,10 @@ class Feed
     /**
      * Overloading: proxy to internal setters
      *
-     * @param  string $method
      * @return mixed
      * @throws Writer\Exception\BadMethodCallException
      */
-    public function __call($method, array $params)
+    public function __call(string $method, array $params)
     {
         $point = lcfirst(substr($method, 9));
         if (

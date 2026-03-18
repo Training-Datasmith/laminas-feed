@@ -19,9 +19,8 @@ class Feed extends Extension\AbstractFeed
      * Get a single author
      *
      * @param  int $index
-     * @return null|string
      */
-    public function getAuthor($index = 0)
+    public function getAuthor($index = 0): ?string
     {
         $authors = $this->getAuthors();
 

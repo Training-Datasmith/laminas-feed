@@ -48,7 +48,7 @@ class Entry extends Extension\AbstractEntry
         $hitParade    = [];
 
         if (! empty($stringParade)) {
-            $stringParade = explode(',', $stringParade);
+            $stringParade = explode(',', (string) $stringParade);
 
             foreach ($stringParade as $hit) {
                 $hitParade[] = $hit + 0; //cast to integer
@@ -85,11 +85,9 @@ class Entry extends Extension\AbstractEntry
     /**
      * Get the entry data specified by name
      *
-     * @param  string $name
-     * @param  string $type
      * @return null|mixed
      */
-    protected function getData($name, $type = 'string')
+    protected function getData(string $name, string $type = 'string')
     {
         if (array_key_exists($name, $this->data)) {
             return $this->data[$name];

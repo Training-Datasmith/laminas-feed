@@ -51,10 +51,9 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
     /**
      * Retrieve the extension
      *
-     * @param  string $extension
      * @return Extension\AbstractEntry|Extension\AbstractFeed
      */
-    public function get($extension)
+    public function get(string $extension)
     {
         $class = $this->extensions[$extension];
         return new $class();
@@ -63,11 +62,9 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
     /**
      * Add an extension.
      *
-     * @param string $name
      * @param string $class
-     * @return void
      */
-    public function add($name, $class)
+    public function add(string $name, $class): void
     {
         if (
             is_string($class)
@@ -88,11 +85,8 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
 
     /**
      * Remove an extension.
-     *
-     * @param string $name
-     * @return void
      */
-    public function remove($name)
+    public function remove(string $name): void
     {
         unset($this->extensions[$name]);
     }

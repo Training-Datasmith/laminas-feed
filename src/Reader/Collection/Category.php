@@ -17,7 +17,7 @@ class Category extends AbstractCollection
      * the category name, domain/URI, and other data. This method would
      * merely return the most useful data - i.e. the category names.
      */
-    public function getValues()
+    public function getValues(): array
     {
         $categories = [];
         foreach ($this->getIterator() as $element) {

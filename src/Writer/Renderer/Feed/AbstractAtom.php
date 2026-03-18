@@ -16,14 +16,6 @@ use function strtolower;
 
 class AbstractAtom extends Renderer\AbstractRenderer
 {
-    /**
-     * @param Writer\AbstractFeed $container
-     */
-    public function __construct($container)
-    {
-        parent::__construct($container);
-    }
-
     // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
     /**
@@ -52,10 +44,9 @@ class AbstractAtom extends Renderer\AbstractRenderer
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
 
         $title = $dom->createElement('title');
@@ -96,10 +87,9 @@ class AbstractAtom extends Renderer\AbstractRenderer
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
 
         $updated = $dom->createElement('updated');
@@ -172,10 +162,9 @@ class AbstractAtom extends Renderer\AbstractRenderer
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
 
         foreach ($flinks as $type => $href) {
@@ -245,10 +234,9 @@ class AbstractAtom extends Renderer\AbstractRenderer
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
 
         if (! $this->getDataContainer()->getId()) {

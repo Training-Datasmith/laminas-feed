@@ -28,7 +28,7 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
      *
      * @return $this
      */
-    public function render()
+    public function render(): static
     {
         $this->dom                     = new DOMDocument('1.0', $this->container->getEncoding());
         $this->dom->formatOutput       = true;
@@ -115,10 +115,9 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
 
         $title = $dom->createElement('title');
@@ -141,10 +140,9 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
         $subtitle = $dom->createElement('description');
         $root->appendChild($subtitle);
@@ -196,7 +194,7 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
         if (array_key_exists('uri', $gdata)) {
             $name .= ' (' . $gdata['uri'] . ')';
         }
-        $text = $dom->createTextNode((string) $name);
+        $text = $dom->createTextNode($name);
         $generator->appendChild($text);
     }
 
@@ -215,10 +213,9 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
         $link = $dom->createElement('link');
         $root->appendChild($link);
@@ -290,10 +287,9 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
 
         if (
@@ -305,10 +301,9 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
             $exception = new Writer\Exception\InvalidArgumentException($message);
             if (! $this->ignoreExceptions) {
                 throw $exception;
-            } else {
-                $this->exceptions[] = $exception;
-                return;
             }
+            $this->exceptions[] = $exception;
+            return;
         }
 
         $img = $dom->createElement('image');
@@ -337,10 +332,9 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
                 $exception = new Writer\Exception\InvalidArgumentException($message);
                 if (! $this->ignoreExceptions) {
                     throw $exception;
-                } else {
-                    $this->exceptions[] = $exception;
-                    return;
                 }
+                $this->exceptions[] = $exception;
+                return;
             }
             $height = $dom->createElement('height');
             $text   = $dom->createTextNode((string) $image['height']);
@@ -354,10 +348,9 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
                 $exception = new Writer\Exception\InvalidArgumentException($message);
                 if (! $this->ignoreExceptions) {
                     throw $exception;
-                } else {
-                    $this->exceptions[] = $exception;
-                    return;
                 }
+                $this->exceptions[] = $exception;
+                return;
             }
             $width = $dom->createElement('width');
             $text  = $dom->createTextNode((string) $image['width']);
@@ -371,10 +364,9 @@ class Rss extends Renderer\AbstractRenderer implements Renderer\RendererInterfac
                 $exception = new Writer\Exception\InvalidArgumentException($message);
                 if (! $this->ignoreExceptions) {
                     throw $exception;
-                } else {
-                    $this->exceptions[] = $exception;
-                    return;
                 }
+                $this->exceptions[] = $exception;
+                return;
             }
             $desc = $dom->createElement('description');
             $text = $dom->createTextNode($image['description']);

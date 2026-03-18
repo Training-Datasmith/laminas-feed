@@ -36,7 +36,7 @@ class Deleted
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setEncoding($encoding)
+    public function setEncoding($encoding): static
     {
         if (empty($encoding)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: parameter must be a non-empty string');
@@ -65,7 +65,7 @@ class Deleted
      * @param  string $name
      * @return $this
      */
-    public function remove($name)
+    public function remove($name): static
     {
         if (isset($this->data[$name])) {
             unset($this->data[$name]);
@@ -82,7 +82,7 @@ class Deleted
      * @param  string $type
      * @return $this
      */
-    public function setType($type)
+    public function setType($type): static
     {
         $this->type = $type;
         return $this;
@@ -105,7 +105,7 @@ class Deleted
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setReference($reference)
+    public function setReference($reference): static
     {
         if (empty($reference) || ! is_string($reference)) {
             throw new Exception\InvalidArgumentException('Invalid parameter: reference must be a non-empty string');
@@ -133,7 +133,7 @@ class Deleted
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setWhen($date = null)
+    public function setWhen($date = null): static
     {
         if ($date === null) {
             $date = new DateTime();
@@ -168,7 +168,7 @@ class Deleted
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setBy(array $by)
+    public function setBy(array $by): static
     {
         $author = [];
         if (
@@ -222,7 +222,7 @@ class Deleted
      * @param  string $comment
      * @return $this
      */
-    public function setComment($comment)
+    public function setComment($comment): static
     {
         $this->data['comment'] = $comment;
         return $this;

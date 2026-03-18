@@ -110,10 +110,8 @@ abstract class AbstractCallback implements CallbackInterface
      * If you wish to handle this via Laminas\Http, use the getter methods
      * to retrieve any data needed to be set on your HTTP Response object, or
      * simply give this object the HTTP Response instance to work with for you!
-     *
-     * @return void
      */
-    public function sendResponse()
+    public function sendResponse(): void
     {
         $this->getHttpResponse()->send();
     }
@@ -337,8 +335,8 @@ abstract class AbstractCallback implements CallbackInterface
             $scheme = 'https';
         }
         $schemeAndHttpHost = $scheme . '://' . $this->_getHttpHost();
-        if (strpos($callbackUrl, $schemeAndHttpHost) === 0) {
-            $callbackUrl = substr($callbackUrl, strlen($schemeAndHttpHost));
+        if (str_starts_with((string) $callbackUrl, $schemeAndHttpHost)) {
+            return substr((string) $callbackUrl, strlen($schemeAndHttpHost));
         }
         return $callbackUrl;
     }

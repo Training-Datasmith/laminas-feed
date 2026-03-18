@@ -21,7 +21,7 @@ class Entry extends Extension\AbstractEntry
      * @param  int $index
      * @return null|array<string, string>
      */
-    public function getAuthor($index = 0)
+    public function getAuthor($index = 0): ?array
     {
         $authors = $this->getAuthors();
 

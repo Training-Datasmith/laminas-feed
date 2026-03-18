@@ -54,7 +54,7 @@ class Feed
      * @param  string $enc
      * @return $this
      */
-    public function setEncoding($enc)
+    public function setEncoding($enc): static
     {
         $this->stringWrapper = StringUtils::getWrapper($enc);
         $this->encoding      = $enc;
@@ -78,7 +78,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPlayPodcastBlock($value)
+    public function setPlayPodcastBlock($value): static
     {
         if (! ctype_alpha($value) && strlen($value) > 0) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -99,7 +99,7 @@ class Feed
      *
      * @return $this
      */
-    public function addPlayPodcastAuthors(array $values)
+    public function addPlayPodcastAuthors(array $values): static
     {
         foreach ($values as $value) {
             $this->addPlayPodcastAuthor($value);
@@ -114,7 +114,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addPlayPodcastAuthor($value)
+    public function addPlayPodcastAuthor($value): static
     {
         if ($this->stringWrapper->strlen($value) > 255) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -134,7 +134,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPlayPodcastCategories(array $values)
+    public function setPlayPodcastCategories(array $values): static
     {
         if (! isset($this->data['categories'])) {
             $this->data['categories'] = [];
@@ -174,7 +174,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPlayPodcastImage($value)
+    public function setPlayPodcastImage($value): static
     {
         if (! is_string($value) || ! Uri::factory($value)->isValid()) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -192,7 +192,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPlayPodcastExplicit($value)
+    public function setPlayPodcastExplicit($value): static
     {
         if (! in_array($value, ['yes', 'no', 'clean'], true)) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -210,7 +210,7 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPlayPodcastDescription($value)
+    public function setPlayPodcastDescription($value): static
     {
         if ($this->stringWrapper->strlen($value) > 4000) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -224,11 +224,10 @@ class Feed
     /**
      * Overloading: proxy to internal setters
      *
-     * @param  string $method
      * @return mixed
      * @throws Writer\Exception\BadMethodCallException
      */
-    public function __call($method, array $params)
+    public function __call(string $method, array $params)
     {
         $point = lcfirst(substr($method, 14));
         if (

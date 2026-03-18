@@ -45,16 +45,18 @@ class FeedSet extends ArrayObject
      * loaded automatically when each links 'feed' array key is accessed.
      *
      * @param string $uri
-     * @return void
      */
-    public function addLinks(DOMNodeList $links, $uri)
+    public function addLinks(DOMNodeList $links, $uri): void
     {
         foreach ($links as $link) {
             /** @var DOMElement $link */
-            if (
-                strtolower($link->getAttribute('rel')) !== 'alternate'
-                || ! $link->getAttribute('type') || ! $link->getAttribute('href')
-            ) {
+            if (strtolower($link->getAttribute('rel')) !== 'alternate') {
+                continue;
+            }
+            if (! $link->getAttribute('type')) {
+                continue;
+            }
+            if (! $link->getAttribute('href')) {
                 continue;
             }
             if (null === $this->rss && $link->getAttribute('type') === 'application/rss+xml') {
@@ -111,10 +113,8 @@ class FeedSet extends ArrayObject
      * Resolves scheme relative link to absolute
      *
      * @param  string $link
-     * @param  string $scheme
-     * @return string
      */
-    private function resolveSchemeRelativeUri($link, $scheme)
+    private function resolveSchemeRelativeUri($link, string $scheme): string
     {
         $link = ltrim($link, '/');
         return sprintf('%s://%s', $scheme, $link);
@@ -124,12 +124,9 @@ class FeedSet extends ArrayObject
      * Resolves relative link to absolute
      *
      * @param  string $link
-     * @param  string $scheme
      * @param  string $host
-     * @param  string $uriPath
-     * @return string
      */
-    private function resolveRelativeUri($link, $scheme, $host, $uriPath)
+    private function resolveRelativeUri($link, string $scheme, $host, string $uriPath): string
     {
         if ($link[0] !== '/') {
             $link = $uriPath . '/' . $link;
@@ -146,9 +143,8 @@ class FeedSet extends ArrayObject
      * Canonicalize relative path
      *
      * @param  string $path
-     * @return string
      */
-    protected function canonicalizePath($path)
+    protected function canonicalizePath($path): string
     {
         $parts     = array_filter(explode('/', $path));
         $absolutes = [];
