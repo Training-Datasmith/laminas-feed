@@ -7,6 +7,7 @@ namespace Laminas\Feed\PubSubHubbub\Subscriber;
 use function array_key_exists;
 use function explode;
 use function hash;
+use function hash_equals;
 
 use function is_array;
 
@@ -236,7 +237,7 @@ class Callback extends PubSubHubbub\AbstractCallback
         if ($checkValue) {
             $data        = $this->getStorage()->getSubscription($verifyTokenKey);
             $verifyToken = $data['verify_token'];
-            if ($verifyToken !== hash('sha256', (string) $httpGetData['hub_verify_token'])) {
+            if (! hash_equals($verifyToken, hash('sha256', (string) $httpGetData['hub_verify_token']))) {
                 return false;
             }
             $this->currentSubscriptionData = $data;

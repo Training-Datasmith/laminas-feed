@@ -26,13 +26,13 @@ use Laminas\Http\Request as HttpRequest;
 use Laminas\Stdlib\ArrayUtils;
 
 use function md5;
+use function random_bytes;
 use function rtrim;
 use function time;
 
 use Traversable;
 
 use function uksort;
-use function uniqid;
 
 class Subscriber
 {
@@ -777,7 +777,7 @@ class Subscriber
         if (! empty($this->testStaticToken)) {
             return $this->testStaticToken;
         }
-        return uniqid((string) random_int(0, mt_getrandmax()), true) . time();
+        return bin2hex(random_bytes(16));
     }
 
     /**
