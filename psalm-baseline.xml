@@ -149,7 +149,7 @@
       <code>clearHttpClient</code>
     </PossiblyUnusedMethod>
     <RedundantConditionGivenDocblockType>
-      <code>$source instanceof Reader\Feed\AbstractFeed</code>
+      <code>$source instanceof Reader\Feed\Abstract_Feed</code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/PubSubHubbub/Publisher.php">
@@ -398,7 +398,7 @@
       <code>$feed</code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>null|Extension\AbstractEntry</code>
+      <code>null|Extension\Abstract_Entry</code>
       <code>string</code>
     </MixedInferredReturnType>
     <MixedMethodCall>
@@ -434,13 +434,13 @@
   </file>
   <file src="src/Reader/AbstractFeed.php">
     <ImplementedReturnTypeMismatch>
-      <code>Entry\AbstractEntry</code>
+      <code>Entry\Abstract_Entry</code>
     </ImplementedReturnTypeMismatch>
     <InvalidArgument>
       <code><![CDATA[$this->key()]]></code>
     </InvalidArgument>
     <InvalidTemplateParam>
-      <code>Feed\FeedInterface</code>
+      <code>Feed\Feed_Interface</code>
     </InvalidTemplateParam>
     <MissingReturnType>
       <code>indexEntries</code>
@@ -478,7 +478,7 @@
       <code>$originalSourceUri</code>
     </PropertyNotSetInConstructor>
     <TooManyTemplateParams>
-      <code>Feed\FeedInterface</code>
+      <code>Feed\Feed_Interface</code>
     </TooManyTemplateParams>
     <UnusedClass>
       <code>AbstractFeed</code>
@@ -1714,7 +1714,7 @@
       <code>ExtensionManager</code>
     </DeprecatedInterface>
     <MixedInferredReturnType>
-      <code>Extension\AbstractEntry|Extension\AbstractFeed</code>
+      <code>Extension\Abstract_Entry|Extension\Abstract_Feed</code>
     </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$this->pluginManager->get($extension)]]></code>
@@ -1744,7 +1744,7 @@
       <code><![CDATA[$this->key()]]></code>
     </InvalidArgument>
     <LessSpecificImplementedReturnType>
-      <code>Reader\Entry\EntryInterface</code>
+      <code>Reader\Entry\Entry_Interface</code>
     </LessSpecificImplementedReturnType>
     <MissingReturnType>
       <code>indexEntries</code>
@@ -1770,7 +1770,7 @@
       <code>$plugin</code>
     </MixedAssignment>
     <MixedInferredReturnType>
-      <code>null|Reader\Extension\AbstractFeed</code>
+      <code>null|Reader\Extension\Abstract_Feed</code>
       <code>string</code>
     </MixedInferredReturnType>
     <MixedMethodCall>
@@ -2305,7 +2305,7 @@
       <code>$reader</code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code>Feed\FeedInterface</code>
+      <code>Feed\Feed_Interface</code>
       <code>TInput</code>
     </InvalidReturnType>
     <MixedArgument>
@@ -2368,7 +2368,7 @@
       <code>new $class()</code>
     </MixedMethodCall>
     <MoreSpecificReturnType>
-      <code>Extension\AbstractEntry|Extension\AbstractFeed</code>
+      <code>Extension\Abstract_Entry|Extension\Abstract_Feed</code>
     </MoreSpecificReturnType>
     <RedundantConditionGivenDocblockType>
       <code>is_string($class)</code>
@@ -3266,7 +3266,7 @@
       <code>ExtensionManagerInterface</code>
     </DeprecatedInterface>
     <MixedInferredReturnType>
-      <code>Extension\AbstractRenderer</code>
+      <code>Extension\Abstract_Renderer</code>
     </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$this->pluginManager->get($extension)]]></code>
@@ -4544,7 +4544,7 @@
       <code>new $class()</code>
     </MixedMethodCall>
     <MoreSpecificReturnType>
-      <code>Extension\AbstractEntry|Extension\AbstractFeed</code>
+      <code>Extension\Abstract_Entry|Extension\Abstract_Feed</code>
     </MoreSpecificReturnType>
     <PossiblyUnusedMethod>
       <code>get</code>
@@ -4583,7 +4583,7 @@
     <UnevaluatedCode>
       <code>$entry = new Writer\Deleted();</code>
       <code><![CDATA[$entry->setBy(['name' => 'Joe', 'uri' => 'notauri']);]]></code>
-      <code><![CDATA[$this->expectException(Writer\Exception\ExceptionInterface::class);]]></code>
+      <code><![CDATA[$this->expectException(Writer\Exception\Exception_Interface::class);]]></code>
     </UnevaluatedCode>
   </file>
   <file src="test/Writer/EntryTest.php">
@@ -4688,7 +4688,7 @@
     <UnevaluatedCode>
       <code><![CDATA[$this->expectException(ExceptionInterface::class);]]></code>
       <code><![CDATA[$this->expectException(ExceptionInterface::class);]]></code>
-      <code><![CDATA[$this->expectException(Writer\Exception\InvalidArgumentException::class);]]></code>
+      <code><![CDATA[$this->expectException(Writer\Exception\Invalid_Argument_Exception::class);]]></code>
       <code>$writer = new Writer\Feed();</code>
       <code>$writer = new Writer\Feed();</code>
       <code>$writer = new Writer\Feed();</code>
