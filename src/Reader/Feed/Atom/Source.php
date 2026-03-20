@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader\Feed\Atom;
 
-use DOMElement;
-use DOMXPath;
+use Dom_Element;
+use Domx_Path;
 use Laminas\Feed\Reader;
 use Laminas\Feed\Reader\Feed;
-
 use function rtrim;
-
 class Source extends Feed\Atom
 {
     /**
@@ -21,81 +18,70 @@ class Source extends Feed\Atom
      * @param string $xpathPrefix Passed from parent Entry object
      * @param string $type Nearly always Atom 1.0
      */
-    public function __construct(DOMElement $source, $xpathPrefix, $type = Reader\Reader::TYPE_ATOM_10)
+    public function __construct(Dom_Element $source, $xpath_prefix, $type = Reader\Reader::TYPE_ATOM_10)
     {
-        $this->domDocument  = $source->ownerDocument;
-        $this->xpath        = new DOMXPath($this->domDocument);
+        $this->dom_document = $source->owner_document;
+        $this->xpath = new Domx_Path($this->dom_document);
         $this->data['type'] = $type;
-        $this->registerNamespaces();
-        $this->loadExtensions();
-
-        $manager    = Reader\Reader::getExtensionManager();
+        $this->register_namespaces();
+        $this->load_extensions();
+        $manager = Reader\Reader::get_extension_manager();
         $extensions = ['Atom\Feed', 'DublinCore\Feed'];
-
         foreach ($extensions as $name) {
             $extension = $manager->get($name);
-            $extension->setDomDocument($this->domDocument);
-            $extension->setType($this->data['type']);
-            $extension->setXpath($this->xpath);
+            $extension->set_dom_document($this->dom_document);
+            $extension->set_type($this->data['type']);
+            $extension->set_xpath($this->xpath);
             $this->extensions[$name] = $extension;
         }
-
         foreach ($this->extensions as $extension) {
-            $extension->setXpathPrefix(rtrim($xpathPrefix, '/') . '/atom:source');
+            $extension->set_xpath_prefix(rtrim($xpath_prefix, '/') . '/atom:source');
         }
     }
-
     /**
      * Since this is not an Entry carrier but a vehicle for Feed metadata, any
      * applicable Entry methods are stubbed out and do nothing.
      */
-
     /**
      * @return void
      */
     public function count()
     {
     }
-
     /**
      * @return void
      */
     public function current()
     {
     }
-
     /**
      * @return void
      */
     public function key()
     {
     }
-
     /**
      * @return void
      */
     public function next()
     {
     }
-
     /**
      * @return void
      */
     public function rewind()
     {
     }
-
     /**
      * @return void
      */
     public function valid()
     {
     }
-
     /**
      * @return void
      */
-    protected function indexEntries()
+    protected function index_entries()
     {
     }
 }

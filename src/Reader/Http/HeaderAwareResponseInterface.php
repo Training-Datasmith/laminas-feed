@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader\Http;
 
-interface HeaderAwareResponseInterface extends ResponseInterface
+interface Header_Aware_Response_Interface extends Response_Interface
 {
     /**
      * Retrieve a header (as a single line) from the response.
@@ -19,5 +18,5 @@ interface HeaderAwareResponseInterface extends ResponseInterface
      * @param  null|mixed $default Default value to use if header is not present.
      * @return string
      */
-    public function getHeaderLine($name, $default = null);
+    public function get_header_line($name, $default = null);
 }

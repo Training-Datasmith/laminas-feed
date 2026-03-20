@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader\Collection;
 
 use function array_unique;
-
 /** @template-extends AbstractCollection<int, array{term: string, scheme: string, label: string}> */
-class Category extends AbstractCollection
+class Category extends Abstract_Collection
 {
     /**
      * @inheritDoc
@@ -17,11 +15,11 @@ class Category extends AbstractCollection
      * the category name, domain/URI, and other data. This method would
      * merely return the most useful data - i.e. the category names.
      */
-    public function getValues(): array
+    public function get_values(): array
     {
         $categories = [];
         foreach ($this->getIterator() as $element) {
-            if (isset($element['label']) && ! empty($element['label'])) {
+            if (isset($element['label']) && !empty($element['label'])) {
                 $categories[] = $element['label'];
             } else {
                 $categories[] = $element['term'];

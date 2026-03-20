@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader\Extension;
 
-use DOMDocument;
-use DOMXPath;
+use Dom_Document;
+use Domx_Path;
 use Laminas\Feed\Reader;
-
-abstract class AbstractFeed
+abstract class Abstract_Feed
 {
     /**
      * Parsed feed data
@@ -16,71 +14,63 @@ abstract class AbstractFeed
      * @var array
      */
     protected $data = [];
-
     /**
      * Parsed feed data in the shape of a DOMDocument
      *
      * @var DOMDocument
      */
-    protected $domDocument;
-
+    protected $dom_document;
     /**
      * The base XPath query used to retrieve feed data
      *
      * @var DOMXPath
      */
     protected $xpath;
-
     /**
      * The XPath prefix
      *
      * @var string
      */
-    protected $xpathPrefix = '';
-
+    protected $xpath_prefix = '';
     /**
      * Set the DOM document
      *
      * @return $this
      */
-    public function setDomDocument(DOMDocument $dom)
+    public function set_dom_document(Dom_Document $dom)
     {
-        $this->domDocument = $dom;
+        $this->dom_document = $dom;
         return $this;
     }
-
     /**
      * Get the DOM
      *
      * @return DOMDocument
      */
-    public function getDomDocument()
+    public function get_dom_document()
     {
-        return $this->domDocument;
+        return $this->dom_document;
     }
-
     /**
      * Get the Feed's encoding
      *
      * @return string
      */
-    public function getEncoding()
+    public function get_encoding()
     {
-        return $this->getDomDocument()->encoding;
+        return $this->get_dom_document()->encoding;
     }
-
     /**
      * Set the feed type
      *
      * @param  string $type
      * @return $this
      */
-    public function setType($type)
+    public function set_type($type)
     {
         $this->data['type'] = $type;
         return $this;
     }
-
     /**
      * Get the feed type
      *
@@ -88,79 +78,71 @@ abstract class AbstractFeed
      *
      * @return string
      */
-    public function getType()
+    public function get_type()
     {
         $type = $this->data['type'];
         if (null === $type) {
-            $type = Reader\Reader::detectType($this->getDomDocument());
-            $this->setType($type);
+            $type = Reader\Reader::detect_type($this->get_dom_document());
+            $this->set_type($type);
         }
         return $type;
     }
-
     /**
      * Return the feed as an array
      *
      * @return array
      */
-    public function toArray() // untested
+    public function to_array()
     {
         return $this->data;
     }
-
     /**
      * Set the XPath query
      *
      * @return $this
      */
-    public function setXpath(?DOMXPath $xpath = null)
+    public function set_xpath(?Domx_Path $xpath = null)
     {
         if (null === $xpath) {
             $this->xpath = null;
             return $this;
         }
-
         $this->xpath = $xpath;
-        $this->registerNamespaces();
+        $this->register_namespaces();
         return $this;
     }
-
     /**
      * Get the DOMXPath object
      *
      * @return DOMXPath
      */
-    public function getXpath()
+    public function get_xpath()
     {
         if (null === $this->xpath) {
-            $this->setXpath(new DOMXPath($this->getDomDocument()));
+            $this->set_xpath(new Domx_Path($this->get_dom_document()));
         }
-
         return $this->xpath;
     }
-
     /**
      * Get the XPath prefix
      *
      * @return string
      */
-    public function getXpathPrefix()
+    public function get_xpath_prefix()
     {
-        return $this->xpathPrefix;
+        return $this->xpath_prefix;
     }
-
     /**
      * Set the XPath prefix
      *
      * @param string $prefix
      */
-    public function setXpathPrefix($prefix): void
+    public function set_xpath_prefix($prefix): void
     {
-        $this->xpathPrefix = $prefix;
+        $this->xpath_prefix = $prefix;
     }
-
     /**
      * Register the default namespaces for the current feed format
      */
-    abstract protected function registerNamespaces();
+    abstract protected function register_namespaces();
 }

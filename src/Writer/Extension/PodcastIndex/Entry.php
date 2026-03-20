@@ -1,23 +1,18 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\Feed\Writer\Extension\PodcastIndex;
+declare (strict_types=1);
+namespace Laminas\Feed\Writer\Extension\Podcast_Index;
 
 use function array_key_exists;
 use function count;
-
 use Laminas\Feed\Writer;
-
-use Laminas\Stdlib\StringUtils;
-use Laminas\Stdlib\StringWrapper\StringWrapperInterface;
-
+use Laminas\Stdlib\String_Utils;
+use Laminas\Stdlib\String_Wrapper\String_Wrapper_Interface;
 use function lcfirst;
 use function method_exists;
 use function rtrim;
 use function substr;
 use function ucfirst;
-
 /**
  * Describes PodcastIndex data of an entry in a RSS Feed
  *
@@ -50,83 +45,73 @@ class Entry
      * @var array
      */
     protected $data = [];
-
     /**
      * Encoding of all text values
      *
      * @var string
      */
     protected $encoding = 'UTF-8';
-
     /**
      * The used string wrapper supporting encoding
      *
      * @var StringWrapperInterface
      */
-    protected $stringWrapper;
-
+    protected $string_wrapper;
     public function __construct()
     {
-        $this->stringWrapper = StringUtils::getWrapper($this->encoding);
+        $this->string_wrapper = String_Utils::get_wrapper($this->encoding);
     }
-
     /**
      * Set feed encoding
      */
-    public function setEncoding(string $enc): Entry
+    public function set_encoding(string $enc): Entry
     {
-        $this->stringWrapper = StringUtils::getWrapper($enc);
-        $this->encoding      = $enc;
+        $this->string_wrapper = String_Utils::get_wrapper($enc);
+        $this->encoding = $enc;
         return $this;
     }
-
     /**
      * Get feed encoding
      */
-    public function getEncoding(): string
+    public function get_encoding(): string
     {
         return $this->encoding;
     }
-
     /**
      * Set entry transcript
      *
      * @param TranscriptArray $value
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexTranscript(array $value): Entry
+    public function set_podcast_index_transcript(array $value): Entry
     {
-        $this->data['transcript'] = Validator::validateTranscript($value);
+        $this->data['transcript'] = Validator::validate_transcript($value);
         return $this;
     }
-
     /**
      * Set entry chapters
      *
      * @param ChaptersArray $value
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexChapters(array $value): Entry
+    public function set_podcast_index_chapters(array $value): Entry
     {
-        $this->data['chapters'] = Validator::validateChapters($value);
+        $this->data['chapters'] = Validator::validate_chapters($value);
         return $this;
     }
-
     /**
      * Add multiple entry soundbites
      *
      * @param list<SoundbiteArray> $values
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addPodcastIndexSoundbites(array $values): Entry
+    public function add_podcast_index_soundbites(array $values): Entry
     {
         foreach ($values as $value) {
-            $this->addPodcastIndexSoundbite($value);
+            $this->add_podcast_index_soundbite($value);
         }
-
         return $this;
     }
-
     /**
      * Set entry soundbites.
      * If no argument is passed, the existing soundbite entries get removed.
@@ -135,66 +120,58 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexSoundbites(array $values = []): self
+    public function set_podcast_index_soundbites(array $values = []): self
     {
         $this->data['soundbites'] = [];
-
         foreach ($values as $value) {
-            $this->addPodcastIndexSoundbite($value);
+            $this->add_podcast_index_soundbite($value);
         }
-
         return $this;
     }
-
     /**
      * Add a single entry soundbite
      *
      * @param SoundbiteArray $value
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addPodcastIndexSoundbite(array $value): Entry
+    public function add_podcast_index_soundbite(array $value): Entry
     {
-        if (! isset($this->data['soundbites'])) {
+        if (!isset($this->data['soundbites'])) {
             $this->data['soundbites'] = [];
         }
-
         /** @var list<SoundbiteArray> $this->data['soundbites'] */
-        $this->data['soundbites'][] = Validator::validateSoundbite($value);
+        $this->data['soundbites'][] = Validator::validate_soundbite($value);
         return $this;
     }
-
     /**
      * Adds a feed location tag.
      *
      * @param LocationArray $value
      * @return $this
      */
-    public function addPodcastIndexLocation(array $value): self
+    public function add_podcast_index_location(array $value): self
     {
-        if (! isset($this->data['locations'])) {
+        if (!isset($this->data['locations'])) {
             $this->data['locations'] = [];
         }
-
         /** @var list<LocationArray> $this->data['locations'] */
-        $this->data['locations'][] = Validator::validateLocation($value);
+        $this->data['locations'][] = Validator::validate_location($value);
         return $this;
     }
-
     /**
      * Set multiple location tags
      *
      * @param list<LocationArray> $values
      * @return $this
      */
-    public function setPodcastIndexLocations(array $values = []): self
+    public function set_podcast_index_locations(array $values = []): self
     {
         $this->data['locations'] = [];
         foreach ($values as $value) {
-            $this->addPodcastIndexLocation($value);
+            $this->add_podcast_index_location($value);
         }
         return $this;
     }
-
     /**
      * Set entry license
      *
@@ -202,12 +179,11 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexLicense(array $value): self
+    public function set_podcast_index_license(array $value): self
     {
-        $this->data['license'] = Validator::validateLicense($value);
+        $this->data['license'] = Validator::validate_license($value);
         return $this;
     }
-
     /**
      * Add entry person
      *
@@ -215,17 +191,15 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addPodcastIndexPerson(array $value): self
+    public function add_podcast_index_person(array $value): self
     {
-        if (! isset($this->data['people'])) {
+        if (!isset($this->data['people'])) {
             $this->data['people'] = [];
         }
-
         /** @var list<PersonArray> $this->data['people'] */
-        $this->data['people'][] = Validator::validatePerson($value);
+        $this->data['people'][] = Validator::validate_person($value);
         return $this;
     }
-
     /**
      * Set a new array of people.
      * If no argument is passed, it will just remove all existing people.
@@ -234,16 +208,14 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexPeople(array $values = []): self
+    public function set_podcast_index_people(array $values = []): self
     {
         $this->data['people'] = [];
-
         foreach ($values as $value) {
-            $this->addPodcastIndexPerson($value);
+            $this->add_podcast_index_person($value);
         }
         return $this;
     }
-
     /**
      * Set a new array of persons. (alias of setPodcastIndexPeople)
      * If no argument is passed, it will just remove all existing persons.
@@ -252,11 +224,10 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexPersons(array $values = []): self
+    public function set_podcast_index_persons(array $values = []): self
     {
-        return $this->setPodcastIndexPeople($values);
+        return $this->set_podcast_index_people($values);
     }
-
     /**
      * Add entry txt
      *
@@ -264,17 +235,15 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addPodcastIndexTxt(array $value): self
+    public function add_podcast_index_txt(array $value): self
     {
-        if (! isset($this->data['txts'])) {
+        if (!isset($this->data['txts'])) {
             $this->data['txts'] = [];
         }
-
         /** @var list<TxtArray> $this->data['txts'] */
-        $this->data['txts'][] = Validator::validateTxt($value);
+        $this->data['txts'][] = Validator::validate_txt($value);
         return $this;
     }
-
     /**
      * Set a new array of txts.
      * If no argument is passed, it will just remove all existing txt entries.
@@ -283,34 +252,29 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexTxts(array $values = []): self
+    public function set_podcast_index_txts(array $values = []): self
     {
         $this->data['txts'] = [];
-
         foreach ($values as $value) {
-            $this->addPodcastIndexTxt($value);
+            $this->add_podcast_index_txt($value);
         }
         return $this;
     }
-
     /**
      * Add a social interact for the entry.
      *
      * @param SocialInteractArray $value
      * @return $this
      */
-    public function addPodcastIndexSocialInteract(array $value): self
+    public function add_podcast_index_social_interact(array $value): self
     {
-        if (! isset($this->data['socialInteracts'])) {
+        if (!isset($this->data['socialInteracts'])) {
             $this->data['socialInteracts'] = [];
         }
-
         /** @var list<SocialInteractArray> $this->data['socialInteracts'] */
-        $this->data['socialInteracts'][] = Validator::validateSocialInteract($value);
-
+        $this->data['socialInteracts'][] = Validator::validate_social_interact($value);
         return $this;
     }
-
     /**
      * Create a new set of social interacts for the entry.
      * If no argument is passed, existing social interacts will be removed.
@@ -318,16 +282,14 @@ class Entry
      * @param list<SocialInteractArray> $values
      * @return $this
      */
-    public function setPodcastIndexSocialInteracts(array $values = []): self
+    public function set_podcast_index_social_interacts(array $values = []): self
     {
         $this->data['socialInteracts'] = [];
-
         foreach ($values as $value) {
-            $this->addPodcastIndexSocialInteract($value);
+            $this->add_podcast_index_social_interact($value);
         }
         return $this;
     }
-
     /**
      * Reset all value elements.
      * All value entries will be removed, including their nested valueRecipients and valueTimeSplits.
@@ -335,12 +297,11 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function resetPodcastIndexValues(): self
+    public function reset_podcast_index_values(): self
     {
         $this->data['values'] = [];
         return $this;
     }
-
     /**
      * Adds a value element with one or more valueRecipients as children.
      * Optionally, a set of value time splits can also be attached.
@@ -351,35 +312,25 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addPodcastIndexValue(array $value, array $valueRecipients, array $valueTimeSplits = []): self
+    public function add_podcast_index_value(array $value, array $value_recipients, array $value_time_splits = []): self
     {
-        if (count($valueRecipients) < 1) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: the second argument of "value" must be an array containing '
-                . 'at least one entry with valueRecipient data'
-            );
+        if (count($value_recipients) < 1) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: the second argument of "value" must be an array containing ' . 'at least one entry with valueRecipient data');
         }
-
-        $value = Validator::validateValue($value);
-
-        foreach ($valueRecipients as $valueRecipient) {
-            $value['valueRecipients'][] = Validator::validateValueRecipient($valueRecipient);
+        $value = Validator::validate_value($value);
+        foreach ($value_recipients as $value_recipient) {
+            $value['valueRecipients'][] = Validator::validate_value_recipient($value_recipient);
         }
-
-        foreach ($valueTimeSplits as $split) {
-            $value['valueTimeSplits'][] = Validator::validateValueTimeSplit($split);
+        foreach ($value_time_splits as $split) {
+            $value['valueTimeSplits'][] = Validator::validate_value_time_split($split);
         }
-
-        if (! isset($this->data['values'])) {
+        if (!isset($this->data['values'])) {
             $this->data['values'] = [];
         }
-
         /** @var list<ValueArray> $this->data['values'] */
         $this->data['values'][] = $value;
-
         return $this;
     }
-
     /**
      * Set entry season
      *
@@ -387,12 +338,11 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexSeason(array $value): self
+    public function set_podcast_index_season(array $value): self
     {
-        $this->data['season'] = Validator::validateSeason($value);
+        $this->data['season'] = Validator::validate_season($value);
         return $this;
     }
-
     /**
      * Set entry episode
      *
@@ -400,12 +350,11 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexEpisode(array $value): self
+    public function set_podcast_index_episode(array $value): self
     {
-        $this->data['episode'] = Validator::validateEpisode($value);
+        $this->data['episode'] = Validator::validate_episode($value);
         return $this;
     }
-
     /**
      * Set entry alternateEnclosure
      *
@@ -415,34 +364,25 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addPodcastIndexAlternateEnclosure(array $enclosure, array $sources, ?array $integrity = null): self
+    public function add_podcast_index_alternate_enclosure(array $enclosure, array $sources, ?array $integrity = null): self
     {
         if (count($sources) < 1) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: the second argument to "alternateEnclosure" must be an array containing '
-                . 'at least one source entry'
-            );
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: the second argument to "alternateEnclosure" must be an array containing ' . 'at least one source entry');
         }
-
-        $enclosure = Validator::validateAlternateEnclosure($enclosure);
-
+        $enclosure = Validator::validate_alternate_enclosure($enclosure);
         foreach ($sources as $source) {
-            $enclosure['sources'][] = Validator::validateSource($source);
+            $enclosure['sources'][] = Validator::validate_source($source);
         }
-
         if ($integrity !== null) {
-            $enclosure['integrity'] = Validator::validateIntegrity($integrity);
+            $enclosure['integrity'] = Validator::validate_integrity($integrity);
         }
-
-        if (! isset($this->data['alternateEnclosures'])) {
+        if (!isset($this->data['alternateEnclosures'])) {
             $this->data['alternateEnclosures'] = [];
         }
-
         /** @var list<AlternateEnclosureArray> $this->data['alternateEnclosures'] */
         $this->data['alternateEnclosures'][] = $enclosure;
         return $this;
     }
-
     /**
      * Reset all alternate enclosure elements.
      * All alternate enclosure entries will be removed, including their nested sources and integrities.
@@ -450,12 +390,11 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function resetPodcastIndexAlternateEnclosures(): self
+    public function reset_podcast_index_alternate_enclosures(): self
     {
         $this->data['alternateEnclosures'] = [];
         return $this;
     }
-
     /**
      * Adds an `image` element to the episode.
      *
@@ -463,17 +402,15 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addPodcastIndexDetailedImage(array $value): self
+    public function add_podcast_index_detailed_image(array $value): self
     {
-        if (! isset($this->data['detailedImages'])) {
+        if (!isset($this->data['detailedImages'])) {
             $this->data['detailedImages'] = [];
         }
-
         /** @var list<DetailedImageArray> $this->data['detailedImages'] */
-        $this->data['detailedImages'][] = Validator::validateDetailedImage($value);
+        $this->data['detailedImages'][] = Validator::validate_detailed_image($value);
         return $this;
     }
-
     /**
      * Sets multiple episode `image` elements.
      * If no argument is passed, all existing image entries are removed.
@@ -482,15 +419,14 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexDetailedImages(array $values = []): self
+    public function set_podcast_index_detailed_images(array $values = []): self
     {
         $this->data['detailedImages'] = [];
         foreach ($values as $value) {
-            $this->addPodcastIndexDetailedImage($value);
+            $this->add_podcast_index_detailed_image($value);
         }
         return $this;
     }
-
     /**
      * Adds an `contentLink` element to the episode.
      *
@@ -498,17 +434,15 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addPodcastIndexContentLink(array $value): self
+    public function add_podcast_index_content_link(array $value): self
     {
-        if (! isset($this->data['contentLinks'])) {
+        if (!isset($this->data['contentLinks'])) {
             $this->data['contentLinks'] = [];
         }
-
         /** @var list<ContentLinkArray> $this->data['contentLinks'] */
-        $this->data['contentLinks'][] = Validator::validateContentLink($value);
+        $this->data['contentLinks'][] = Validator::validate_content_link($value);
         return $this;
     }
-
     /**
      * Sets multiple episode `contentLink` elements.
      * If no argument is passed, all existing entries are removed.
@@ -517,15 +451,14 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexContentLinks(array $values = []): self
+    public function set_podcast_index_content_links(array $values = []): self
     {
         $this->data['contentLinks'] = [];
         foreach ($values as $value) {
-            $this->addPodcastIndexContentLink($value);
+            $this->add_podcast_index_content_link($value);
         }
         return $this;
     }
-
     /**
      * Adds a funding tag.
      *
@@ -533,17 +466,15 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addPodcastIndexFunding(array $value): self
+    public function add_podcast_index_funding(array $value): self
     {
-        if (! isset($this->data['fundings'])) {
+        if (!isset($this->data['fundings'])) {
             $this->data['fundings'] = [];
         }
-
         /** @var list<FundingArray> $this->data['fundings'] */
-        $this->data['fundings'][] = Validator::validateFunding($value);
+        $this->data['fundings'][] = Validator::validate_funding($value);
         return $this;
     }
-
     /**
      * Set multiple funding tags
      *
@@ -551,27 +482,25 @@ class Entry
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setPodcastIndexFundings(array $values = []): self
+    public function set_podcast_index_fundings(array $values = []): self
     {
         $this->data['fundings'] = [];
         foreach ($values as $value) {
-            $this->addPodcastIndexFunding($value);
+            $this->add_podcast_index_funding($value);
         }
         return $this;
     }
-
     /**
      * Set a chat element.
      *
      * @psalm-param ChatArray $value
      * @return $this
      */
-    public function setPodcastIndexChat(array $value): self
+    public function set_podcast_index_chat(array $value): self
     {
-        $this->data['chat'] = Validator::validateChat($value);
+        $this->data['chat'] = Validator::validate_chat($value);
         return $this;
     }
-
     /**
      * Overloading: proxy to internal setters
      *
@@ -581,32 +510,22 @@ class Entry
     public function __call(string $method, array $params)
     {
         $point = lcfirst(substr($method, 15));
-        if (
-            ! method_exists($this, 'setPodcastIndex' . ucfirst($point))
-            && ! method_exists($this, 'addPodcastIndex' . ucfirst($point))
-            && ! method_exists($this, 'addPodcastIndex' . rtrim(ucfirst($point), 's'))
-        ) {
-            throw new Writer\Exception\BadMethodCallException(
-                'invalid method: ' . $method
-            );
+        if (!method_exists($this, 'setPodcastIndex' . ucfirst($point)) && !method_exists($this, 'addPodcastIndex' . ucfirst($point)) && !method_exists($this, 'addPodcastIndex' . rtrim(ucfirst($point), 's'))) {
+            throw new Writer\Exception\BadMethodCallException('invalid method: ' . $method);
         }
-        if (
-            ! array_key_exists($point, $this->data)
-            || empty($this->data[$point])
-        ) {
+        if (!array_key_exists($point, $this->data) || empty($this->data[$point])) {
             return;
         }
         return $this->data[$point];
     }
-
     /**
      * Get persons.
      * Specific get call for non-default naming.
      */
-    public function getPodcastIndexPersons(): array
+    public function get_podcast_index_persons(): array
     {
         /** @var list<PersonArray> $persons */
-        $persons = $this->getPodcastIndexPeople();
+        $persons = $this->get_podcast_index_people();
         return $persons;
     }
 }

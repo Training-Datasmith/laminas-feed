@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader;
 
-interface ReaderImportInterface
+interface Reader_Import_Interface
 {
     /**
      * Import a feed by providing a URI
@@ -15,8 +14,7 @@ interface ReaderImportInterface
      * @return Feed\FeedInterface
      * @throws Exception\RuntimeException
      */
-    public static function import($uri, $etag = null, $lastModified = null);
-
+    public static function import($uri, $etag = null, $last_modified = null);
     /**
      * Import a feed from a remote URI
      *
@@ -30,8 +28,7 @@ interface ReaderImportInterface
      * @return Feed\FeedInterface
      * @throws Exception\RuntimeException If response is not an Http\ResponseInterface.
      */
-    public static function importRemoteFeed($uri, Http\ClientInterface $client);
-
+    public static function import_remote_feed($uri, Http\Client_Interface $client);
     /**
      * Import a feed from a string
      *
@@ -40,8 +37,7 @@ interface ReaderImportInterface
      * @throws Exception\InvalidArgumentException
      * @throws Exception\RuntimeException
      */
-    public static function importString($string);
-
+    public static function import_string($string);
     /**
      * Imports a feed from a file located at $filename.
      *
@@ -49,5 +45,5 @@ interface ReaderImportInterface
      * @return Feed\FeedInterface
      * @throws Exception\RuntimeException
      */
-    public static function importFile($filename);
+    public static function import_file($filename);
 }

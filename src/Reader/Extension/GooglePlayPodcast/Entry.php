@@ -1,57 +1,45 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\Feed\Reader\Extension\GooglePlayPodcast;
+declare (strict_types=1);
+namespace Laminas\Feed\Reader\Extension\Google_Play_Podcast;
 
 use Laminas\Feed\Reader\Extension;
-
-class Entry extends Extension\AbstractEntry
+class Entry extends Extension\Abstract_Entry
 {
     /**
      * Get the entry block
      *
      * @return string
      */
-    public function getPlayPodcastBlock()
+    public function get_play_podcast_block()
     {
         if (isset($this->data['block'])) {
             return $this->data['block'];
         }
-
-        $block = $this->xpath->evaluate('string(' . $this->getXpathPrefix() . '/googleplay:block)');
-
-        if (! $block) {
+        $block = $this->xpath->evaluate('string(' . $this->get_xpath_prefix() . '/googleplay:block)');
+        if (!$block) {
             $block = null;
         }
-
         $this->data['block'] = $block;
-
         return $this->data['block'];
     }
-
     /**
      * Get the entry explicit
      *
      * @return string
      */
-    public function getPlayPodcastExplicit()
+    public function get_play_podcast_explicit()
     {
         if (isset($this->data['explicit'])) {
             return $this->data['explicit'];
         }
-
-        $explicit = $this->xpath->evaluate('string(' . $this->getXpathPrefix() . '/googleplay:explicit)');
-
-        if (! $explicit) {
+        $explicit = $this->xpath->evaluate('string(' . $this->get_xpath_prefix() . '/googleplay:explicit)');
+        if (!$explicit) {
             $explicit = null;
         }
-
         $this->data['explicit'] = $explicit;
-
         return $this->data['explicit'];
     }
-
     /**
      * Get the episode summary/description
      *
@@ -59,28 +47,23 @@ class Entry extends Extension\AbstractEntry
      *
      * @return string
      */
-    public function getPlayPodcastDescription()
+    public function get_play_podcast_description()
     {
         if (isset($this->data['description'])) {
             return $this->data['description'];
         }
-
-        $description = $this->xpath->evaluate('string(' . $this->getXpathPrefix() . '/googleplay:description)');
-
-        if (! $description) {
+        $description = $this->xpath->evaluate('string(' . $this->get_xpath_prefix() . '/googleplay:description)');
+        if (!$description) {
             $description = null;
         }
-
         $this->data['description'] = $description;
-
         return $this->data['description'];
     }
-
     /**
      * Register googleplay namespace
      */
-    protected function registerNamespaces()
+    protected function register_namespaces()
     {
-        $this->xpath->registerNamespace('googleplay', 'http://www.google.com/schemas/play-podcasts/1.0');
+        $this->xpath->register_namespace('googleplay', 'http://www.google.com/schemas/play-podcasts/1.0');
     }
 }

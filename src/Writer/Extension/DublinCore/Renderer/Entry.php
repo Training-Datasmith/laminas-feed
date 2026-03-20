@@ -1,19 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\Feed\Writer\Extension\DublinCore\Renderer;
+declare (strict_types=1);
+namespace Laminas\Feed\Writer\Extension\Dublin_Core\Renderer;
 
 use function array_key_exists;
-
-use DOMDocument;
-use DOMElement;
-
+use Dom_Document;
+use Dom_Element;
 use Laminas\Feed\Writer\Extension;
-
 use function strtolower;
-
-class Entry extends Extension\AbstractRenderer
+class Entry extends Extension\Abstract_Renderer
 {
     /**
      * Set to TRUE if a rendering method actually renders something. This
@@ -23,57 +18,49 @@ class Entry extends Extension\AbstractRenderer
      * @var bool
      */
     protected $called = false;
-
     /**
      * Render entry
      */
     public function render(): void
     {
-        if (strtolower($this->getType()) === 'atom') {
+        if (strtolower($this->get_type()) === 'atom') {
             return;
         }
-        $this->_setAuthors($this->dom, $this->base);
+        $this->_set_authors($this->dom, $this->base);
         if ($this->called) {
-            $this->_appendNamespaces();
+            $this->_append_namespaces();
         }
     }
-
     // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
     /**
      * Append namespaces to entry
      *
      * @return void
      */
-    protected function _appendNamespaces()
+    protected function _append_namespaces()
     {
-        $this->getRootElement()->setAttribute(
-            'xmlns:dc',
-            'http://purl.org/dc/elements/1.1/'
-        );
+        $this->get_root_element()->set_attribute('xmlns:dc', 'http://purl.org/dc/elements/1.1/');
     }
-
     /**
      * Set entry author elements
      *
      * @return void
      */
-    protected function _setAuthors(DOMDocument $dom, DOMElement $root)
+    protected function _set_authors(Dom_Document $dom, Dom_Element $root)
     {
-        $authors = $this->getDataContainer()->getAuthors();
-        if (! $authors || empty($authors)) {
+        $authors = $this->get_data_container()->get_authors();
+        if (!$authors || empty($authors)) {
             return;
         }
         foreach ($authors as $data) {
-            $author = $this->dom->createElement('dc:creator');
+            $author = $this->dom->create_element('dc:creator');
             if (array_key_exists('name', $data)) {
-                $text = $dom->createTextNode((string) $data['name']);
-                $author->appendChild($text);
-                $root->appendChild($author);
+                $text = $dom->create_text_node((string) $data['name']);
+                $author->append_child($text);
+                $root->append_child($author);
             }
         }
         $this->called = true;
     }
-
     // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
 }

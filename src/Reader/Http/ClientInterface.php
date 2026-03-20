@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader\Http;
 
-interface ClientInterface
+interface Client_Interface
 {
     /**
      * Make a GET request to a given URI

@@ -1,15 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader\Extension;
 
-use DOMDocument;
-use DOMElement;
-use DOMXPath;
+use Dom_Document;
+use Dom_Element;
+use Domx_Path;
 use Laminas\Feed\Reader;
-
-abstract class AbstractEntry
+abstract class Abstract_Entry
 {
     /**
      * Feed entry data
@@ -17,42 +15,36 @@ abstract class AbstractEntry
      * @var array
      */
     protected $data = [];
-
     /**
      * DOM document object
      *
      * @var DOMDocument
      */
-    protected $domDocument;
-
+    protected $dom_document;
     /**
      * Entry instance
      *
      * @var DOMElement
      */
     protected $entry;
-
     /**
      * Pointer to the current entry
      *
      * @var int
      */
-    protected $entryKey = 0;
-
+    protected $entry_key = 0;
     /**
      * XPath object
      *
      * @var DOMXPath
      */
     protected $xpath;
-
     /**
      * XPath query
      *
      * @var string
      */
-    protected $xpathPrefix = '';
-
+    protected $xpath_prefix = '';
     /**
      * Set the entry DOMElement
      *
@@ -60,55 +52,50 @@ abstract class AbstractEntry
      *
      * @return $this
      */
-    public function setEntryElement(DOMElement $entry)
+    public function set_entry_element(Dom_Element $entry)
     {
-        $this->entry       = $entry;
-        $this->domDocument = $entry->ownerDocument;
+        $this->entry = $entry;
+        $this->dom_document = $entry->owner_document;
         return $this;
     }
-
     /**
      * Get the entry DOMElement
      *
      * @return DOMElement
      */
-    public function getEntryElement()
+    public function get_entry_element()
     {
         return $this->entry;
     }
-
     /**
      * Set the entry key
      *
      * @param  string $entryKey
      * @return $this
      */
-    public function setEntryKey($entryKey)
+    public function set_entry_key($entry_key)
     {
-        $this->entryKey = $entryKey;
+        $this->entry_key = $entry_key;
         return $this;
     }
-
     /**
      * Get the DOM
      *
      * @return DOMDocument
      */
-    public function getDomDocument()
+    public function get_dom_document()
     {
-        return $this->domDocument;
+        return $this->dom_document;
     }
-
     /**
      * Get the Entry's encoding
      *
      * @return string
      */
-    public function getEncoding()
+    public function get_encoding()
     {
-        return $this->getDomDocument()->encoding;
+        return $this->get_dom_document()->encoding;
     }
-
     /**
      * Set the entry type
      *
@@ -117,111 +104,94 @@ abstract class AbstractEntry
      * @param  string $type
      * @return $this
      */
-    public function setType($type)
+    public function set_type($type)
     {
         if (null === $type) {
             $this->data['type'] = null;
             return $this;
         }
-
         $this->data['type'] = $type;
-        if (
-            $type === Reader\Reader::TYPE_RSS_10
-            || $type === Reader\Reader::TYPE_RSS_090
-        ) {
-            $this->setXpathPrefix('//rss:item[' . ((int) $this->entryKey + 1) . ']');
+        if ($type === Reader\Reader::TYPE_RSS_10 || $type === Reader\Reader::TYPE_RSS_090) {
+            $this->set_xpath_prefix('//rss:item[' . ((int) $this->entry_key + 1) . ']');
             return $this;
         }
-
-        if (
-            $type === Reader\Reader::TYPE_ATOM_10
-            || $type === Reader\Reader::TYPE_ATOM_03
-        ) {
-            $this->setXpathPrefix('//atom:entry[' . ((int) $this->entryKey + 1) . ']');
+        if ($type === Reader\Reader::TYPE_ATOM_10 || $type === Reader\Reader::TYPE_ATOM_03) {
+            $this->set_xpath_prefix('//atom:entry[' . ((int) $this->entry_key + 1) . ']');
             return $this;
         }
-
-        $this->setXpathPrefix('//item[' . ((int) $this->entryKey + 1) . ']');
+        $this->set_xpath_prefix('//item[' . ((int) $this->entry_key + 1) . ']');
         return $this;
     }
-
     /**
      * Get the entry type
      *
      * @return string
      */
-    public function getType()
+    public function get_type()
     {
         $type = $this->data['type'];
         if ($type === null) {
-            $type = Reader\Reader::detectType($this->getEntryElement(), true);
-            $this->setType($type);
+            $type = Reader\Reader::detect_type($this->get_entry_element(), true);
+            $this->set_type($type);
         }
-
         return $type;
     }
-
     /**
      * Set the XPath query
      *
      * @return $this
      */
-    public function setXpath(DOMXPath $xpath)
+    public function set_xpath(Domx_Path $xpath)
     {
         $this->xpath = $xpath;
-        $this->registerNamespaces();
+        $this->register_namespaces();
         return $this;
     }
-
     /**
      * Get the XPath query object
      *
      * @return DOMXPath
      */
-    public function getXpath()
+    public function get_xpath()
     {
-        if (! $this->xpath) {
-            $this->setXpath(new DOMXPath($this->getDomDocument()));
+        if (!$this->xpath) {
+            $this->set_xpath(new Domx_Path($this->get_dom_document()));
         }
         return $this->xpath;
     }
-
     /**
      * Serialize the entry to an array
      *
      * @return array
      */
-    public function toArray()
+    public function to_array()
     {
         return $this->data;
     }
-
     /**
      * Get the XPath prefix
      *
      * @return string
      */
-    public function getXpathPrefix()
+    public function get_xpath_prefix()
     {
-        return $this->xpathPrefix;
+        return $this->xpath_prefix;
     }
-
     /**
      * Set the XPath prefix
      *
      * @param  string $prefix
      * @return $this
      */
-    public function setXpathPrefix($prefix)
+    public function set_xpath_prefix($prefix)
     {
-        $this->xpathPrefix = $prefix;
+        $this->xpath_prefix = $prefix;
         return $this;
     }
-
     /**
      * Register XML namespaces
      *
      * @return void
      */
-    abstract protected function registerNamespaces();
+    abstract protected function register_namespaces();
 }

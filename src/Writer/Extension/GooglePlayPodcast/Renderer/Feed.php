@@ -1,17 +1,13 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Feed\Writer\Extension\Google_Play_Podcast\Renderer;
 
-namespace Laminas\Feed\Writer\Extension\GooglePlayPodcast\Renderer;
-
-use DOMDocument;
-use DOMElement;
-
+use Dom_Document;
+use Dom_Element;
 use function is_array;
-
 use Laminas\Feed\Writer\Extension;
-
-class Feed extends Extension\AbstractRenderer
+class Feed extends Extension\Abstract_Renderer
 {
     /**
      * Set to TRUE if a rendering method actually renders something. This
@@ -21,158 +17,145 @@ class Feed extends Extension\AbstractRenderer
      * @var bool
      */
     protected $called = false;
-
     /**
      * Render feed
      */
     public function render(): void
     {
-        $this->_setAuthors($this->dom, $this->base);
-        $this->_setBlock($this->dom, $this->base);
-        $this->_setCategories($this->dom, $this->base);
-        $this->_setImage($this->dom, $this->base);
-        $this->_setExplicit($this->dom, $this->base);
-        $this->_setDescription($this->dom, $this->base);
+        $this->_set_authors($this->dom, $this->base);
+        $this->_set_block($this->dom, $this->base);
+        $this->_set_categories($this->dom, $this->base);
+        $this->_set_image($this->dom, $this->base);
+        $this->_set_explicit($this->dom, $this->base);
+        $this->_set_description($this->dom, $this->base);
         if ($this->called) {
-            $this->_appendNamespaces();
+            $this->_append_namespaces();
         }
     }
-
     // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
     /**
      * Append feed namespaces
      *
      * @return void
      */
-    protected function _appendNamespaces()
+    protected function _append_namespaces()
     {
-        $this->getRootElement()->setAttribute(
-            'xmlns:googleplay',
-            'http://www.google.com/schemas/play-podcasts/1.0'
-        );
+        $this->get_root_element()->set_attribute('xmlns:googleplay', 'http://www.google.com/schemas/play-podcasts/1.0');
     }
-
     /**
      * Set feed authors
      *
      * @return void
      */
-    protected function _setAuthors(DOMDocument $dom, DOMElement $root)
+    protected function _set_authors(Dom_Document $dom, Dom_Element $root)
     {
-        $authors = $this->getDataContainer()->getPlayPodcastAuthors();
-        if (! $authors || empty($authors)) {
+        $authors = $this->get_data_container()->get_play_podcast_authors();
+        if (!$authors || empty($authors)) {
             return;
         }
         foreach ($authors as $author) {
-            $el   = $dom->createElement('googleplay:author');
-            $text = $dom->createTextNode((string) $author);
-            $el->appendChild($text);
-            $root->appendChild($el);
+            $el = $dom->create_element('googleplay:author');
+            $text = $dom->create_text_node((string) $author);
+            $el->append_child($text);
+            $root->append_child($el);
         }
         $this->called = true;
     }
-
     /**
      * Set feed itunes block
      *
      * @return void
      */
-    protected function _setBlock(DOMDocument $dom, DOMElement $root)
+    protected function _set_block(Dom_Document $dom, Dom_Element $root)
     {
-        $block = $this->getDataContainer()->getPlayPodcastBlock();
+        $block = $this->get_data_container()->get_play_podcast_block();
         if ($block === null) {
             return;
         }
-        $el   = $dom->createElement('googleplay:block');
-        $text = $dom->createTextNode((string) $block);
-        $el->appendChild($text);
-        $root->appendChild($el);
+        $el = $dom->create_element('googleplay:block');
+        $text = $dom->create_text_node((string) $block);
+        $el->append_child($text);
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set feed categories
      *
      * @return void
      */
-    protected function _setCategories(DOMDocument $dom, DOMElement $root)
+    protected function _set_categories(Dom_Document $dom, Dom_Element $root)
     {
-        $cats = $this->getDataContainer()->getPlayPodcastCategories();
-        if (! $cats || empty($cats)) {
+        $cats = $this->get_data_container()->get_play_podcast_categories();
+        if (!$cats || empty($cats)) {
             return;
         }
         foreach ($cats as $key => $cat) {
-            if (! is_array($cat)) {
-                $el = $dom->createElement('googleplay:category');
-                $el->setAttribute('text', $cat);
-                $root->appendChild($el);
+            if (!is_array($cat)) {
+                $el = $dom->create_element('googleplay:category');
+                $el->set_attribute('text', $cat);
+                $root->append_child($el);
             } else {
-                $el = $dom->createElement('googleplay:category');
-                $el->setAttribute('text', $key);
-                $root->appendChild($el);
+                $el = $dom->create_element('googleplay:category');
+                $el->set_attribute('text', $key);
+                $root->append_child($el);
                 foreach ($cat as $subcat) {
-                    $el2 = $dom->createElement('googleplay:category');
-                    $el2->setAttribute('text', $subcat);
-                    $el->appendChild($el2);
+                    $el2 = $dom->create_element('googleplay:category');
+                    $el2->set_attribute('text', $subcat);
+                    $el->append_child($el2);
                 }
             }
         }
         $this->called = true;
     }
-
     /**
      * Set feed image (icon)
      *
      * @return void
      */
-    protected function _setImage(DOMDocument $dom, DOMElement $root)
+    protected function _set_image(Dom_Document $dom, Dom_Element $root)
     {
-        $image = $this->getDataContainer()->getPlayPodcastImage();
-        if (! $image) {
+        $image = $this->get_data_container()->get_play_podcast_image();
+        if (!$image) {
             return;
         }
-        $el = $dom->createElement('googleplay:image');
-        $el->setAttribute('href', $image);
-        $root->appendChild($el);
+        $el = $dom->create_element('googleplay:image');
+        $el->set_attribute('href', $image);
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set explicit flag
      *
      * @return void
      */
-    protected function _setExplicit(DOMDocument $dom, DOMElement $root)
+    protected function _set_explicit(Dom_Document $dom, Dom_Element $root)
     {
-        $explicit = $this->getDataContainer()->getPlayPodcastExplicit();
+        $explicit = $this->get_data_container()->get_play_podcast_explicit();
         if ($explicit === null) {
             return;
         }
-        $el   = $dom->createElement('googleplay:explicit');
-        $text = $dom->createTextNode((string) $explicit);
-        $el->appendChild($text);
-        $root->appendChild($el);
+        $el = $dom->create_element('googleplay:explicit');
+        $text = $dom->create_text_node((string) $explicit);
+        $el->append_child($text);
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set podcast description
      *
      * @return void
      */
-    protected function _setDescription(DOMDocument $dom, DOMElement $root)
+    protected function _set_description(Dom_Document $dom, Dom_Element $root)
     {
-        $description = $this->getDataContainer()->getPlayPodcastDescription();
-        if (! $description) {
+        $description = $this->get_data_container()->get_play_podcast_description();
+        if (!$description) {
             return;
         }
-        $el   = $dom->createElement('googleplay:description');
-        $text = $dom->createTextNode((string) $description);
-        $el->appendChild($text);
-        $root->appendChild($el);
+        $el = $dom->create_element('googleplay:description');
+        $text = $dom->create_text_node((string) $description);
+        $el->append_child($text);
+        $root->append_child($el);
         $this->called = true;
     }
-
     // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
 }

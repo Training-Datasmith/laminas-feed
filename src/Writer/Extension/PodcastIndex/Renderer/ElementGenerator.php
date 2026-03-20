@@ -1,18 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\Feed\Writer\Extension\PodcastIndex\Renderer;
+declare (strict_types=1);
+namespace Laminas\Feed\Writer\Extension\Podcast_Index\Renderer;
 
 use DateTime;
 use DateTimeInterface;
-use DOMDocument;
-use DOMElement;
-
+use Dom_Document;
+use Dom_Element;
 use function gettype;
 use function is_string;
 use function number_format;
-
 /**
  * Creates PodcastIndex elements for feed and entry renderer.
  * This class is internal to the library and should not be referenced by consumer code.
@@ -23,7 +20,7 @@ use function number_format;
  * @psalm-internal Laminas\Feed
  * @psalm-internal LaminasTest\Feed
  */
-final class ElementGenerator
+final class Element_Generator
 {
     /**
      * Create PodcastIndex element
@@ -33,26 +30,21 @@ final class ElementGenerator
      * @psalm-param string $name
      * @psalm-param string $nodeValue
      */
-    public static function createPodcastIndexElement(
-        DOMDocument $dom,
-        array $data,
-        string $name,
-        string $nodeValue = ''
-    ): DOMElement {
-        $tagName = 'podcast:' . $name;
-        $element = $dom->createElement($tagName);
-
+    public static function create_podcast_index_element(Dom_Document $dom, array $data, string $name, string $node_value = ''): Dom_Element
+    {
+        $tag_name = 'podcast:' . $name;
+        $element = $dom->create_element($tag_name);
         /**
          * @psalm-var string $key
          * @psalm-var mixed $value
          */
         foreach ($data as $key => $value) {
-            if ($key === $nodeValue) {
-                if (! is_string($value)) {
+            if ($key === $node_value) {
+                if (!is_string($value)) {
                     $value = (string) $value;
                 }
-                $text = $dom->createTextNode($value);
-                $element->appendChild($text);
+                $text = $dom->create_text_node($value);
+                $element->append_child($text);
                 continue;
             }
             if ($key === 'aspectRatio') {
@@ -61,11 +53,11 @@ final class ElementGenerator
             switch (gettype($value)) {
                 case 'string':
                     if ($value !== '') {
-                        $element->setAttribute($key, $value);
+                        $element->set_attribute($key, $value);
                     }
                     break;
                 case 'integer':
-                    $element->setAttribute($key, (string) $value);
+                    $element->set_attribute($key, (string) $value);
                     break;
                 case 'double':
                     // ensure decimal number instead of scientific notation, and remove thousands comma seperator
@@ -74,16 +66,16 @@ final class ElementGenerator
                     } else {
                         $num = number_format($value, 2, '.', '');
                     }
-                    $element->setAttribute($key, $num);
+                    $element->set_attribute($key, $num);
                     break;
                 case 'boolean':
                     $bool = $value ? 'true' : 'false';
-                    $element->setAttribute($key, $bool);
+                    $element->set_attribute($key, $bool);
                     break;
                 case 'object':
                     if ($value instanceof DateTime) {
                         $date = $value->format(DateTimeInterface::ATOM);
-                        $element->setAttribute($key, $date);
+                        $element->set_attribute($key, $date);
                     }
                     break;
                 default:

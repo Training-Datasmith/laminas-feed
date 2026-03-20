@@ -1,33 +1,26 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\Feed\PubSubHubbub;
+declare (strict_types=1);
+namespace Laminas\Feed\Pub_Sub_Hubbub;
 
 use function array_key_exists;
 use function file_get_contents;
 use function function_exists;
-
 use function gettype;
 use function intval;
 use function is_array;
 use function is_resource;
-
-use Laminas\Http\PhpEnvironment\Response as PhpResponse;
-use Laminas\Stdlib\ArrayUtils;
-
+use Laminas\Http\Php_Environment\Response as PhpResponse;
+use Laminas\Stdlib\Array_Utils;
 use function sprintf;
 use function str_replace;
 use function stream_get_contents;
 use function strlen;
 use function strtoupper;
 use function substr;
-
 use Traversable;
-
 use function trim;
-
-abstract class AbstractCallback implements CallbackInterface
+abstract class Abstract_Callback implements Callback_Interface
 {
     /**
      * An instance of Laminas\Feed\Pubsubhubbub\Model\SubscriptionPersistenceInterface
@@ -37,7 +30,6 @@ abstract class AbstractCallback implements CallbackInterface
      * @var Model\SubscriptionPersistenceInterface
      */
     protected $storage;
-
     /**
      * An instance of a class handling Http Responses. This is implemented in
      * Laminas\Feed\Pubsubhubbub\HttpResponse which shares an unenforced interface with
@@ -45,8 +37,7 @@ abstract class AbstractCallback implements CallbackInterface
      *
      * @var HttpResponse|PhpResponse
      */
-    protected $httpResponse;
-
+    protected $http_response;
     /**
      * The input stream to use when retrieving the request body. Defaults to
      * php://input, but can be set to another value in order to force usage
@@ -56,15 +47,13 @@ abstract class AbstractCallback implements CallbackInterface
      * @var resource|string String indicates a filename or stream to open;
      *     resource indicates an already created stream to use.
      */
-    protected $inputStream = 'php://input';
-
+    protected $input_stream = 'php://input';
     /**
      * The number of Subscribers for which any updates are on behalf of.
      *
      * @var int
      */
-    protected $subscriberCount = 1;
-
+    protected $subscriber_count = 1;
     /**
      * Constructor; accepts an array or Traversable object to preset
      * options for the Subscriber without calling all supported setter
@@ -75,10 +64,9 @@ abstract class AbstractCallback implements CallbackInterface
     public function __construct($options = null)
     {
         if ($options !== null) {
-            $this->setOptions($options);
+            $this->set_options($options);
         }
     }
-
     /**
      * Process any injected configuration options
      *
@@ -86,39 +74,32 @@ abstract class AbstractCallback implements CallbackInterface
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setOptions($options)
+    public function set_options($options)
     {
         if ($options instanceof Traversable) {
-            $options = ArrayUtils::iteratorToArray($options);
+            $options = Array_Utils::iterator_to_array($options);
         }
-
-        if (! is_array($options)) {
-            throw new Exception\InvalidArgumentException(
-                'Array or Traversable object expected, got ' . gettype($options)
-            );
+        if (!is_array($options)) {
+            throw new Exception\InvalidArgumentException('Array or Traversable object expected, got ' . gettype($options));
         }
-
         if (is_array($options)) {
-            $this->setOptions($options);
+            $this->set_options($options);
         }
-
         if (array_key_exists('storage', $options)) {
-            $this->setStorage($options['storage']);
+            $this->set_storage($options['storage']);
         }
         return $this;
     }
-
     /**
      * Send the response, including all headers.
      * If you wish to handle this via Laminas\Http, use the getter methods
      * to retrieve any data needed to be set on your HTTP Response object, or
      * simply give this object the HTTP Response instance to work with for you!
      */
-    public function sendResponse(): void
+    public function send_response(): void
     {
-        $this->getHttpResponse()->send();
+        $this->get_http_response()->send();
     }
-
     /**
      * Sets an instance of Laminas\Feed\Pubsubhubbub\Model\SubscriptionPersistence used
      * to background save any verification tokens associated with a subscription
@@ -126,12 +107,11 @@ abstract class AbstractCallback implements CallbackInterface
      *
      * @return $this
      */
-    public function setStorage(Model\SubscriptionPersistenceInterface $storage)
+    public function set_storage(Model\Subscription_Persistence_Interface $storage)
     {
         $this->storage = $storage;
         return $this;
     }
-
     /**
      * Gets an instance of Laminas\Feed\Pubsubhubbub\Model\SubscriptionPersistence used
      * to background save any verification tokens associated with a subscription
@@ -140,17 +120,13 @@ abstract class AbstractCallback implements CallbackInterface
      * @return Model\SubscriptionPersistenceInterface
      * @throws Exception\RuntimeException
      */
-    public function getStorage()
+    public function get_storage()
     {
         if ($this->storage === null) {
-            throw new Exception\RuntimeException(
-                'No storage object has been set that subclasses'
-                . ' Laminas\Feed\Pubsubhubbub\Model\SubscriptionPersistence'
-            );
+            throw new Exception\RuntimeException('No storage object has been set that subclasses' . ' Laminas\Feed\Pubsubhubbub\Model\SubscriptionPersistence');
         }
         return $this->storage;
     }
-
     /**
      * An instance of a class handling Http Responses. This is implemented in
      * Laminas\Feed\Pubsubhubbub\HttpResponse which shares an unenforced interface with
@@ -160,19 +136,14 @@ abstract class AbstractCallback implements CallbackInterface
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setHttpResponse($httpResponse)
+    public function set_http_response($http_response)
     {
-        if (! $httpResponse instanceof HttpResponse && ! $httpResponse instanceof PhpResponse) {
-            throw new Exception\InvalidArgumentException(
-                'HTTP Response object must'
-                . ' implement one of Laminas\Feed\Pubsubhubbub\HttpResponse or'
-                . ' Laminas\Http\PhpEnvironment\Response'
-            );
+        if (!$http_response instanceof Http_Response && !$http_response instanceof Php_Response) {
+            throw new Exception\InvalidArgumentException('HTTP Response object must' . ' implement one of Laminas\Feed\Pubsubhubbub\HttpResponse or' . ' Laminas\Http\PhpEnvironment\Response');
         }
-        $this->httpResponse = $httpResponse;
+        $this->http_response = $http_response;
         return $this;
     }
-
     /**
      * An instance of a class handling Http Responses. This is implemented in
      * Laminas\Feed\Pubsubhubbub\HttpResponse which shares an unenforced interface with
@@ -180,14 +151,13 @@ abstract class AbstractCallback implements CallbackInterface
      *
      * @return HttpResponse|PhpResponse
      */
-    public function getHttpResponse()
+    public function get_http_response()
     {
-        if ($this->httpResponse === null) {
-            $this->httpResponse = new HttpResponse();
+        if ($this->http_response === null) {
+            $this->http_response = new Http_Response();
         }
-        return $this->httpResponse;
+        return $this->http_response;
     }
-
     /**
      * Sets the number of Subscribers for which any updates are on behalf of.
      * In other words, is this class serving one or more subscribers? How many?
@@ -197,164 +167,138 @@ abstract class AbstractCallback implements CallbackInterface
      * @return $this
      * @throws Exception\InvalidArgumentException
      */
-    public function setSubscriberCount($count)
+    public function set_subscriber_count($count)
     {
         $count = intval($count);
         if ($count <= 0) {
-            throw new Exception\InvalidArgumentException(
-                'Subscriber count must be'
-                . ' greater than zero'
-            );
+            throw new Exception\InvalidArgumentException('Subscriber count must be' . ' greater than zero');
         }
-        $this->subscriberCount = $count;
+        $this->subscriber_count = $count;
         return $this;
     }
-
     /**
      * Gets the number of Subscribers for which any updates are on behalf of.
      * In other words, is this class serving one or more subscribers? How many?
      *
      * @return int
      */
-    public function getSubscriberCount()
+    public function get_subscriber_count()
     {
-        return $this->subscriberCount;
+        return $this->subscriber_count;
     }
-
     // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
     /**
      * Attempt to detect the callback URL (specifically the path forward)
      *
      * @return string
      */
-    protected function _detectCallbackUrl()
+    protected function _detect_callback_url()
     {
-        $callbackUrl = null;
-
+        $callback_url = null;
         // IIS7 with URL Rewrite: make sure we get the unencoded url
         // (double slash problem).
-        $iisUrlRewritten = $_SERVER['IIS_WasUrlRewritten'] ?? null;
-        $unencodedUrl    = $_SERVER['UNENCODED_URL'] ?? null;
-        if ('1' === $iisUrlRewritten && ! empty($unencodedUrl)) {
-            return $unencodedUrl;
+        $iis_url_rewritten = $_SERVER['IIS_WasUrlRewritten'] ?? null;
+        $unencoded_url = $_SERVER['UNENCODED_URL'] ?? null;
+        if ('1' === $iis_url_rewritten && !empty($unencoded_url)) {
+            return $unencoded_url;
         }
-
         // HTTP proxy requests setup request URI with scheme and host [and port]
         // + the URL path, only use URL path.
         if (isset($_SERVER['REQUEST_URI'])) {
-            $callbackUrl = $this->buildCallbackUrlFromRequestUri();
+            $callback_url = $this->build_callback_url_from_request_uri();
         }
-
-        if (null !== $callbackUrl) {
-            return $callbackUrl;
+        if (null !== $callback_url) {
+            return $callback_url;
         }
-
         if (isset($_SERVER['ORIG_PATH_INFO'])) {
-            return $this->buildCallbackUrlFromOrigPathInfo();
+            return $this->build_callback_url_from_orig_path_info();
         }
-
         return '';
     }
-
     /**
      * Get the HTTP host
      *
      * @return string
      */
-    protected function _getHttpHost()
+    protected function _get_http_host()
     {
-        if (! empty($_SERVER['HTTP_HOST'])) {
+        if (!empty($_SERVER['HTTP_HOST'])) {
             return $_SERVER['HTTP_HOST'];
         }
-
-        $https  = $_SERVER['HTTPS'] ?? null;
+        $https = $_SERVER['HTTPS'] ?? null;
         $scheme = $https === 'on' ? 'https' : 'http';
-        $name   = $_SERVER['SERVER_NAME'] ?? '';
-        $port   = isset($_SERVER['SERVER_PORT']) ? (int) $_SERVER['SERVER_PORT'] : 80;
-
-        if (
-            ($scheme === 'http' && $port === 80)
-            || ($scheme === 'https' && $port === 443)
-        ) {
+        $name = $_SERVER['SERVER_NAME'] ?? '';
+        $port = isset($_SERVER['SERVER_PORT']) ? (int) $_SERVER['SERVER_PORT'] : 80;
+        if ($scheme === 'http' && $port === 80 || $scheme === 'https' && $port === 443) {
             return $name;
         }
-
         return sprintf('%s:%d', $name, $port);
     }
-
     /**
      * Retrieve a Header value from either $_SERVER or Apache
      *
      * @param  string $header
      * @return bool|string
      */
-    protected function _getHeader($header)
+    protected function _get_header($header)
     {
         $temp = strtoupper(str_replace('-', '_', $header));
-        if (! empty($_SERVER[$temp])) {
+        if (!empty($_SERVER[$temp])) {
             return $_SERVER[$temp];
         }
         $temp = 'HTTP_' . strtoupper(str_replace('-', '_', $header));
-        if (! empty($_SERVER[$temp])) {
+        if (!empty($_SERVER[$temp])) {
             return $_SERVER[$temp];
         }
         if (function_exists('apache_request_headers')) {
             $headers = apache_request_headers();
-            if (! empty($headers[$header])) {
+            if (!empty($headers[$header])) {
                 return $headers[$header];
             }
         }
         return false;
     }
-
     /**
      * Return the raw body of the request
      *
      * @return false|string Raw body, or false if not present
      */
-    protected function _getRawBody()
+    protected function _get_raw_body()
     {
-        $body = is_resource($this->inputStream)
-            ? stream_get_contents($this->inputStream)
-            : file_get_contents($this->inputStream);
-
+        $body = is_resource($this->input_stream) ? stream_get_contents($this->input_stream) : file_get_contents($this->input_stream);
         return strlen(trim($body)) > 0 ? $body : false;
     }
-
     // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
-
     /**
      * Build the callback URL from the REQUEST_URI server parameter.
      *
      * @return string
      */
-    private function buildCallbackUrlFromRequestUri()
+    private function build_callback_url_from_request_uri()
     {
-        $callbackUrl = $_SERVER['REQUEST_URI'];
-        $https       = $_SERVER['HTTPS'] ?? null;
-        $scheme      = $https === 'on' ? 'https' : 'http';
+        $callback_url = $_SERVER['REQUEST_URI'];
+        $https = $_SERVER['HTTPS'] ?? null;
+        $scheme = $https === 'on' ? 'https' : 'http';
         if ($https === 'on') {
             $scheme = 'https';
         }
-        $schemeAndHttpHost = $scheme . '://' . $this->_getHttpHost();
-        if (str_starts_with((string) $callbackUrl, $schemeAndHttpHost)) {
-            return substr((string) $callbackUrl, strlen($schemeAndHttpHost));
+        $scheme_and_http_host = $scheme . '://' . $this->_get_http_host();
+        if (str_starts_with((string) $callback_url, $scheme_and_http_host)) {
+            return substr((string) $callback_url, strlen($scheme_and_http_host));
         }
-        return $callbackUrl;
+        return $callback_url;
     }
-
     /**
      * Build the callback URL from the ORIG_PATH_INFO server parameter.
      *
      * @return string
      */
-    private function buildCallbackUrlFromOrigPathInfo()
+    private function build_callback_url_from_orig_path_info()
     {
-        $callbackUrl = $_SERVER['ORIG_PATH_INFO'];
-        if (! empty($_SERVER['QUERY_STRING'])) {
-            $callbackUrl .= '?' . $_SERVER['QUERY_STRING'];
+        $callback_url = $_SERVER['ORIG_PATH_INFO'];
+        if (!empty($_SERVER['QUERY_STRING'])) {
+            $callback_url .= '?' . $_SERVER['QUERY_STRING'];
         }
-        return $callbackUrl;
+        return $callback_url;
     }
 }

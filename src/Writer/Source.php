@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Writer;
 
-class Source extends AbstractFeed
+class Source extends Abstract_Feed
 {
 }

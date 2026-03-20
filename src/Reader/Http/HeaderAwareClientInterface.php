@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader\Http;
 
-interface HeaderAwareClientInterface extends ClientInterface
+interface Header_Aware_Client_Interface extends Client_Interface
 {
     /**
      * Allow specifying headers to use when fetching a feed.

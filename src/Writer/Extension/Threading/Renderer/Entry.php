@@ -1,19 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Writer\Extension\Threading\Renderer;
 
-use DOMDocument;
-use DOMElement;
-
+use Dom_Document;
+use Dom_Element;
 use function is_numeric;
-
 use Laminas\Feed\Writer\Extension;
-
 use function strtolower;
-
-class Entry extends Extension\AbstractRenderer
+class Entry extends Extension\Abstract_Renderer
 {
     /**
      * Set to TRUE if a rendering method actually renders something. This
@@ -23,103 +18,93 @@ class Entry extends Extension\AbstractRenderer
      * @var bool
      */
     protected $called = false;
-
     /**
      * Render entry
      */
     public function render(): void
     {
-        if (strtolower($this->getType()) === 'rss') {
-            return; // Atom 1.0 only
+        if (strtolower($this->get_type()) === 'rss') {
+            return;
+            // Atom 1.0 only
         }
-        $this->_setCommentLink($this->dom, $this->base);
-        $this->_setCommentFeedLinks($this->dom, $this->base);
-        $this->_setCommentCount($this->dom, $this->base);
+        $this->_set_comment_link($this->dom, $this->base);
+        $this->_set_comment_feed_links($this->dom, $this->base);
+        $this->_set_comment_count($this->dom, $this->base);
         if ($this->called) {
-            $this->_appendNamespaces();
+            $this->_append_namespaces();
         }
     }
-
     // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
     /**
      * Append entry namespaces
      *
      * @return void
      */
-    protected function _appendNamespaces()
+    protected function _append_namespaces()
     {
-        $this->getRootElement()->setAttribute(
-            'xmlns:thr',
-            'http://purl.org/syndication/thread/1.0'
-        );
+        $this->get_root_element()->set_attribute('xmlns:thr', 'http://purl.org/syndication/thread/1.0');
     }
-
     /**
      * Set comment link
      *
      * @return void
      */
-    protected function _setCommentLink(DOMDocument $dom, DOMElement $root)
+    protected function _set_comment_link(Dom_Document $dom, Dom_Element $root)
     {
-        $link = $this->getDataContainer()->getCommentLink();
-        if (! $link) {
+        $link = $this->get_data_container()->get_comment_link();
+        if (!$link) {
             return;
         }
-        $clink = $this->dom->createElement('link');
-        $clink->setAttribute('rel', 'replies');
-        $clink->setAttribute('type', 'text/html');
-        $clink->setAttribute('href', $link);
-        $count = $this->getDataContainer()->getCommentCount();
+        $clink = $this->dom->create_element('link');
+        $clink->set_attribute('rel', 'replies');
+        $clink->set_attribute('type', 'text/html');
+        $clink->set_attribute('href', $link);
+        $count = $this->get_data_container()->get_comment_count();
         if ($count !== null) {
-            $clink->setAttribute('thr:count', $count);
+            $clink->set_attribute('thr:count', $count);
         }
-        $root->appendChild($clink);
+        $root->append_child($clink);
         $this->called = true;
     }
-
     /**
      * Set comment feed links
      *
      * @return void
      */
-    protected function _setCommentFeedLinks(DOMDocument $dom, DOMElement $root)
+    protected function _set_comment_feed_links(Dom_Document $dom, Dom_Element $root)
     {
-        $links = $this->getDataContainer()->getCommentFeedLinks();
-        if (! $links || empty($links)) {
+        $links = $this->get_data_container()->get_comment_feed_links();
+        if (!$links || empty($links)) {
             return;
         }
         foreach ($links as $link) {
-            $flink = $this->dom->createElement('link');
-            $flink->setAttribute('rel', 'replies');
-            $flink->setAttribute('type', 'application/' . $link['type'] . '+xml');
-            $flink->setAttribute('href', $link['uri']);
-            $count = $this->getDataContainer()->getCommentCount();
+            $flink = $this->dom->create_element('link');
+            $flink->set_attribute('rel', 'replies');
+            $flink->set_attribute('type', 'application/' . $link['type'] . '+xml');
+            $flink->set_attribute('href', $link['uri']);
+            $count = $this->get_data_container()->get_comment_count();
             if ($count !== null) {
-                $flink->setAttribute('thr:count', $count);
+                $flink->set_attribute('thr:count', $count);
             }
-            $root->appendChild($flink);
+            $root->append_child($flink);
             $this->called = true;
         }
     }
-
     /**
      * Set entry comment count
      *
      * @return void
      */
-    protected function _setCommentCount(DOMDocument $dom, DOMElement $root)
+    protected function _set_comment_count(Dom_Document $dom, Dom_Element $root)
     {
-        $count = $this->getDataContainer()->getCommentCount();
-        if ($count === null || ! is_numeric($count)) {
+        $count = $this->get_data_container()->get_comment_count();
+        if ($count === null || !is_numeric($count)) {
             return;
         }
-
-        $tcount            = $this->dom->createElement('thr:total');
-        $tcount->nodeValue = (string) $count;
-        $root->appendChild($tcount);
+        $tcount = $this->dom->create_element('thr:total');
+        $tcount->node_value = (string) $count;
+        $root->append_child($tcount);
         $this->called = true;
     }
-
     // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
 }

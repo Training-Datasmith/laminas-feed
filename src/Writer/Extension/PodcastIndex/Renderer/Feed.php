@@ -1,18 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\Feed\Writer\Extension\PodcastIndex\Renderer;
+declare (strict_types=1);
+namespace Laminas\Feed\Writer\Extension\Podcast_Index\Renderer;
 
 use function assert;
-
-use DOMDocument;
-use DOMElement;
+use Dom_Document;
+use Dom_Element;
 use Laminas\Feed\Writer\Extension;
-use Laminas\Feed\Writer\Extension\PodcastIndex;
-
+use Laminas\Feed\Writer\Extension\Podcast_Index;
 use Laminas\Feed\Writer\Feed as FeedWriter;
-
 /**
  * Renders PodcastIndex data of a RSS Feed
  *
@@ -33,7 +29,7 @@ use Laminas\Feed\Writer\Feed as FeedWriter;
  * @psalm-import-type LiveItemArray from PodcastIndex\Validator
  * @psalm-import-type ChatArray from PodcastIndex\Validator
  */
-class Feed extends Extension\AbstractRenderer
+class Feed extends Extension\Abstract_Renderer
 {
     /**
      * Set to TRUE if a rendering method actually renders something. This
@@ -43,505 +39,429 @@ class Feed extends Extension\AbstractRenderer
      * @var bool
      */
     protected $called = false;
-
     /**
      * Render feed
      */
     public function render(): void
     {
-        $this->setLocked($this->dom, $this->base);
-        $this->setFunding($this->dom, $this->base);
-        $this->setFundings($this->dom, $this->base);
-        $this->setLicense($this->dom, $this->base);
-        $this->setLocation($this->dom, $this->base);
-        $this->setLocations($this->dom, $this->base);
-        $this->setImages($this->dom, $this->base);
-        $this->setDetailedImages($this->dom, $this->base);
-        $this->setUpdateFrequency($this->dom, $this->base);
-        $this->setPeople($this->dom, $this->base);
-        $this->setTrailer($this->dom, $this->base);
-        $this->setGuid($this->dom, $this->base);
-        $this->setMedium($this->dom, $this->base);
-        $this->setBlocks($this->dom, $this->base);
-        $this->setTxts($this->dom, $this->base);
-        $this->setPodping($this->dom, $this->base);
-        $this->setRemoteItems($this->dom, $this->base);
-        $this->setPodroll($this->dom, $this->base);
-        $this->setPublisher($this->dom, $this->base);
-        $this->setValues($this->dom, $this->base);
-        $this->setSocialInteracts($this->dom, $this->base);
-        $this->setChat($this->dom, $this->base);
-
+        $this->set_locked($this->dom, $this->base);
+        $this->set_funding($this->dom, $this->base);
+        $this->set_fundings($this->dom, $this->base);
+        $this->set_license($this->dom, $this->base);
+        $this->set_location($this->dom, $this->base);
+        $this->set_locations($this->dom, $this->base);
+        $this->set_images($this->dom, $this->base);
+        $this->set_detailed_images($this->dom, $this->base);
+        $this->set_update_frequency($this->dom, $this->base);
+        $this->set_people($this->dom, $this->base);
+        $this->set_trailer($this->dom, $this->base);
+        $this->set_guid($this->dom, $this->base);
+        $this->set_medium($this->dom, $this->base);
+        $this->set_blocks($this->dom, $this->base);
+        $this->set_txts($this->dom, $this->base);
+        $this->set_podping($this->dom, $this->base);
+        $this->set_remote_items($this->dom, $this->base);
+        $this->set_podroll($this->dom, $this->base);
+        $this->set_publisher($this->dom, $this->base);
+        $this->set_values($this->dom, $this->base);
+        $this->set_social_interacts($this->dom, $this->base);
+        $this->set_chat($this->dom, $this->base);
         /** @var FeedWriter $feedWriter */
-        $feedWriter = $this->getDataContainer();
+        $feed_writer = $this->get_data_container();
         /** @var list<PodcastIndex\LiveItem> $liveItems */
-        $liveItems = $feedWriter->getPodcastIndexLiveItems();
-        if ($liveItems) {
-            foreach ($liveItems as $liveItem) {
-                $encoding = $feedWriter->getEncoding();
+        $live_items = $feed_writer->get_podcast_index_live_items();
+        if ($live_items) {
+            foreach ($live_items as $live_item) {
+                $encoding = $feed_writer->get_encoding();
                 if ($encoding) {
-                    $liveItem->setEncoding($encoding);
+                    $live_item->set_encoding($encoding);
                 }
-                $renderer = new LiveItem($liveItem, $this->dom, $this->base);
-                $renderer->setType($this->getType());
-                $renderer->setRootElement($this->dom->documentElement);
+                $renderer = new Live_Item($live_item, $this->dom, $this->base);
+                $renderer->set_type($this->get_type());
+                $renderer->set_root_element($this->dom->document_element);
                 $renderer->render();
-                $element  = $renderer->getElement();
-                $imported = $this->dom->importNode($element, true);
-                $this->base->appendChild($imported);
+                $element = $renderer->get_element();
+                $imported = $this->dom->import_node($element, true);
+                $this->base->append_child($imported);
             }
         }
-
         if ($this->called) {
-            $this->_appendNamespaces();
+            $this->_append_namespaces();
         }
     }
-
     /**
      * Append feed namespaces
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _appendNamespaces(): void
+    protected function _append_namespaces(): void
     {
-        $this->getRootElement()->setAttribute(
-            'xmlns:podcast',
-            'https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md'
-        );
+        $this->get_root_element()->set_attribute('xmlns:podcast', 'https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md');
     }
-
-    private function getFeedWriter(): FeedWriter
+    private function get_feed_writer(): Feed_Writer
     {
-        $container = $this->getDataContainer();
-        assert($container instanceof FeedWriter);
-
+        $container = $this->get_data_container();
+        assert($container instanceof Feed_Writer);
         return $container;
     }
-
     /**
      * Set feed lock
      */
-    protected function setLocked(DOMDocument $dom, DOMElement $root): void
+    protected function set_locked(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|array<string, string> $locked */
-        $locked = $container->getPodcastIndexLocked();
+        $locked = $container->get_podcast_index_locked();
         if ($locked === null) {
             return;
         }
-        $el = ElementGenerator::createPodcastIndexElement($dom, $locked, 'locked', 'value');
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $locked, 'locked', 'value');
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set a single feed funding tag
      */
-    protected function setFunding(DOMDocument $dom, DOMElement $root): void
+    protected function set_funding(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|FundingArray $funding */
-        $funding = $container->getPodcastIndexFunding();
+        $funding = $container->get_podcast_index_funding();
         if ($funding === null) {
             return;
         }
-        $el = ElementGenerator::createPodcastIndexElement($dom, $funding, 'funding', 'title');
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $funding, 'funding', 'title');
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set multiple funding tags
      */
-    protected function setFundings(DOMDocument $dom, DOMElement $root): void
+    protected function set_fundings(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|list<FundingArray> $fundings */
-        $fundings = $container->getPodcastIndexFundings();
+        $fundings = $container->get_podcast_index_fundings();
         if ($fundings === null) {
             return;
         }
-
         foreach ($fundings as $funding) {
-            $el = ElementGenerator::createPodcastIndexElement($dom, $funding, 'funding', 'title');
-            $root->appendChild($el);
+            $el = Element_Generator::create_podcast_index_element($dom, $funding, 'funding', 'title');
+            $root->append_child($el);
         }
-
         $this->called = true;
     }
-
     /**
      * Set feed license
      */
-    private function setLicense(DOMDocument $dom, DOMElement $root): void
+    private function set_license(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|LicenseArray $license */
-        $license = $container->getPodcastIndexLicense();
+        $license = $container->get_podcast_index_license();
         if ($license === null) {
             return;
         }
-        $el = ElementGenerator::createPodcastIndexElement($dom, $license, 'license', 'identifier');
-
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $license, 'license', 'identifier');
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set a single feed location
      */
-    private function setLocation(DOMDocument $dom, DOMElement $root): void
+    private function set_location(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|LocationArray $location */
-        $location = $container->getPodcastIndexLocation();
+        $location = $container->get_podcast_index_location();
         if ($location === null) {
             return;
         }
-        $el = ElementGenerator::createPodcastIndexElement($dom, $location, 'location', 'description');
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $location, 'location', 'description');
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set multiple location tags
      */
-    protected function setLocations(DOMDocument $dom, DOMElement $root): void
+    protected function set_locations(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|list<LocationArray> $locations */
-        $locations = $container->getPodcastIndexLocations();
+        $locations = $container->get_podcast_index_locations();
         if ($locations === null) {
             return;
         }
-
         foreach ($locations as $location) {
-            $el = ElementGenerator::createPodcastIndexElement($dom, $location, 'location', 'description');
-            $root->appendChild($el);
+            $el = Element_Generator::create_podcast_index_element($dom, $location, 'location', 'description');
+            $root->append_child($el);
         }
-
         $this->called = true;
     }
-
     /**
      * Set feed images srcset
      */
-    private function setImages(DOMDocument $dom, DOMElement $root): void
+    private function set_images(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|ImagesArray $images */
-        $images = $container->getPodcastIndexImages();
+        $images = $container->get_podcast_index_images();
         if ($images === null) {
             return;
         }
-        $el = ElementGenerator::createPodcastIndexElement($dom, $images, 'images');
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $images, 'images');
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set feed detailed images
      */
-    private function setDetailedImages(DOMDocument $dom, DOMElement $root): void
+    private function set_detailed_images(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var list<DetailedImageArray>|null $detailedImages */
-        $detailedImages = $container->getPodcastIndexDetailedImages();
-        if ($detailedImages === null || $detailedImages === []) {
+        $detailed_images = $container->get_podcast_index_detailed_images();
+        if ($detailed_images === null || $detailed_images === []) {
             return;
         }
-
-        foreach ($detailedImages as $detailedImage) {
-            $el = ElementGenerator::createPodcastIndexElement($dom, $detailedImage, 'image');
-            $root->appendChild($el);
+        foreach ($detailed_images as $detailed_image) {
+            $el = Element_Generator::create_podcast_index_element($dom, $detailed_image, 'image');
+            $root->append_child($el);
         }
-
         $this->called = true;
     }
-
     /**
      * Set feed update frequency
      */
-    private function setUpdateFrequency(DOMDocument $dom, DOMElement $root): void
+    private function set_update_frequency(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|UpdateFrequencyArray $updateFrequency */
-        $updateFrequency = $container->getPodcastIndexUpdateFrequency();
-        if ($updateFrequency === null) {
+        $update_frequency = $container->get_podcast_index_update_frequency();
+        if ($update_frequency === null) {
             return;
         }
-        $el = ElementGenerator::createPodcastIndexElement($dom, $updateFrequency, 'updateFrequency', 'description');
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $update_frequency, 'updateFrequency', 'description');
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set feed people
      */
-    private function setPeople(DOMDocument $dom, DOMElement $root): void
+    private function set_people(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|list<PersonArray> $people */
-        $people = $container->getPodcastIndexPeople();
+        $people = $container->get_podcast_index_people();
         if ($people === null || $people === []) {
             return;
         }
         foreach ($people as $person) {
-            $el = ElementGenerator::createPodcastIndexElement($dom, $person, 'person', 'name');
-            $root->appendChild($el);
+            $el = Element_Generator::create_podcast_index_element($dom, $person, 'person', 'name');
+            $root->append_child($el);
         }
         $this->called = true;
     }
-
     /**
      * Set feed trailer
      */
-    private function setTrailer(DOMDocument $dom, DOMElement $root): void
+    private function set_trailer(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|TrailerArray $trailer */
-        $trailer = $container->getPodcastIndexTrailer();
+        $trailer = $container->get_podcast_index_trailer();
         if ($trailer === null) {
             return;
         }
-        $el = ElementGenerator::createPodcastIndexElement($dom, $trailer, 'trailer', 'title');
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $trailer, 'trailer', 'title');
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set feed guid
      */
-    private function setGuid(DOMDocument $dom, DOMElement $root): void
+    private function set_guid(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|array{value: string} $guid */
-        $guid = $container->getPodcastIndexGuid();
+        $guid = $container->get_podcast_index_guid();
         if ($guid === null) {
             return;
         }
-        $el = ElementGenerator::createPodcastIndexElement($dom, $guid, 'guid', 'value');
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $guid, 'guid', 'value');
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set feed medium
      */
-    private function setMedium(DOMDocument $dom, DOMElement $root): void
+    private function set_medium(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|array{value: string} $medium */
-        $medium = $container->getPodcastIndexMedium();
+        $medium = $container->get_podcast_index_medium();
         if ($medium === null) {
             return;
         }
-        $el = ElementGenerator::createPodcastIndexElement($dom, $medium, 'medium', 'value');
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $medium, 'medium', 'value');
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set feed blocks
      */
-    private function setBlocks(DOMDocument $dom, DOMElement $root): void
+    private function set_blocks(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var list<BlockArray>|null $blocks */
-        $blocks = $container->getPodcastIndexBlocks();
+        $blocks = $container->get_podcast_index_blocks();
         if ($blocks === null || $blocks === []) {
             return;
         }
-
         foreach ($blocks as $block) {
-            $el = ElementGenerator::createPodcastIndexElement($dom, $block, 'block', 'value');
-            $root->appendChild($el);
+            $el = Element_Generator::create_podcast_index_element($dom, $block, 'block', 'value');
+            $root->append_child($el);
         }
         $this->called = true;
     }
-
     /**
      * Set feed txts
      */
-    private function setTxts(DOMDocument $dom, DOMElement $root): void
+    private function set_txts(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var list<TxtArray>|null $txts */
-        $txts = $container->getPodcastIndexTxts();
+        $txts = $container->get_podcast_index_txts();
         if ($txts === null || $txts === []) {
             return;
         }
-
         foreach ($txts as $txt) {
-            $el = ElementGenerator::createPodcastIndexElement($dom, $txt, 'txt', 'value');
-            $root->appendChild($el);
+            $el = Element_Generator::create_podcast_index_element($dom, $txt, 'txt', 'value');
+            $root->append_child($el);
         }
         $this->called = true;
     }
-
     /**
      * Set feed podping
      */
-    private function setPodping(DOMDocument $dom, DOMElement $root): void
+    private function set_podping(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var null|array{usesPodping: bool} $podping */
-        $podping = $container->getPodcastIndexPodping();
+        $podping = $container->get_podcast_index_podping();
         if ($podping === null) {
             return;
         }
-
-        $el = ElementGenerator::createPodcastIndexElement($dom, $podping, 'podping');
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $podping, 'podping');
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set feed remote items
      */
-    private function setRemoteItems(DOMDocument $dom, DOMElement $root): void
+    private function set_remote_items(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var list<RemoteItemArray>|null $remoteItems */
-        $remoteItems = $container->getPodcastIndexRemoteItems();
-        if ($remoteItems === null || $remoteItems === []) {
+        $remote_items = $container->get_podcast_index_remote_items();
+        if ($remote_items === null || $remote_items === []) {
             return;
         }
-
-        foreach ($remoteItems as $remoteItem) {
-            $el = ElementGenerator::createPodcastIndexElement($dom, $remoteItem, 'remoteItem');
-            $root->appendChild($el);
+        foreach ($remote_items as $remote_item) {
+            $el = Element_Generator::create_podcast_index_element($dom, $remote_item, 'remoteItem');
+            $root->append_child($el);
         }
-
         $this->called = true;
     }
-
     /**
      * Set podroll element with remote items
      */
-    private function setPodroll(DOMDocument $dom, DOMElement $root): void
+    private function set_podroll(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var list<RemoteItemArray>|null $podrollItems */
-        $podrollItems = $container->getPodcastIndexPodroll();
-        if ($podrollItems === null || $podrollItems === []) {
+        $podroll_items = $container->get_podcast_index_podroll();
+        if ($podroll_items === null || $podroll_items === []) {
             return;
         }
-
-        $podroll = $dom->createElement('podcast:podroll');
-
-        foreach ($podrollItems as $remoteItem) {
-            $el = ElementGenerator::createPodcastIndexElement($dom, $remoteItem, 'remoteItem');
-            $podroll->appendChild($el);
+        $podroll = $dom->create_element('podcast:podroll');
+        foreach ($podroll_items as $remote_item) {
+            $el = Element_Generator::create_podcast_index_element($dom, $remote_item, 'remoteItem');
+            $podroll->append_child($el);
         }
-
-        $root->appendChild($podroll);
-
+        $root->append_child($podroll);
         $this->called = true;
     }
-
     /**
      * Set publisher element with remote items
      */
-    private function setPublisher(DOMDocument $dom, DOMElement $root): void
+    private function set_publisher(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var RemoteItemArray|null $publisherItem */
-        $publisherItem = $container->getPodcastIndexPublisher();
-        if ($publisherItem === null) {
+        $publisher_item = $container->get_podcast_index_publisher();
+        if ($publisher_item === null) {
             return;
         }
-
-        $publisher = $dom->createElement('podcast:publisher');
-        $el        = ElementGenerator::createPodcastIndexElement($dom, $publisherItem, 'remoteItem');
-        $publisher->appendChild($el);
-        $root->appendChild($publisher);
-
+        $publisher = $dom->create_element('podcast:publisher');
+        $el = Element_Generator::create_podcast_index_element($dom, $publisher_item, 'remoteItem');
+        $publisher->append_child($el);
+        $root->append_child($publisher);
         $this->called = true;
     }
-
     /**
      * Set values with the valueRecipients
      */
-    private function setValues(DOMDocument $dom, DOMElement $root): void
+    private function set_values(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var list<ValueArray>|null $values */
-        $values = $container->getPodcastIndexValues();
+        $values = $container->get_podcast_index_values();
         if ($values === null || $values === []) {
             return;
         }
-
         foreach ($values as $value) {
-            if (! isset($value['valueRecipients'])) {
+            if (!isset($value['valueRecipients'])) {
                 continue;
             }
-            $valueElement = ElementGenerator::createPodcastIndexElement($dom, $value, 'value');
-            foreach ($value['valueRecipients'] as $valueRecipient) {
-                $el = ElementGenerator::createPodcastIndexElement($dom, $valueRecipient, 'valueRecipient');
-                $valueElement->appendChild($el);
+            $value_element = Element_Generator::create_podcast_index_element($dom, $value, 'value');
+            foreach ($value['valueRecipients'] as $value_recipient) {
+                $el = Element_Generator::create_podcast_index_element($dom, $value_recipient, 'valueRecipient');
+                $value_element->append_child($el);
             }
-            $root->appendChild($valueElement);
+            $root->append_child($value_element);
         }
-
         $this->called = true;
     }
-
     /**
      * Set feed social interacts
      */
-    private function setSocialInteracts(DOMDocument $dom, DOMElement $root): void
+    private function set_social_interacts(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var list<SocialInteractArray>|null $socialInteracts */
-        $socialInteracts = $container->getPodcastIndexSocialInteracts();
-        if ($socialInteracts === null || $socialInteracts === []) {
+        $social_interacts = $container->get_podcast_index_social_interacts();
+        if ($social_interacts === null || $social_interacts === []) {
             return;
         }
-
-        foreach ($socialInteracts as $socialInteract) {
-            $el = ElementGenerator::createPodcastIndexElement($dom, $socialInteract, 'socialInteract');
-            $root->appendChild($el);
+        foreach ($social_interacts as $social_interact) {
+            $el = Element_Generator::create_podcast_index_element($dom, $social_interact, 'socialInteract');
+            $root->append_child($el);
         }
-
         $this->called = true;
     }
-
     /**
      * Set chat element
      */
-    private function setChat(DOMDocument $dom, DOMElement $root): void
+    private function set_chat(Dom_Document $dom, Dom_Element $root): void
     {
-        $container = $this->getFeedWriter();
-
+        $container = $this->get_feed_writer();
         /** @psalm-var ChatArray|null $chat */
-        $chat = $container->getPodcastIndexChat();
+        $chat = $container->get_podcast_index_chat();
         if ($chat === null) {
             return;
         }
-
-        $el = ElementGenerator::createPodcastIndexElement($dom, $chat, 'chat');
-        $root->appendChild($el);
+        $el = Element_Generator::create_podcast_index_element($dom, $chat, 'chat');
+        $root->append_child($el);
         $this->called = true;
     }
 }

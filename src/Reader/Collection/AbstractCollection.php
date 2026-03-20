@@ -1,17 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader\Collection;
 
 use ArrayObject;
-
 /**
  * @template TKey of array-key
  * @template TValue
  * @template-extends ArrayObject<TKey, TValue>
  */
-abstract class AbstractCollection extends ArrayObject
+abstract class Abstract_Collection extends ArrayObject
 {
     /**
      * Return a simple array of the most relevant slice of
@@ -21,5 +19,5 @@ abstract class AbstractCollection extends ArrayObject
      *
      * @return array<int, string>
      */
-    abstract public function getValues();
+    abstract public function get_values();
 }

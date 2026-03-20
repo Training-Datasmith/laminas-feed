@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Feed\Pub_Sub_Hubbub;
 
-namespace Laminas\Feed\PubSubHubbub;
-
-use Laminas\Http\PhpEnvironment\Response;
-
-interface CallbackInterface
+use Laminas\Http\Php_Environment\Response;
+interface Callback_Interface
 {
     /**
      * Handle any callback from a Hub Server responding to a subscription or
@@ -16,8 +14,7 @@ interface CallbackInterface
      * @param null|array $httpData GET/POST data if available and not in $_GET/POST
      * @param bool $sendResponseNow Whether to send response now or when asked
      */
-    public function handle(?array $httpData = null, $sendResponseNow = false);
-
+    public function handle(?array $http_data = null, $send_response_now = false);
     /**
      * Send the response, including all headers.
      * If you wish to handle this via Laminas\Mvc\Controller, use the getter methods
@@ -26,8 +23,7 @@ interface CallbackInterface
      *
      * @return void
      */
-    public function sendResponse();
-
+    public function send_response();
     /**
      * An instance of a class handling Http Responses. This is implemented in
      * Laminas\Feed\Pubsubhubbub\HttpResponse which shares an unenforced interface with
@@ -35,8 +31,7 @@ interface CallbackInterface
      *
      * @param HttpResponse|Response $httpResponse
      */
-    public function setHttpResponse($httpResponse);
-
+    public function set_http_response($http_response);
     /**
      * An instance of a class handling Http Responses. This is implemented in
      * Laminas\Feed\Pubsubhubbub\HttpResponse which shares an unenforced interface with
@@ -44,5 +39,5 @@ interface CallbackInterface
      *
      * @return HttpResponse|Response
      */
-    public function getHttpResponse();
+    public function get_http_response();
 }

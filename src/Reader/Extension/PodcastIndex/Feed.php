@@ -1,18 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\Feed\Reader\Extension\PodcastIndex;
+declare (strict_types=1);
+namespace Laminas\Feed\Reader\Extension\Podcast_Index;
 
 use function array_key_exists;
 use function assert;
-
-use DOMElement;
+use Dom_Element;
 use Laminas\Feed\Reader\Extension;
-
-use Laminas\Feed\Reader\Extension\PodcastIndex\LiveItem as LiveItemReader;
+use Laminas\Feed\Reader\Extension\Podcast_Index\Live_Item as LiveItemReader;
 use stdClass;
-
 /**
  * Describes PodcastIndex data of a RSS Feed
  *
@@ -32,223 +28,180 @@ use stdClass;
  * @psalm-import-type SocialInteractObject from AttributesReader
  * @psalm-import-type ChatObject from AttributesReader
  */
-class Feed extends Extension\AbstractFeed
+class Feed extends Extension\Abstract_Feed
 {
     /**
      * Is the podcast locked (not available for indexing)?
      */
-    public function isLocked(): bool
+    public function is_locked(): bool
     {
-        return $this->isPodcastIndexLocked();
+        return $this->is_podcast_index_locked();
     }
-
     /**
      * Is the podcast locked (not available for indexing)?
      */
-    public function isPodcastIndexLocked(): bool
+    public function is_podcast_index_locked(): bool
     {
         if (isset($this->data['locked'])) {
             return $this->data['locked'];
         }
-
-        $locked = $this->xpath->evaluate('string(' . $this->getXpathPrefix() . '/podcast:locked)');
-
-        if (! $locked) {
+        $locked = $this->xpath->evaluate('string(' . $this->get_xpath_prefix() . '/podcast:locked)');
+        if (!$locked) {
             $locked = false;
         }
-
         $this->data['locked'] = $locked === 'yes';
-
         return $this->data['locked'];
     }
-
     /**
      * Get the owner of the podcast (for verification)
      */
-    public function getLockOwner(): ?string
+    public function get_lock_owner(): ?string
     {
-        return $this->getPodcastIndexLockOwner();
+        return $this->get_podcast_index_lock_owner();
     }
-
     /**
      * Get the owner of the podcast (for verification)
      */
-    public function getPodcastIndexLockOwner(): ?string
+    public function get_podcast_index_lock_owner(): ?string
     {
         if (isset($this->data['owner'])) {
             return $this->data['owner'];
         }
-
-        $owner = $this->xpath->evaluate('string(' . $this->getXpathPrefix() . '/podcast:locked/@owner)');
-
-        if (! $owner) {
+        $owner = $this->xpath->evaluate('string(' . $this->get_xpath_prefix() . '/podcast:locked/@owner)');
+        if (!$owner) {
             $owner = null;
         }
-
         $this->data['owner'] = $owner;
-
         return $this->data['owner'];
     }
-
     /**
      * Get a single feed funding
      *
      * @deprecated Multiple `funding` tags are allowed now. Use `getPodcastIndexFundings()` instead.
      */
-    public function getFunding(): object|null
+    public function get_funding(): object|null
     {
-        return $this->getPodcastIndexFunding();
+        return $this->get_podcast_index_funding();
     }
-
     /**
      * Get a single feed funding
      *
      * @deprecated Multiple `funding` tags are allowed now. Use `getPodcastIndexFundings()` instead.
      */
-    public function getPodcastIndexFunding(): object|null
+    public function get_podcast_index_funding(): object|null
     {
         if (array_key_exists('funding', $this->data)) {
             /** @psalm-var null|FundingObject */
             return $this->data['funding'];
         }
-
         $funding = null;
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:funding');
-
-        if ($nodeList->length > 0) {
-            $item = $nodeList->item(0);
-            assert($item instanceof DOMElement);
-            $funding = AttributesReader::readFunding($item);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:funding');
+        if ($node_list->length > 0) {
+            $item = $node_list->item(0);
+            assert($item instanceof Dom_Element);
+            $funding = Attributes_Reader::read_funding($item);
         }
-
         $this->data['funding'] = $funding;
-
         return $this->data['funding'];
     }
-
     /**
      * Get multiple feed fundings
      *
      * @psalm-return list<FundingObject>
      */
-    public function getPodcastIndexFundings(): array
+    public function get_podcast_index_fundings(): array
     {
         $fundings = [];
-
         // include deprecated single funding entry if exists
         if (array_key_exists('fundings', $this->data) || array_key_exists('funding', $this->data)) {
             /** @var list<FundingObject> $fundings */
             $fundings = $this->data['fundings'] ?? [];
             if (isset($this->data['funding'])) {
                 /** @var FundingObject $single */
-                $single     = $this->data['funding'];
+                $single = $this->data['funding'];
                 $fundings[] = $single;
             }
             return $fundings;
         }
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:funding');
-
-        if ($nodeList->length > 0) {
-            foreach ($nodeList as $entry) {
-                assert($entry instanceof DOMElement);
-                $funding    = AttributesReader::readFunding($entry);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:funding');
+        if ($node_list->length > 0) {
+            foreach ($node_list as $entry) {
+                assert($entry instanceof Dom_Element);
+                $funding = Attributes_Reader::read_funding($entry);
                 $fundings[] = $funding;
             }
         }
-
         $this->data['fundings'] = $fundings;
-
         return $this->data['fundings'];
     }
-
     /**
      * Get the podcast license
      */
-    public function getPodcastIndexLicense(): object|null
+    public function get_podcast_index_license(): object|null
     {
         if (array_key_exists('license', $this->data)) {
             /** @psalm-var null|LicenseObject */
             return $this->data['license'];
         }
-
         $license = null;
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:license');
-
-        if ($nodeList->length > 0) {
-            $item = $nodeList->item(0);
-            assert($item instanceof DOMElement);
-            $license = AttributesReader::readLicense($item);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:license');
+        if ($node_list->length > 0) {
+            $item = $node_list->item(0);
+            assert($item instanceof Dom_Element);
+            $license = Attributes_Reader::read_license($item);
         }
-
         $this->data['license'] = $license;
-
         return $this->data['license'];
     }
-
     /**
      * Get the podcast location
      */
-    public function getPodcastIndexLocation(): object|null
+    public function get_podcast_index_location(): object|null
     {
         if (array_key_exists('location', $this->data)) {
             /** @psalm-var null|LocationObject */
             return $this->data['location'];
         }
-
         $location = null;
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:location');
-
-        if ($nodeList->length > 0) {
-            $item = $nodeList->item(0);
-            assert($item instanceof DOMElement);
-            $location = AttributesReader::readLocation($item);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:location');
+        if ($node_list->length > 0) {
+            $item = $node_list->item(0);
+            assert($item instanceof Dom_Element);
+            $location = Attributes_Reader::read_location($item);
         }
-
         $this->data['location'] = $location;
-
         return $this->data['location'];
     }
-
     /**
      * Get multiple feed locations
      *
      * @psalm-return list<LocationObject>
      */
-    public function getPodcastIndexLocations(): array
+    public function get_podcast_index_locations(): array
     {
         $locations = [];
-
         // include deprecated single location entry if exists
         if (array_key_exists('locations', $this->data) || array_key_exists('location', $this->data)) {
             /** @var list<LocationObject> $locations */
             $locations = $this->data['locations'] ?? [];
             if (isset($this->data['location'])) {
                 /** @var LocationObject $single */
-                $single      = $this->data['location'];
+                $single = $this->data['location'];
                 $locations[] = $single;
             }
             return $locations;
         }
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:location');
-
-        if ($nodeList->length > 0) {
-            foreach ($nodeList as $entry) {
-                assert($entry instanceof DOMElement);
-                $location    = AttributesReader::readLocation($entry);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:location');
+        if ($node_list->length > 0) {
+            foreach ($node_list as $entry) {
+                assert($entry instanceof Dom_Element);
+                $location = Attributes_Reader::read_location($entry);
                 $locations[] = $location;
             }
         }
-
         $this->data['locations'] = $locations;
-
         return $this->data['locations'];
     }
-
     /**
      * Get the podcast images.
      * Returns the content of a single `<podcast:images>` tag.
@@ -257,514 +210,407 @@ class Feed extends Extension\AbstractFeed
      *
      * @psalm-return null|ImagesObject
      */
-    public function getPodcastIndexImages(): object|null
+    public function get_podcast_index_images(): object|null
     {
         if (array_key_exists('images', $this->data)) {
             /** @psalm-var null|ImagesObject */
             return $this->data['images'];
         }
-
         $images = null;
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:images');
-
-        if ($nodeList->length > 0) {
-            $item = $nodeList->item(0);
-            assert($item instanceof DOMElement);
-            $images = AttributesReader::readImages($item);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:images');
+        if ($node_list->length > 0) {
+            $item = $node_list->item(0);
+            assert($item instanceof Dom_Element);
+            $images = Attributes_Reader::read_images($item);
         }
-
         $this->data['images'] = $images;
-
         return $this->data['images'];
     }
-
     /**
      * Get the podcast detailed images.
      * Returns the contents of one or more `<podcast:image>` tags.
      *
      * @psalm-return list<DetailedImageObject>
      */
-    public function getPodcastIndexDetailedImages(): array
+    public function get_podcast_index_detailed_images(): array
     {
         if (array_key_exists('detailedImages', $this->data)) {
             /** @psalm-var list<DetailedImageObject> */
             return $this->data['detailedImages'];
         }
-
         $images = [];
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:image');
-
-        if ($nodeList->length > 0) {
-            foreach ($nodeList as $entry) {
-                assert($entry instanceof DOMElement);
-                $image    = AttributesReader::readDetailedImage($entry);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:image');
+        if ($node_list->length > 0) {
+            foreach ($node_list as $entry) {
+                assert($entry instanceof Dom_Element);
+                $image = Attributes_Reader::read_detailed_image($entry);
                 $images[] = $image;
             }
         }
-
         $this->data['detailedImages'] = $images;
-
         return $this->data['detailedImages'];
     }
-
     /**
      * Get the podcast update frequency
      *
      * @psalm-return null|UpdateFrequencyObject
      */
-    public function getPodcastIndexUpdateFrequency(): object|null
+    public function get_podcast_index_update_frequency(): object|null
     {
         if (array_key_exists('updateFrequency', $this->data)) {
             /** @psalm-var null|UpdateFrequencyObject */
             return $this->data['updateFrequency'];
         }
-
-        $updateFrequency = null;
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:updateFrequency');
-
-        if ($nodeList->length > 0) {
-            $item = $nodeList->item(0);
-            assert($item instanceof DOMElement);
-            $updateFrequency = AttributesReader::readUpdateFrequency($item);
+        $update_frequency = null;
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:updateFrequency');
+        if ($node_list->length > 0) {
+            $item = $node_list->item(0);
+            assert($item instanceof Dom_Element);
+            $update_frequency = Attributes_Reader::read_update_frequency($item);
         }
-
-        $this->data['updateFrequency'] = $updateFrequency;
-
+        $this->data['updateFrequency'] = $update_frequency;
         return $this->data['updateFrequency'];
     }
-
     /**
      * Get the podcast people
      *
      * @psalm-return list<PersonObject>
      */
-    public function getPodcastIndexPeople(): array
+    public function get_podcast_index_people(): array
     {
         if (array_key_exists('people', $this->data)) {
             /** @psalm-var list<PersonObject> */
             return $this->data['people'];
         }
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:person');
-
-        $personCollection = [];
-
-        if ($nodeList->length > 0) {
-            foreach ($nodeList as $entry) {
-                assert($entry instanceof DOMElement);
-                $person = AttributesReader::readPerson($entry);
-
-                $personCollection[] = $person;
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:person');
+        $person_collection = [];
+        if ($node_list->length > 0) {
+            foreach ($node_list as $entry) {
+                assert($entry instanceof Dom_Element);
+                $person = Attributes_Reader::read_person($entry);
+                $person_collection[] = $person;
             }
         }
-
-        $this->data['people'] = $personCollection;
-
+        $this->data['people'] = $person_collection;
         return $this->data['people'];
     }
-
     /**
      * Get the podcast persons (alias of getPodcastIndexPeople)
      *
      * @psalm-return list<PersonObject>
      */
-    public function getPodcastIndexPersons(): array
+    public function get_podcast_index_persons(): array
     {
-        return $this->getPodcastIndexPeople();
+        return $this->get_podcast_index_people();
     }
-
     /**
      * Get the podcast trailer
      *
      * @return null|TrailerObject
      */
-    public function getPodcastIndexTrailer(): object|null
+    public function get_podcast_index_trailer(): object|null
     {
         if (array_key_exists('trailer', $this->data)) {
             /** @psalm-var null|TrailerObject */
             return $this->data['trailer'];
         }
-
         $object = null;
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:trailer');
-
-        if ($nodeList->length > 0) {
-            $item = $nodeList->item(0);
-            assert($item instanceof DOMElement);
-            $object = AttributesReader::readTrailer($item);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:trailer');
+        if ($node_list->length > 0) {
+            $item = $node_list->item(0);
+            assert($item instanceof Dom_Element);
+            $object = Attributes_Reader::read_trailer($item);
         }
-
         $this->data['trailer'] = $object;
-
         return $this->data['trailer'];
     }
-
     /**
      * Get the podcast guid
      *
      * @return null|object{value: string}
      */
-    public function getPodcastIndexGuid(): object|null
+    public function get_podcast_index_guid(): object|null
     {
         if (array_key_exists('guid', $this->data)) {
             /** @psalm-var null|object{value: string} */
             return $this->data['guid'];
         }
-
         $object = null;
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:guid');
-
-        if ($nodeList->length > 0) {
-            $item = $nodeList->item(0);
-            assert($item instanceof DOMElement);
-            $object = AttributesReader::readGuid($item);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:guid');
+        if ($node_list->length > 0) {
+            $item = $node_list->item(0);
+            assert($item instanceof Dom_Element);
+            $object = Attributes_Reader::read_guid($item);
         }
-
         $this->data['guid'] = $object;
-
         return $this->data['guid'];
     }
-
     /**
      * Get the podcast medium
      *
      * @return null|object{value: string}
      */
-    public function getPodcastIndexMedium(): object|null
+    public function get_podcast_index_medium(): object|null
     {
         if (array_key_exists('medium', $this->data)) {
             /** @psalm-var null|object{value: string} */
             return $this->data['medium'];
         }
-
         $object = null;
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:medium');
-
-        if ($nodeList->length > 0) {
-            $item = $nodeList->item(0);
-            assert($item instanceof DOMElement);
-            $object = AttributesReader::readMedium($item);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:medium');
+        if ($node_list->length > 0) {
+            $item = $node_list->item(0);
+            assert($item instanceof Dom_Element);
+            $object = Attributes_Reader::read_medium($item);
         }
-
         $this->data['medium'] = $object;
-
         return $this->data['medium'];
     }
-
     /**
      * Get the podcast blocks
      *
      * @return list<object{value: string, id?: string}>
      */
-    public function getPodcastIndexBlocks(): array
+    public function get_podcast_index_blocks(): array
     {
         if (array_key_exists('blocks', $this->data)) {
             /** @psalm-var list<object{value: string, id?: string}> */
             return $this->data['blocks'];
         }
-
         $blocks = [];
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:block');
-
-        foreach ($nodeList as $entry) {
-            assert($entry instanceof DOMElement);
-            $object   = AttributesReader::readBlock($entry);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:block');
+        foreach ($node_list as $entry) {
+            assert($entry instanceof Dom_Element);
+            $object = Attributes_Reader::read_block($entry);
             $blocks[] = $object;
         }
-
         $this->data['blocks'] = $blocks;
-
         return $this->data['blocks'];
     }
-
     /**
      * Get the podcast txts
      *
      * @return list<TxtObject>
      */
-    public function getPodcastIndexTxts(): array
+    public function get_podcast_index_txts(): array
     {
         if (array_key_exists('txts', $this->data)) {
             /** @psalm-var list<TxtObject> */
             return $this->data['txts'];
         }
-
         $txts = [];
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:txt');
-
-        foreach ($nodeList as $entry) {
-            assert($entry instanceof DOMElement);
-            $object = AttributesReader::readTxt($entry);
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:txt');
+        foreach ($node_list as $entry) {
+            assert($entry instanceof Dom_Element);
+            $object = Attributes_Reader::read_txt($entry);
             $txts[] = $object;
         }
-
         $this->data['txts'] = $txts;
-
         return $this->data['txts'];
     }
-
     /**
      * Get the podcast podping
      *
      * @return null|object{usesPodping: bool}
      */
-    public function getPodcastIndexPodping(): object|null
+    public function get_podcast_index_podping(): object|null
     {
         if (array_key_exists('podping', $this->data)) {
             /** @psalm-var null|object{usesPodping: bool} */
             return $this->data['podping'];
         }
-
         $object = null;
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:podping');
-
-        if ($nodeList->length > 0) {
-            $item = $nodeList->item(0);
-            assert($item instanceof DOMElement);
-            $object              = new stdClass();
-            $object->usesPodping = $item->getAttribute('usesPodping') === 'true';
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:podping');
+        if ($node_list->length > 0) {
+            $item = $node_list->item(0);
+            assert($item instanceof Dom_Element);
+            $object = new stdClass();
+            $object->uses_podping = $item->get_attribute('usesPodping') === 'true';
         }
-
         $this->data['podping'] = $object;
-
         return $this->data['podping'];
     }
-
     /**
      * Get the podcast remoteItems
      *
      * @return list<RemoteItemObject>
      */
-    public function getPodcastIndexRemoteItems(): array
+    public function get_podcast_index_remote_items(): array
     {
         if (array_key_exists('remoteItems', $this->data)) {
             /** @var list<RemoteItemObject> $remoteItems */
-            $remoteItems = $this->data['remoteItems'];
-            return $remoteItems;
+            $remote_items = $this->data['remoteItems'];
+            return $remote_items;
         }
-
-        $remoteItems = [];
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:remoteItem');
-
-        foreach ($nodeList as $entry) {
-            assert($entry instanceof DOMElement);
-            $object        = AttributesReader::readRemoteItem($entry);
-            $remoteItems[] = $object;
+        $remote_items = [];
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:remoteItem');
+        foreach ($node_list as $entry) {
+            assert($entry instanceof Dom_Element);
+            $object = Attributes_Reader::read_remote_item($entry);
+            $remote_items[] = $object;
         }
-
-        $this->data['remoteItems'] = $remoteItems;
-
+        $this->data['remoteItems'] = $remote_items;
         return $this->data['remoteItems'];
     }
-
     /**
      * Get the podcast podroll remote items
      *
      * @return list<RemoteItemObject>
      */
-    public function getPodcastIndexPodroll(): array
+    public function get_podcast_index_podroll(): array
     {
         if (array_key_exists('podroll', $this->data)) {
             /** @var list<RemoteItemObject> $podrollItems */
-            $podrollItems = $this->data['podroll'];
-            return $podrollItems;
+            $podroll_items = $this->data['podroll'];
+            return $podroll_items;
         }
-
-        $podrollItems    = [];
-        $podrollNodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:podroll');
-
-        if ($podrollNodeList->length > 0) {
-            $podrollNode = $podrollNodeList->item(0);
-            assert($podrollNode instanceof DOMElement);
-
-            $remoteItems = $this->xpath->query('podcast:remoteItem', $podrollNode);
-            foreach ($remoteItems as $entry) {
-                assert($entry instanceof DOMElement);
-                $object         = AttributesReader::readRemoteItem($entry);
-                $podrollItems[] = $object;
+        $podroll_items = [];
+        $podroll_node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:podroll');
+        if ($podroll_node_list->length > 0) {
+            $podroll_node = $podroll_node_list->item(0);
+            assert($podroll_node instanceof Dom_Element);
+            $remote_items = $this->xpath->query('podcast:remoteItem', $podroll_node);
+            foreach ($remote_items as $entry) {
+                assert($entry instanceof Dom_Element);
+                $object = Attributes_Reader::read_remote_item($entry);
+                $podroll_items[] = $object;
             }
         }
-
-        $this->data['podroll'] = $podrollItems;
-
+        $this->data['podroll'] = $podroll_items;
         return $this->data['podroll'];
     }
-
     /**
      * Get the podcast publisher remote items
      *
      * @return RemoteItemObject|null
      */
-    public function getPodcastIndexPublisher(): object|null
+    public function get_podcast_index_publisher(): object|null
     {
         if (array_key_exists('publisher', $this->data)) {
             /** @var null|RemoteItemObject $publisherItem */
-            $publisherItem = $this->data['publisher'];
-            return $publisherItem;
+            $publisher_item = $this->data['publisher'];
+            return $publisher_item;
         }
-
-        $publisherItem     = null;
-        $publisherNodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:publisher');
-
-        if ($publisherNodeList->length > 0) {
-            $publisherNode = $publisherNodeList->item(0);
-            assert($publisherNode instanceof DOMElement);
-
-            $remoteItemList = $this->xpath->query('podcast:remoteItem', $publisherNode);
-            if ($remoteItemList->length > 0) {
-                $remoteItem = $remoteItemList->item(0);
-                assert($remoteItem instanceof DOMElement);
-                $publisherItem = AttributesReader::readRemoteItem($remoteItem);
+        $publisher_item = null;
+        $publisher_node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:publisher');
+        if ($publisher_node_list->length > 0) {
+            $publisher_node = $publisher_node_list->item(0);
+            assert($publisher_node instanceof Dom_Element);
+            $remote_item_list = $this->xpath->query('podcast:remoteItem', $publisher_node);
+            if ($remote_item_list->length > 0) {
+                $remote_item = $remote_item_list->item(0);
+                assert($remote_item instanceof Dom_Element);
+                $publisher_item = Attributes_Reader::read_remote_item($remote_item);
             }
         }
-
-        $this->data['publisher'] = $publisherItem;
-
+        $this->data['publisher'] = $publisher_item;
         return $this->data['publisher'];
     }
-
     /**
      * Get the podcast values
      *
      * @return list<ValueObject>
      */
-    public function getPodcastIndexValues(): array
+    public function get_podcast_index_values(): array
     {
         if (array_key_exists('values', $this->data)) {
             /** @var list<ValueObject> $values */
             $values = $this->data['values'];
             return $values;
         }
-
-        $values         = [];
-        $valuesNodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:value');
-
-        foreach ($valuesNodeList as $valueNode) {
-            assert($valueNode instanceof DOMElement);
-            $valueObject = AttributesReader::readValue($valueNode);
-
-            $valueRecipientsNodeList = $this->xpath->query('podcast:valueRecipient', $valueNode);
-            $valueRecipients         = [];
-
-            foreach ($valueRecipientsNodeList as $entry) {
-                assert($entry instanceof DOMElement);
-                $object            = AttributesReader::readValueRecipient($entry);
-                $valueRecipients[] = $object;
+        $values = [];
+        $values_node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:value');
+        foreach ($values_node_list as $value_node) {
+            assert($value_node instanceof Dom_Element);
+            $value_object = Attributes_Reader::read_value($value_node);
+            $value_recipients_node_list = $this->xpath->query('podcast:valueRecipient', $value_node);
+            $value_recipients = [];
+            foreach ($value_recipients_node_list as $entry) {
+                assert($entry instanceof Dom_Element);
+                $object = Attributes_Reader::read_value_recipient($entry);
+                $value_recipients[] = $object;
             }
-
-            $valueObject->valueRecipients = $valueRecipients;
-            $values[]                     = $valueObject;
+            $value_object->value_recipients = $value_recipients;
+            $values[] = $value_object;
         }
-
         $this->data['values'] = $values;
-
         return $this->data['values'];
     }
-
     /**
      * Get the podcast social interacts
      *
      * @return list<SocialInteractObject>
      */
-    public function getPodcastIndexSocialInteracts(): array
+    public function get_podcast_index_social_interacts(): array
     {
         if (array_key_exists('socialInteracts', $this->data)) {
             /** @var list<SocialInteractObject> $socialInteracts */
-            $socialInteracts = $this->data['socialInteracts'];
-            return $socialInteracts;
+            $social_interacts = $this->data['socialInteracts'];
+            return $social_interacts;
         }
-
-        $socialInteracts = [];
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:socialInteract');
-
-        foreach ($nodeList as $entry) {
-            assert($entry instanceof DOMElement);
-            $object            = AttributesReader::readSocialInteract($entry);
-            $socialInteracts[] = $object;
+        $social_interacts = [];
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:socialInteract');
+        foreach ($node_list as $entry) {
+            assert($entry instanceof Dom_Element);
+            $object = Attributes_Reader::read_social_interact($entry);
+            $social_interacts[] = $object;
         }
-
-        $this->data['socialInteracts'] = $socialInteracts;
-
+        $this->data['socialInteracts'] = $social_interacts;
         return $this->data['socialInteracts'];
     }
-
     /**
      * Get the podcast live items
      *
      * @psalm-return list<LiveItemReader>
      */
-    public function getPodcastIndexLiveItems(): array
+    public function get_podcast_index_live_items(): array
     {
         if (array_key_exists('liveItems', $this->data)) {
             /** @psalm-var list<LiveItemReader> */
             return $this->data['liveItems'];
         }
-
-        $liveItems = [];
-
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:liveItem');
-
-        if ($nodeList->length > 0) {
+        $live_items = [];
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:liveItem');
+        if ($node_list->length > 0) {
             $index = 0;
-            foreach ($nodeList as $entry) {
-                assert($entry instanceof DOMElement);
-                $reader = new LiveItemReader($entry, (string) $index, $this->getType());
-                $reader->setXpath($this->xpath);
-                $reader->setXpathPrefix('//podcast:liveItem[' . ($index + 1) . ']');
-                $liveItems[] = $reader;
+            foreach ($node_list as $entry) {
+                assert($entry instanceof Dom_Element);
+                $reader = new Live_Item_Reader($entry, (string) $index, $this->get_type());
+                $reader->set_xpath($this->xpath);
+                $reader->set_xpath_prefix('//podcast:liveItem[' . ($index + 1) . ']');
+                $live_items[] = $reader;
                 $index++;
             }
         }
-
-        $this->data['liveItems'] = $liveItems;
-
+        $this->data['liveItems'] = $live_items;
         return $this->data['liveItems'];
     }
-
     /**
      * Get the podcast chat
      *
      * @return null|ChatObject
      */
-    public function getPodcastIndexChat(): object|null
+    public function get_podcast_index_chat(): object|null
     {
         if (array_key_exists('chat', $this->data)) {
             /** @psalm-var null|ChatObject */
             return $this->data['chat'];
         }
-
-        $object   = null;
-        $nodeList = $this->xpath->query($this->getXpathPrefix() . '/podcast:chat');
-
-        if ($nodeList->length > 0) {
-            $item = $nodeList->item(0);
-            assert($item instanceof DOMElement);
-            $object = AttributesReader::readChat($item);
+        $object = null;
+        $node_list = $this->xpath->query($this->get_xpath_prefix() . '/podcast:chat');
+        if ($node_list->length > 0) {
+            $item = $node_list->item(0);
+            assert($item instanceof Dom_Element);
+            $object = Attributes_Reader::read_chat($item);
         }
-
         $this->data['chat'] = $object;
         return $this->data['chat'];
     }
-
     /**
      * Register PodcastIndex namespace
      */
-    protected function registerNamespaces(): void
+    protected function register_namespaces(): void
     {
-        $this->xpath->registerNamespace(
-            'podcast',
-            'https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md'
-        );
+        $this->xpath->register_namespace('podcast', 'https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md');
     }
 }

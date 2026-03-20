@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Feed\Pub_Sub_Hubbub\Model;
 
-namespace Laminas\Feed\PubSubHubbub\Model;
-
-interface SubscriptionPersistenceInterface
+interface Subscription_Persistence_Interface
 {
     /**
      * Save subscription to RDMBS
@@ -12,29 +11,26 @@ interface SubscriptionPersistenceInterface
      * @param  array $data The key must be stored here as a $data['id'] entry
      * @return bool
      */
-    public function setSubscription(array $data);
-
+    public function set_subscription(array $data);
     /**
      * Get subscription by ID/key
      *
      * @param  string $key
      * @return array
      */
-    public function getSubscription($key);
-
+    public function get_subscription($key);
     /**
      * Determine if a subscription matching the key exists
      *
      * @param  string $key
      * @return bool
      */
-    public function hasSubscription($key);
-
+    public function has_subscription($key);
     /**
      * Delete a subscription
      *
      * @param  string $key
      * @return bool
      */
-    public function deleteSubscription($key);
+    public function delete_subscription($key);
 }

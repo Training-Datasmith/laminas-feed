@@ -1,34 +1,28 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\Feed\PubSubHubbub\Subscriber;
+declare (strict_types=1);
+namespace Laminas\Feed\Pub_Sub_Hubbub\Subscriber;
 
 use function array_key_exists;
 use function explode;
 use function hash;
 use function hash_equals;
-
 use function is_array;
-
-use Laminas\Feed\PubSubHubbub;
-use Laminas\Feed\PubSubHubbub\Exception;
+use Laminas\Feed\Pub_Sub_Hubbub;
+use Laminas\Feed\Pub_Sub_Hubbub\Exception;
 use Laminas\Feed\Uri;
-
 use function rawurldecode;
 use function sprintf;
 use function stripos;
 use function strtolower;
-
-class Callback extends PubSubHubbub\AbstractCallback
+class Callback extends Pub_Sub_Hubbub\Abstract_Callback
 {
     /**
      * Contains the content of any feeds sent as updates to the Callback URL
      *
      * @var string
      */
-    protected $feedUpdate;
-
+    protected $feed_update;
     /**
      * Holds a manually set subscription key (i.e. identifies a unique
      * subscription) which is typical when it is not passed in the query string
@@ -37,15 +31,13 @@ class Callback extends PubSubHubbub\AbstractCallback
      *
      * @var null|string
      */
-    protected $subscriptionKey;
-
+    protected $subscription_key;
     /**
      * After verification, this is set to the verified subscription's data.
      *
      * @var array
      */
-    protected $currentSubscriptionData;
-
+    protected $current_subscription_data;
     /**
      * Set a subscription key to use for the current callback request manually.
      * Required if usePathParameter is enabled for the Subscriber.
@@ -53,12 +45,11 @@ class Callback extends PubSubHubbub\AbstractCallback
      * @param  string $key
      * @return $this
      */
-    public function setSubscriptionKey($key): static
+    public function set_subscription_key($key): static
     {
-        $this->subscriptionKey = $key;
+        $this->subscription_key = $key;
         return $this;
     }
-
     /**
      * Handle any callback from a Hub Server responding to a subscription or
      * unsubscription request. This should be the Hub Server confirming the
@@ -67,12 +58,11 @@ class Callback extends PubSubHubbub\AbstractCallback
      * @param  null|array $httpGetData     GET data if available and not in $_GET
      * @param  bool       $sendResponseNow Whether to send response now or when asked
      */
-    public function handle(?array $httpGetData = null, $sendResponseNow = false): void
+    public function handle(?array $http_get_data = null, $send_response_now = false): void
     {
-        if ($httpGetData === null) {
-            $httpGetData = $_GET;
+        if ($http_get_data === null) {
+            $http_get_data = $_GET;
         }
-
         /**
          * Handle any feed updates (sorry for the mess :P)
          *
@@ -80,60 +70,46 @@ class Callback extends PubSubHubbub\AbstractCallback
          * SHOULD be validated/processed by an asynchronous process so as
          * to avoid holding up responses to the Hub.
          */
-        $contentType = $this->_getHeader('Content-Type');
-        if (
-            strtolower((string) $_SERVER['REQUEST_METHOD']) === 'post'
-            && $this->_hasValidVerifyToken(null, false)
-            && (stripos($contentType, 'application/atom+xml') === 0
-                || stripos($contentType, 'application/rss+xml') === 0
-                || stripos($contentType, 'application/xml') === 0
-                || stripos($contentType, 'text/xml') === 0
-                || stripos($contentType, 'application/rdf+xml') === 0)
-        ) {
-            $this->setFeedUpdate($this->_getRawBody());
-            $this->getHttpResponse()->setHeader('X-Hub-On-Behalf-Of', $this->getSubscriberCount());
+        $content_type = $this->_get_header('Content-Type');
+        if (strtolower((string) $_SERVER['REQUEST_METHOD']) === 'post' && $this->_has_valid_verify_token(null, false) && (stripos($content_type, 'application/atom+xml') === 0 || stripos($content_type, 'application/rss+xml') === 0 || stripos($content_type, 'application/xml') === 0 || stripos($content_type, 'text/xml') === 0 || stripos($content_type, 'application/rdf+xml') === 0)) {
+            $this->set_feed_update($this->_get_raw_body());
+            $this->get_http_response()->set_header('X-Hub-On-Behalf-Of', $this->get_subscriber_count());
             /**
              * Handle any (un)subscribe confirmation requests
              */
-        } elseif ($this->isValidHubVerification($httpGetData)) {
-            $this->getHttpResponse()->setContent($httpGetData['hub_challenge']);
-
-            switch (strtolower((string) $httpGetData['hub_mode'])) {
+        } elseif ($this->is_valid_hub_verification($http_get_data)) {
+            $this->get_http_response()->set_content($http_get_data['hub_challenge']);
+            switch (strtolower((string) $http_get_data['hub_mode'])) {
                 case 'subscribe':
-                    $data                       = $this->currentSubscriptionData;
-                    $data['subscription_state'] = PubSubHubbub\PubSubHubbub::SUBSCRIPTION_VERIFIED;
-                    if (isset($httpGetData['hub_lease_seconds'])) {
-                        $data['lease_seconds'] = $httpGetData['hub_lease_seconds'];
+                    $data = $this->current_subscription_data;
+                    $data['subscription_state'] = Pub_Sub_Hubbub\Pub_Sub_Hubbub::SUBSCRIPTION_VERIFIED;
+                    if (isset($http_get_data['hub_lease_seconds'])) {
+                        $data['lease_seconds'] = $http_get_data['hub_lease_seconds'];
                     }
-                    $this->getStorage()->setSubscription($data);
+                    $this->get_storage()->set_subscription($data);
                     break;
                 case 'unsubscribe':
-                    $verifyTokenKey = $this->_detectVerifyTokenKey($httpGetData);
-                    $this->getStorage()->deleteSubscription($verifyTokenKey);
+                    $verify_token_key = $this->_detect_verify_token_key($http_get_data);
+                    $this->get_storage()->delete_subscription($verify_token_key);
                     break;
                 default:
-                    throw new Exception\RuntimeException(sprintf(
-                        'Invalid hub_mode ("%s") provided',
-                        $httpGetData['hub_mode']
-                    ));
+                    throw new Exception\RuntimeException(sprintf('Invalid hub_mode ("%s") provided', $http_get_data['hub_mode']));
             }
             /**
              * Hey, C'mon! We tried everything else!
              */
         } else {
-            $this->getHttpResponse()->setStatusCode(404);
+            $this->get_http_response()->set_status_code(404);
         }
-
-        if ($sendResponseNow) {
-            $this->sendResponse();
+        if ($send_response_now) {
+            $this->send_response();
         }
     }
-
     /**
      * Checks validity of the request simply by making a quick pass and
      * confirming the presence of all REQUIRED parameters.
      */
-    public function isValidHubVerification(array $httpGetData): bool
+    public function is_valid_hub_verification(array $http_get_data): bool
     {
         /**
          * As per the specification, the hub.verify_token is OPTIONAL. This
@@ -144,43 +120,30 @@ class Callback extends PubSubHubbub\AbstractCallback
         if (strtolower((string) $_SERVER['REQUEST_METHOD']) !== 'get') {
             return false;
         }
-        $required = [
-            'hub_mode',
-            'hub_topic',
-            'hub_challenge',
-            'hub_verify_token',
-        ];
+        $required = ['hub_mode', 'hub_topic', 'hub_challenge', 'hub_verify_token'];
         foreach ($required as $key) {
-            if (! array_key_exists($key, $httpGetData)) {
+            if (!array_key_exists($key, $http_get_data)) {
                 return false;
             }
         }
-        if (
-            $httpGetData['hub_mode'] !== 'subscribe'
-            && $httpGetData['hub_mode'] !== 'unsubscribe'
-        ) {
+        if ($http_get_data['hub_mode'] !== 'subscribe' && $http_get_data['hub_mode'] !== 'unsubscribe') {
             return false;
         }
-        if (
-            $httpGetData['hub_mode'] === 'subscribe'
-            && ! array_key_exists('hub_lease_seconds', $httpGetData)
-        ) {
+        if ($http_get_data['hub_mode'] === 'subscribe' && !array_key_exists('hub_lease_seconds', $http_get_data)) {
             return false;
         }
-        if (! Uri::factory($httpGetData['hub_topic'])->isValid()) {
+        if (!Uri::factory($http_get_data['hub_topic'])->is_valid()) {
             return false;
         }
-
         /**
          * Attempt to retrieve any Verification Token Key attached to Callback
          * URL's path by our Subscriber implementation
          */
-        if (! $this->_hasValidVerifyToken($httpGetData)) {
+        if (!$this->_has_valid_verify_token($http_get_data)) {
             return false;
         }
         return true;
     }
-
     /**
      * Sets a newly received feed (Atom/RSS) sent by a Hub as an update to a
      * Topic we've subscribed to.
@@ -188,34 +151,31 @@ class Callback extends PubSubHubbub\AbstractCallback
      * @param  string $feed
      * @return $this
      */
-    public function setFeedUpdate($feed): static
+    public function set_feed_update($feed): static
     {
-        $this->feedUpdate = $feed;
+        $this->feed_update = $feed;
         return $this;
     }
-
     /**
      * Check if any newly received feed (Atom/RSS) update was received
      */
-    public function hasFeedUpdate(): bool
+    public function has_feed_update(): bool
     {
-        if ($this->feedUpdate === null) {
+        if ($this->feed_update === null) {
             return false;
         }
         return true;
     }
-
     /**
      * Gets a newly received feed (Atom/RSS) sent by a Hub as an update to a
      * Topic we've subscribed to.
      *
      * @return string
      */
-    public function getFeedUpdate()
+    public function get_feed_update()
     {
-        return $this->feedUpdate;
+        return $this->feed_update;
     }
-
     // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
     /**
      * Check for a valid verify_token. By default attempts to compare values
@@ -224,28 +184,27 @@ class Callback extends PubSubHubbub\AbstractCallback
      * @param  array $httpGetData
      * @param  bool $checkValue
      */
-    protected function _hasValidVerifyToken(?array $httpGetData = null, $checkValue = true): bool
+    protected function _has_valid_verify_token(?array $http_get_data = null, $check_value = true): bool
     {
-        $verifyTokenKey = $this->_detectVerifyTokenKey($httpGetData);
-        if (empty($verifyTokenKey)) {
+        $verify_token_key = $this->_detect_verify_token_key($http_get_data);
+        if (empty($verify_token_key)) {
             return false;
         }
-        $verifyTokenExists = $this->getStorage()->hasSubscription($verifyTokenKey);
-        if (! $verifyTokenExists) {
+        $verify_token_exists = $this->get_storage()->has_subscription($verify_token_key);
+        if (!$verify_token_exists) {
             return false;
         }
-        if ($checkValue) {
-            $data        = $this->getStorage()->getSubscription($verifyTokenKey);
-            $verifyToken = $data['verify_token'];
-            if (! hash_equals($verifyToken, hash('sha256', (string) $httpGetData['hub_verify_token']))) {
+        if ($check_value) {
+            $data = $this->get_storage()->get_subscription($verify_token_key);
+            $verify_token = $data['verify_token'];
+            if (!hash_equals($verify_token, hash('sha256', (string) $http_get_data['hub_verify_token']))) {
                 return false;
             }
-            $this->currentSubscriptionData = $data;
+            $this->current_subscription_data = $data;
             return true;
         }
         return true;
     }
-
     /**
      * Attempt to detect the verification token key. This would be passed in
      * the Callback URL (which we are handling with this class!) as a URI
@@ -253,36 +212,29 @@ class Callback extends PubSubHubbub\AbstractCallback
      *
      * @return false|string
      */
-    protected function _detectVerifyTokenKey(?array $httpGetData = null)
+    protected function _detect_verify_token_key(?array $http_get_data = null)
     {
         /**
          * Available when sub keys encoding in Callback URL path
          */
-        if (isset($this->subscriptionKey)) {
-            return $this->subscriptionKey;
+        if (isset($this->subscription_key)) {
+            return $this->subscription_key;
         }
-
         /**
          * Available only if allowed by PuSH 0.2 Hubs
          */
-        if (
-            is_array($httpGetData)
-            && isset($httpGetData['xhub_subscription'])
-        ) {
-            return $httpGetData['xhub_subscription'];
+        if (is_array($http_get_data) && isset($http_get_data['xhub_subscription'])) {
+            return $http_get_data['xhub_subscription'];
         }
-
         /**
          * Available (possibly) if corrupted in transit and not part of $_GET
          */
-        $params = $this->_parseQueryString();
+        $params = $this->_parse_query_string();
         if (isset($params['xhub.subscription'])) {
             return rawurldecode($params['xhub.subscription']);
         }
-
         return false;
     }
-
     /**
      * Build an array of Query String parameters.
      * This bypasses $_GET which munges parameter names and cannot accept
@@ -290,20 +242,20 @@ class Callback extends PubSubHubbub\AbstractCallback
      *
      * @return array|void
      */
-    protected function _parseQueryString(): array
+    protected function _parse_query_string(): array
     {
-        $params      = [];
-        $queryString = '';
+        $params = [];
+        $query_string = '';
         if (isset($_SERVER['QUERY_STRING'])) {
-            $queryString = $_SERVER['QUERY_STRING'];
+            $query_string = $_SERVER['QUERY_STRING'];
         }
-        if (empty($queryString)) {
+        if (empty($query_string)) {
             return [];
         }
-        $parts = explode('&', (string) $queryString);
+        $parts = explode('&', (string) $query_string);
         foreach ($parts as $kvpair) {
-            $pair  = explode('=', $kvpair);
-            $key   = rawurldecode($pair[0]);
+            $pair = explode('=', $kvpair);
+            $key = rawurldecode($pair[0]);
             $value = rawurldecode($pair[1]);
             if (isset($params[$key])) {
                 if (is_array($params[$key])) {
@@ -317,6 +269,5 @@ class Callback extends PubSubHubbub\AbstractCallback
         }
         return $params;
     }
-
     // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
 }

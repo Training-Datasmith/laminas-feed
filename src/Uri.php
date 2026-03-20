@@ -1,53 +1,36 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed;
 
 use function in_array;
 use function parse_url;
-
 class Uri
 {
     /** @var null|string */
     protected $fragment;
-
     /** @var null|string */
     protected $host;
-
     /** @var null|string */
     protected $pass;
-
     /** @var null|string */
     protected $path;
-
     /** @var null|int */
     protected $port;
-
     /** @var null|string */
     protected $query;
-
     /** @var null|string */
     protected $scheme;
-
     /** @var null|string */
     protected $user;
-
     /** @var null|bool */
     protected $valid;
-
     /**
      * Valid schemes
      *
      * @var string[]
      */
-    protected $validSchemes = [
-        'http',
-        'https',
-        'file',
-        'magnet',
-    ];
-
+    protected $valid_schemes = ['http', 'https', 'file', 'magnet'];
     /**
      * @param string $uri
      */
@@ -58,17 +41,15 @@ class Uri
             $this->valid = false;
             return;
         }
-
-        $this->scheme   = $parsed['scheme'] ?? '';
-        $this->host     = $parsed['host'] ?? '';
-        $this->port     = $parsed['port'] ?? null;
-        $this->user     = $parsed['user'] ?? null;
-        $this->pass     = $parsed['pass'] ?? null;
-        $this->path     = $parsed['path'] ?? '';
-        $this->query    = $parsed['query'] ?? null;
+        $this->scheme = $parsed['scheme'] ?? '';
+        $this->host = $parsed['host'] ?? '';
+        $this->port = $parsed['port'] ?? null;
+        $this->user = $parsed['user'] ?? null;
+        $this->pass = $parsed['pass'] ?? null;
+        $this->path = $parsed['path'] ?? '';
+        $this->query = $parsed['query'] ?? null;
         $this->fragment = $parsed['fragment'] ?? null;
     }
-
     /**
      * Create an instance
      *
@@ -80,62 +61,54 @@ class Uri
     {
         return new static($uri);
     }
-
     /**
      * Retrieve the host
      *
      * @return string
      */
-    public function getHost()
+    public function get_host()
     {
         return $this->host;
     }
-
     /**
      * Retrieve the URI path
      *
      * @return string
      */
-    public function getPath()
+    public function get_path()
     {
         return $this->path;
     }
-
     /**
      * Retrieve the scheme
      *
      * @return string
      */
-    public function getScheme()
+    public function get_scheme()
     {
         return $this->scheme;
     }
-
     /**
      * Is the URI valid?
      */
-    public function isValid(): bool
+    public function is_valid(): bool
     {
         if (false === $this->valid) {
             return false;
         }
-
-        if ($this->scheme && ! in_array($this->scheme, $this->validSchemes, true)) {
+        if ($this->scheme && !in_array($this->scheme, $this->valid_schemes, true)) {
             return false;
         }
-
         if ($this->host) {
             if ($this->path && !str_starts_with($this->path, '/')) {
                 return false;
             }
             return true;
         }
-
         // no host, but user and/or port... what?
         if ($this->user || $this->port) {
             return false;
         }
-
         if ($this->path) {
             // Check path-only (no host) URI
             if (str_starts_with($this->path, '//')) {
@@ -143,20 +116,17 @@ class Uri
             }
             return true;
         }
-
-        if (! ($this->query || $this->fragment)) {
+        if (!($this->query || $this->fragment)) {
             // No host, path, query or fragment - this is not a valid URI
             return false;
         }
-
         return true;
     }
-
     /**
      * Is the URI absolute?
      */
-    public function isAbsolute(): bool
+    public function is_absolute(): bool
     {
-        return ! empty($this->scheme);
+        return !empty($this->scheme);
     }
 }

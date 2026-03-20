@@ -1,28 +1,23 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\Feed\Writer\Extension\ITunes;
+declare (strict_types=1);
+namespace Laminas\Feed\Writer\Extension\I_Tunes;
 
 use function array_key_exists;
 use function count;
 use function ctype_alpha;
 use function ctype_digit;
-
 use const E_USER_DEPRECATED;
-
 use function get_debug_type;
 use function implode;
 use function in_array;
 use function is_array;
 use function is_bool;
 use function is_string;
-
 use Laminas\Feed\Uri;
 use Laminas\Feed\Writer;
-use Laminas\Stdlib\StringUtils;
-use Laminas\Stdlib\StringWrapper\StringWrapperInterface;
-
+use Laminas\Stdlib\String_Utils;
+use Laminas\Stdlib\String_Wrapper\String_Wrapper_Interface;
 use function lcfirst;
 use function method_exists;
 use function preg_match;
@@ -30,9 +25,7 @@ use function sprintf;
 use function strlen;
 use function substr;
 use function trigger_error;
-
 use function ucfirst;
-
 class Feed
 {
     /**
@@ -41,49 +34,43 @@ class Feed
      * @var array
      */
     protected $data = [];
-
     /**
      * Encoding of all text values
      *
      * @var string
      */
     protected $encoding = 'UTF-8';
-
     /**
      * The used string wrapper supporting encoding
      *
      * @var StringWrapperInterface
      */
-    protected $stringWrapper;
-
+    protected $string_wrapper;
     public function __construct()
     {
-        $this->stringWrapper = StringUtils::getWrapper($this->encoding);
+        $this->string_wrapper = String_Utils::get_wrapper($this->encoding);
     }
-
     /**
      * Set feed encoding
      *
      * @param  string $enc
      * @return $this
      */
-    public function setEncoding($enc): static
+    public function set_encoding($enc): static
     {
-        $this->stringWrapper = StringUtils::getWrapper($enc);
-        $this->encoding      = $enc;
+        $this->string_wrapper = String_Utils::get_wrapper($enc);
+        $this->encoding = $enc;
         return $this;
     }
-
     /**
      * Get feed encoding
      *
      * @return string
      */
-    public function getEncoding()
+    public function get_encoding()
     {
         return $this->encoding;
     }
-
     /**
      * Set a block value of "yes" or "no". You may also set an empty string.
      *
@@ -91,35 +78,29 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesBlock($value): static
+    public function set_itunes_block($value): static
     {
-        if (! ctype_alpha($value) && strlen($value) > 0) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "block" may only contain alphabetic characters'
-            );
+        if (!ctype_alpha($value) && strlen($value) > 0) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "block" may only contain alphabetic characters');
         }
-        if ($this->stringWrapper->strlen($value) > 255) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "block" may only contain a maximum of 255 characters'
-            );
+        if ($this->string_wrapper->strlen($value) > 255) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "block" may only contain a maximum of 255 characters');
         }
         $this->data['block'] = $value;
         return $this;
     }
-
     /**
      * Add feed authors
      *
      * @return $this
      */
-    public function addItunesAuthors(array $values): static
+    public function add_itunes_authors(array $values): static
     {
         foreach ($values as $value) {
-            $this->addItunesAuthor($value);
+            $this->add_itunes_author($value);
         }
         return $this;
     }
-
     /**
      * Add feed author
      *
@@ -127,51 +108,42 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addItunesAuthor($value): static
+    public function add_itunes_author($value): static
     {
-        if ($this->stringWrapper->strlen($value) > 255) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: any "author" may only contain a maximum of 255 characters each'
-            );
+        if ($this->string_wrapper->strlen($value) > 255) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: any "author" may only contain a maximum of 255 characters each');
         }
-        if (! isset($this->data['authors'])) {
+        if (!isset($this->data['authors'])) {
             $this->data['authors'] = [];
         }
         $this->data['authors'][] = $value;
         return $this;
     }
-
     /**
      * Set feed categories
      *
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesCategories(array $values): static
+    public function set_itunes_categories(array $values): static
     {
-        if (! isset($this->data['categories'])) {
+        if (!isset($this->data['categories'])) {
             $this->data['categories'] = [];
         }
         foreach ($values as $key => $value) {
-            if (! is_array($value)) {
-                if ($this->stringWrapper->strlen($value) > 255) {
-                    throw new Writer\Exception\InvalidArgumentException(
-                        'invalid parameter: any "category" may only contain a maximum of 255 characters each'
-                    );
+            if (!is_array($value)) {
+                if ($this->string_wrapper->strlen($value) > 255) {
+                    throw new Writer\Exception\InvalidArgumentException('invalid parameter: any "category" may only contain a maximum of 255 characters each');
                 }
                 $this->data['categories'][] = $value;
             } else {
-                if ($this->stringWrapper->strlen($key) > 255) {
-                    throw new Writer\Exception\InvalidArgumentException(
-                        'invalid parameter: any "category" may only contain a maximum of 255 characters each'
-                    );
+                if ($this->string_wrapper->strlen($key) > 255) {
+                    throw new Writer\Exception\InvalidArgumentException('invalid parameter: any "category" may only contain a maximum of 255 characters each');
                 }
                 $this->data['categories'][$key] = [];
                 foreach ($value as $val) {
-                    if ($this->stringWrapper->strlen($val) > 255) {
-                        throw new Writer\Exception\InvalidArgumentException(
-                            'invalid parameter: any "category" may only contain a maximum of 255 characters each'
-                        );
+                    if ($this->string_wrapper->strlen($val) > 255) {
+                        throw new Writer\Exception\InvalidArgumentException('invalid parameter: any "category" may only contain a maximum of 255 characters each');
                     }
                     $this->data['categories'][$key][] = $val;
                 }
@@ -179,7 +151,6 @@ class Feed
         }
         return $this;
     }
-
     /**
      * Set feed image (icon)
      *
@@ -187,24 +158,17 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesImage($value): static
+    public function set_itunes_image($value): static
     {
-        if (! is_string($value) || ! Uri::factory($value)->isValid()) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "image" may only be a valid URI/IRI'
-            );
+        if (!is_string($value) || !Uri::factory($value)->is_valid()) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "image" may only be a valid URI/IRI');
         }
-        if (! in_array(substr($value, -3), ['jpg', 'png'])) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "image" may only'
-                . ' use file extension "jpg" or "png" which must be the last three'
-                . ' characters of the URI (i.e. no query string or fragment)'
-            );
+        if (!in_array(substr($value, -3), ['jpg', 'png'])) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "image" may only' . ' use file extension "jpg" or "png" which must be the last three' . ' characters of the URI (i.e. no query string or fragment)');
         }
         $this->data['image'] = $value;
         return $this;
     }
-
     /**
      * Set feed cumulative duration
      *
@@ -212,22 +176,15 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesDuration($value): static
+    public function set_itunes_duration($value): static
     {
         $value = (string) $value;
-        if (
-            ! ctype_digit($value)
-            && ! preg_match('/^\d+:[0-5]{1}[0-9]{1}$/', $value)
-            && ! preg_match('/^\d+:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}$/', $value)
-        ) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "duration" may only be of a specified [[HH:]MM:]SS format'
-            );
+        if (!ctype_digit($value) && !preg_match('/^\d+:[0-5]{1}[0-9]{1}$/', $value) && !preg_match('/^\d+:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}$/', $value)) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "duration" may only be of a specified [[HH:]MM:]SS format');
         }
         $this->data['duration'] = $value;
         return $this;
     }
-
     /**
      * Set "explicit" flag
      *
@@ -237,30 +194,24 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesExplicit($value): static
+    public function set_itunes_explicit($value): static
     {
         // "yes", "no" and "clean" are valid values for a previous version
-        if (! is_bool($value) && ! in_array($value, ['yes', 'no', 'clean'])) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "explicit" must be a boolean value'
-            );
+        if (!is_bool($value) && !in_array($value, ['yes', 'no', 'clean'])) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "explicit" must be a boolean value');
         }
-
         switch ($value) {
             case 'yes':
                 $value = true;
                 break;
-
             case 'no':
             case 'clean':
                 $value = false;
                 break;
         }
-
         $this->data['explicit'] = $value ? 'true' : 'false';
         return $this;
     }
-
     /**
      * Set feed keywords
      *
@@ -271,31 +222,19 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesKeywords(array $value): static
+    public function set_itunes_keywords(array $value): static
     {
-        trigger_error(
-            'itunes:keywords has been deprecated in the iTunes podcast RSS specification,'
-            . ' and should not be relied on.',
-            E_USER_DEPRECATED
-        );
-
+        trigger_error('itunes:keywords has been deprecated in the iTunes podcast RSS specification,' . ' and should not be relied on.', E_USER_DEPRECATED);
         if (count($value) > 12) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "keywords" may only contain a maximum of 12 terms'
-            );
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "keywords" may only contain a maximum of 12 terms');
         }
         $concat = implode(',', $value);
-        if ($this->stringWrapper->strlen($concat) > 255) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "keywords" may only'
-                . ' have a concatenated length of 255 chars where terms are delimited'
-                . ' by a comma'
-            );
+        if ($this->string_wrapper->strlen($concat) > 255) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "keywords" may only' . ' have a concatenated length of 255 chars where terms are delimited' . ' by a comma');
         }
         $this->data['keywords'] = $value;
         return $this;
     }
-
     /**
      * Set new feed URL
      *
@@ -303,59 +242,46 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesNewFeedUrl($value): static
+    public function set_itunes_new_feed_url($value): static
     {
-        if (! Uri::factory($value)->isValid()) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "newFeedUrl" may only be a valid URI/IRI'
-            );
+        if (!Uri::factory($value)->is_valid()) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "newFeedUrl" may only be a valid URI/IRI');
         }
         $this->data['newFeedUrl'] = $value;
         return $this;
     }
-
     /**
      * Add feed owners
      *
      * @return $this
      */
-    public function addItunesOwners(array $values): static
+    public function add_itunes_owners(array $values): static
     {
         foreach ($values as $value) {
-            $this->addItunesOwner($value);
+            $this->add_itunes_owner($value);
         }
         return $this;
     }
-
     /**
      * Add feed owner
      *
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function addItunesOwner(array $value): static
+    public function add_itunes_owner(array $value): static
     {
-        if (! isset($value['name']) || ! isset($value['email'])) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: any "owner" must be an array containing keys "name" and "email"'
-            );
+        if (!isset($value['name']) || !isset($value['email'])) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: any "owner" must be an array containing keys "name" and "email"');
         }
-        if (
-            $this->stringWrapper->strlen($value['name']) > 255
-            || $this->stringWrapper->strlen($value['email']) > 255
-        ) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: any "owner" may only contain a maximum of 255 characters'
-                . ' each for "name" and "email"'
-            );
+        if ($this->string_wrapper->strlen($value['name']) > 255 || $this->string_wrapper->strlen($value['email']) > 255) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: any "owner" may only contain a maximum of 255 characters' . ' each for "name" and "email"');
         }
-        if (! isset($this->data['owners'])) {
+        if (!isset($this->data['owners'])) {
             $this->data['owners'] = [];
         }
         $this->data['owners'][] = $value;
         return $this;
     }
-
     /**
      * Set feed subtitle
      *
@@ -363,17 +289,14 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesSubtitle($value): static
+    public function set_itunes_subtitle($value): static
     {
-        if ($this->stringWrapper->strlen($value) > 255) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "subtitle" may only contain a maximum of 255 characters'
-            );
+        if ($this->string_wrapper->strlen($value) > 255) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "subtitle" may only contain a maximum of 255 characters');
         }
         $this->data['subtitle'] = $value;
         return $this;
     }
-
     /**
      * Set feed summary
      *
@@ -381,17 +304,14 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesSummary($value): static
+    public function set_itunes_summary($value): static
     {
-        if ($this->stringWrapper->strlen($value) > 4000) {
-            throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "summary" may only contain a maximum of 4000 characters'
-            );
+        if ($this->string_wrapper->strlen($value) > 4000) {
+            throw new Writer\Exception\InvalidArgumentException('invalid parameter: "summary" may only contain a maximum of 4000 characters');
         }
         $this->data['summary'] = $value;
         return $this;
     }
-
     /**
      * Set podcast type
      *
@@ -399,20 +319,15 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesType($type): static
+    public function set_itunes_type($type): static
     {
-        $validTypes = ['episodic', 'serial'];
-        if (! in_array($type, $validTypes, true)) {
-            throw new Writer\Exception\InvalidArgumentException(sprintf(
-                'invalid parameter: "type" MUST be one of [%s]; received %s',
-                implode(', ', $validTypes),
-                get_debug_type($type),
-            ));
+        $valid_types = ['episodic', 'serial'];
+        if (!in_array($type, $valid_types, true)) {
+            throw new Writer\Exception\InvalidArgumentException(sprintf('invalid parameter: "type" MUST be one of [%s]; received %s', implode(', ', $valid_types), get_debug_type($type)));
         }
         $this->data['type'] = $type;
         return $this;
     }
-
     /**
      * Set "completion" status (whether more episodes will be released)
      *
@@ -420,23 +335,17 @@ class Feed
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
-    public function setItunesComplete($status): static
+    public function set_itunes_complete($status): static
     {
-        if (! is_bool($status)) {
-            throw new Writer\Exception\InvalidArgumentException(sprintf(
-                'invalid parameter: "complete" MUST be boolean; received %s',
-                get_debug_type($status),
-            ));
+        if (!is_bool($status)) {
+            throw new Writer\Exception\InvalidArgumentException(sprintf('invalid parameter: "complete" MUST be boolean; received %s', get_debug_type($status)));
         }
-
-        if (! $status) {
+        if (!$status) {
             return $this;
         }
-
         $this->data['complete'] = 'Yes';
         return $this;
     }
-
     /**
      * Overloading: proxy to internal setters
      *
@@ -446,16 +355,10 @@ class Feed
     public function __call(string $method, array $params)
     {
         $point = lcfirst(substr($method, 9));
-        if (
-            ! method_exists($this, 'setItunes' . ucfirst($point))
-            && ! method_exists($this, 'addItunes' . ucfirst($point))
-        ) {
-            throw new Writer\Exception\BadMethodCallException(
-                'invalid method: ' . $method
-            );
+        if (!method_exists($this, 'setItunes' . ucfirst($point)) && !method_exists($this, 'addItunes' . ucfirst($point))) {
+            throw new Writer\Exception\BadMethodCallException('invalid method: ' . $method);
         }
-
-        if (! array_key_exists($point, $this->data) || empty($this->data[$point])) {
+        if (!array_key_exists($point, $this->data) || empty($this->data[$point])) {
             return;
         }
         return $this->data[$point];

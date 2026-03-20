@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Writer;
 
 /**
@@ -15,6 +14,6 @@ namespace Laminas\Feed\Writer;
  * @method has(string $extension): bool
  * @method get(string $extension): mixed
  */
-interface ExtensionManagerInterface
+interface Extension_Manager_Interface
 {
 }

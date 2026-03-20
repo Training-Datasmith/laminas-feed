@@ -1,15 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\Feed\Reader\Extension\PodcastIndex;
+declare (strict_types=1);
+namespace Laminas\Feed\Reader\Extension\Podcast_Index;
 
 // phpcs:disable SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
 use DateTimeInterface;
 // phpcs:enable SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
-use DOMElement;
+use Dom_Element;
 use stdClass;
-
 /**
  * Reads PodcastIndex data that exists for both, Feeds and Entries.
  * This class is internal to the library and should not be referenced by consumer code.
@@ -169,334 +167,305 @@ use stdClass;
  *        space: string,
  *      }
  */
-final class AttributesReader
+final class Attributes_Reader
 {
     /**
      * Read feed or item license
      *
      * @psalm-return LicenseObject
      */
-    public static function readLicense(DOMElement $item): \stdClass
+    public static function read_license(Dom_Element $item): \stdClass
     {
-        $license             = new stdClass();
-        $license->identifier = $item->nodeValue;
-        $license->url        = $item->getAttribute('url');
-
+        $license = new stdClass();
+        $license->identifier = $item->node_value;
+        $license->url = $item->get_attribute('url');
         return $license;
     }
-
     /**
      * Read podcast location
      *
      * @psalm-return LocationObject
      */
-    public static function readLocation(DOMElement $item): \stdClass
+    public static function read_location(Dom_Element $item): \stdClass
     {
-        $location              = new stdClass();
-        $location->description = $item->nodeValue;
-        $location->geo         = $item->getAttribute('geo');
-        $location->osm         = $item->getAttribute('osm');
-        $location->rel         = $item->getAttribute('rel');
-        $location->country     = $item->getAttribute('country');
+        $location = new stdClass();
+        $location->description = $item->node_value;
+        $location->geo = $item->get_attribute('geo');
+        $location->osm = $item->get_attribute('osm');
+        $location->rel = $item->get_attribute('rel');
+        $location->country = $item->get_attribute('country');
         return $location;
     }
-
     /**
      * Read podcast images
      *
      * @psalm-return ImagesObject
      */
-    public static function readImages(DOMElement $item): \stdClass
+    public static function read_images(Dom_Element $item): \stdClass
     {
-        $images         = new stdClass();
-        $images->srcset = $item->getAttribute('srcset');
+        $images = new stdClass();
+        $images->srcset = $item->get_attribute('srcset');
         return $images;
     }
-
     /**
      * Read podcast images
      *
      * @psalm-return DetailedImageObject
      */
-    public static function readDetailedImage(DOMElement $item): \stdClass
+    public static function read_detailed_image(Dom_Element $item): \stdClass
     {
-        $image              = new stdClass();
-        $image->href        = $item->getAttribute('href');
-        $image->alt         = $item->getAttribute('alt');
-        $image->aspectRatio = $item->getAttribute('aspect-ratio');
-        $image->width       = $item->getAttribute('width');
-        $image->height      = $item->getAttribute('height');
-        $image->type        = $item->getAttribute('type');
-        $image->purpose     = $item->getAttribute('purpose');
+        $image = new stdClass();
+        $image->href = $item->get_attribute('href');
+        $image->alt = $item->get_attribute('alt');
+        $image->aspect_ratio = $item->get_attribute('aspect-ratio');
+        $image->width = $item->get_attribute('width');
+        $image->height = $item->get_attribute('height');
+        $image->type = $item->get_attribute('type');
+        $image->purpose = $item->get_attribute('purpose');
         return $image;
     }
-
     /**
      * Read podcast update frequency
      *
      * @psalm-return UpdateFrequencyObject
      */
-    public static function readUpdateFrequency(DOMElement $item): \stdClass
+    public static function read_update_frequency(Dom_Element $item): \stdClass
     {
-        $updateFrequency              = new stdClass();
-        $updateFrequency->description = $item->nodeValue;
-        $updateFrequency->complete    = $item->getAttribute('complete');
-        $updateFrequency->dtstart     = $item->getAttribute('dtstart');
-        $updateFrequency->rrule       = $item->getAttribute('rrule');
-
-        return $updateFrequency;
+        $update_frequency = new stdClass();
+        $update_frequency->description = $item->node_value;
+        $update_frequency->complete = $item->get_attribute('complete');
+        $update_frequency->dtstart = $item->get_attribute('dtstart');
+        $update_frequency->rrule = $item->get_attribute('rrule');
+        return $update_frequency;
     }
-
     /**
      * Read podcast people
      *
      * @psalm-return PersonObject
      */
-    public static function readPerson(DOMElement $item): \stdClass
+    public static function read_person(Dom_Element $item): \stdClass
     {
-        $person        = new stdClass();
-        $person->name  = $item->nodeValue;
-        $person->role  = $item->getAttribute('role');
-        $person->group = $item->getAttribute('group');
-        $person->img   = $item->getAttribute('img');
-        $person->href  = $item->getAttribute('href');
-
+        $person = new stdClass();
+        $person->name = $item->node_value;
+        $person->role = $item->get_attribute('role');
+        $person->group = $item->get_attribute('group');
+        $person->img = $item->get_attribute('img');
+        $person->href = $item->get_attribute('href');
         return $person;
     }
-
     /**
      * Read podcast trailer
      *
      * @psalm-return TrailerObject
      */
-    public static function readTrailer(DOMElement $item): \stdClass
+    public static function read_trailer(Dom_Element $item): \stdClass
     {
-        $object          = new stdClass();
-        $object->title   = $item->nodeValue;
-        $object->pubdate = $item->getAttribute('pubdate');
-        $object->url     = $item->getAttribute('url');
-        $object->length  = $item->getAttribute('length');
-        $object->type    = $item->getAttribute('type');
-        $object->season  = $item->getAttribute('season');
-
+        $object = new stdClass();
+        $object->title = $item->node_value;
+        $object->pubdate = $item->get_attribute('pubdate');
+        $object->url = $item->get_attribute('url');
+        $object->length = $item->get_attribute('length');
+        $object->type = $item->get_attribute('type');
+        $object->season = $item->get_attribute('season');
         return $object;
     }
-
     /**
      * Read podcast guid
      *
      * @psalm-return object{value: string}
      */
-    public static function readGuid(DOMElement $item): \stdClass
+    public static function read_guid(Dom_Element $item): \stdClass
     {
-        $object        = new stdClass();
-        $object->value = $item->nodeValue;
-
+        $object = new stdClass();
+        $object->value = $item->node_value;
         return $object;
     }
-
     /**
      * Read podcast medium
      *
      * @psalm-return object{value: string}
      */
-    public static function readMedium(DOMElement $item): \stdClass
+    public static function read_medium(Dom_Element $item): \stdClass
     {
-        $object        = new stdClass();
-        $object->value = $item->nodeValue;
+        $object = new stdClass();
+        $object->value = $item->node_value;
         return $object;
     }
-
     /**
      * Read podcast blocks
      *
      * @psalm-return BlockObject
      */
-    public static function readBlock(DOMElement $item): \stdClass
+    public static function read_block(Dom_Element $item): \stdClass
     {
-        $object        = new stdClass();
-        $object->value = $item->nodeValue;
-        $object->id    = $item->getAttribute('id');
+        $object = new stdClass();
+        $object->value = $item->node_value;
+        $object->id = $item->get_attribute('id');
         return $object;
     }
-
     /**
      * Read podcast txts
      *
      * @psalm-return TxtObject
      */
-    public static function readTxt(DOMElement $item): \stdClass
+    public static function read_txt(Dom_Element $item): \stdClass
     {
-        $object          = new stdClass();
-        $object->value   = $item->nodeValue;
-        $object->purpose = $item->getAttribute('purpose');
+        $object = new stdClass();
+        $object->value = $item->node_value;
+        $object->purpose = $item->get_attribute('purpose');
         return $object;
     }
-
     /**
      * Read podcast remote item
      *
      * @psalm-return RemoteItemObject
      */
-    public static function readRemoteItem(DOMElement $item): \stdClass
+    public static function read_remote_item(Dom_Element $item): \stdClass
     {
-        $object           = new stdClass();
-        $object->feedGuid = $item->getAttribute('feedGuid');
-        $object->feedUrl  = $item->getAttribute('feedUrl');
-        $object->itemGuid = $item->getAttribute('itemGuid');
-        $object->medium   = $item->getAttribute('medium');
-        $object->title    = $item->getAttribute('title');
-
+        $object = new stdClass();
+        $object->feed_guid = $item->get_attribute('feedGuid');
+        $object->feed_url = $item->get_attribute('feedUrl');
+        $object->item_guid = $item->get_attribute('itemGuid');
+        $object->medium = $item->get_attribute('medium');
+        $object->title = $item->get_attribute('title');
         return $object;
     }
-
     /**
      * Read podcast podroll remote items
      *
      * @psalm-return ValueObject
      */
-    public static function readValue(DOMElement $item): \stdClass
+    public static function read_value(Dom_Element $item): \stdClass
     {
-        $valueObject            = new stdClass();
-        $valueObject->type      = $item->getAttribute('type');
-        $valueObject->method    = $item->getAttribute('method');
-        $valueObject->suggested = $item->getAttribute('suggested');
-        return $valueObject;
+        $value_object = new stdClass();
+        $value_object->type = $item->get_attribute('type');
+        $value_object->method = $item->get_attribute('method');
+        $value_object->suggested = $item->get_attribute('suggested');
+        return $value_object;
     }
-
     /**
      * Read single remote item
      *
      * @psalm-return ValueRecipientObject
      */
-    public static function readValueRecipient(DOMElement $item): \stdClass
+    public static function read_value_recipient(Dom_Element $item): \stdClass
     {
-        $object              = new stdClass();
-        $object->name        = $item->getAttribute('name');
-        $object->type        = $item->getAttribute('type');
-        $object->address     = $item->getAttribute('address');
-        $object->split       = $item->getAttribute('split');
-        $object->customKey   = $item->getAttribute('customKey');
-        $object->customValue = $item->getAttribute('customValue');
-        $object->fee         = $item->getAttribute('fee');
-
+        $object = new stdClass();
+        $object->name = $item->get_attribute('name');
+        $object->type = $item->get_attribute('type');
+        $object->address = $item->get_attribute('address');
+        $object->split = $item->get_attribute('split');
+        $object->custom_key = $item->get_attribute('customKey');
+        $object->custom_value = $item->get_attribute('customValue');
+        $object->fee = $item->get_attribute('fee');
         return $object;
     }
-
     /**
      * Read single value time split
      */
-    public static function readValueTimeSplit(DOMElement $entry): \stdClass
+    public static function read_value_time_split(Dom_Element $entry): \stdClass
     {
-        $object                   = new stdClass();
-        $object->startTime        = $entry->getAttribute('startTime');
-        $object->duration         = $entry->getAttribute('duration');
-        $object->remoteStartTime  = $entry->getAttribute('remoteStartTime');
-        $object->remotePercentage = $entry->getAttribute('remotePercentage');
-
+        $object = new stdClass();
+        $object->start_time = $entry->get_attribute('startTime');
+        $object->duration = $entry->get_attribute('duration');
+        $object->remote_start_time = $entry->get_attribute('remoteStartTime');
+        $object->remote_percentage = $entry->get_attribute('remotePercentage');
         return $object;
     }
-
     /**
      * Read podcast social interacts
      *
      * @psalm-return SocialInteractObject
      */
-    public static function readSocialInteract(DOMElement $item): \stdClass
+    public static function read_social_interact(Dom_Element $item): \stdClass
     {
-        $object             = new stdClass();
-        $object->protocol   = $item->getAttribute('protocol');
-        $object->uri        = $item->getAttribute('uri');
-        $object->priority   = $item->getAttribute('priority');
-        $object->accountId  = $item->getAttribute('accountId');
-        $object->accountUrl = $item->getAttribute('accountUrl');
+        $object = new stdClass();
+        $object->protocol = $item->get_attribute('protocol');
+        $object->uri = $item->get_attribute('uri');
+        $object->priority = $item->get_attribute('priority');
+        $object->account_id = $item->get_attribute('accountId');
+        $object->account_url = $item->get_attribute('accountUrl');
         return $object;
     }
-
     /**
      * Read podcast alternate enclosure
      *
      * @psalm-return AlternateEnclosureObject
      */
-    public static function readAlternateEnclosure(DOMElement $item): \stdClass
+    public static function read_alternate_enclosure(Dom_Element $item): \stdClass
     {
-        $object          = new stdClass();
-        $object->type    = $item->getAttribute('type');
-        $object->length  = $item->getAttribute('length');
-        $object->bitrate = $item->getAttribute('bitrate');
-        $object->height  = $item->getAttribute('height');
-        $object->lang    = $item->getAttribute('lang');
-        $object->title   = $item->getAttribute('title');
-        $object->rel     = $item->getAttribute('rel');
-        $object->codecs  = $item->getAttribute('codecs');
-        $object->default = $item->getAttribute('default');
+        $object = new stdClass();
+        $object->type = $item->get_attribute('type');
+        $object->length = $item->get_attribute('length');
+        $object->bitrate = $item->get_attribute('bitrate');
+        $object->height = $item->get_attribute('height');
+        $object->lang = $item->get_attribute('lang');
+        $object->title = $item->get_attribute('title');
+        $object->rel = $item->get_attribute('rel');
+        $object->codecs = $item->get_attribute('codecs');
+        $object->default = $item->get_attribute('default');
         return $object;
     }
-
     /**
      * Read podcast source
      *
      * @psalm-return SourceObject
      */
-    public static function readSource(DOMElement $item): \stdClass
+    public static function read_source(Dom_Element $item): \stdClass
     {
-        $object              = new stdClass();
-        $object->uri         = $item->getAttribute('uri');
-        $object->contentType = $item->getAttribute('contentType');
+        $object = new stdClass();
+        $object->uri = $item->get_attribute('uri');
+        $object->content_type = $item->get_attribute('contentType');
         return $object;
     }
-
     /**
      * Read podcast integrity
      *
      * @psalm-return SourceObject
      */
-    public static function readIntegrity(DOMElement $item): \stdClass
+    public static function read_integrity(Dom_Element $item): \stdClass
     {
-        $object        = new stdClass();
-        $object->type  = $item->getAttribute('type');
-        $object->value = $item->getAttribute('value');
+        $object = new stdClass();
+        $object->type = $item->get_attribute('type');
+        $object->value = $item->get_attribute('value');
         return $object;
     }
-
     /**
      * Read content link
      *
      * @psalm-return ContentLinkObject
      */
-    public static function readContentLink(DOMElement $item): \stdClass
+    public static function read_content_link(Dom_Element $item): \stdClass
     {
-        $object              = new stdClass();
-        $object->href        = $item->getAttribute('href');
-        $object->description = $item->nodeValue;
+        $object = new stdClass();
+        $object->href = $item->get_attribute('href');
+        $object->description = $item->node_value;
         return $object;
     }
-
     /**
      * Read podcast funding
      *
      * @psalm-return FundingObject
      */
-    public static function readFunding(DOMElement $item): \stdClass
+    public static function read_funding(Dom_Element $item): \stdClass
     {
-        $object        = new stdClass();
-        $object->url   = $item->getAttribute('url');
-        $object->title = $item->nodeValue;
+        $object = new stdClass();
+        $object->url = $item->get_attribute('url');
+        $object->title = $item->node_value;
         return $object;
     }
-
     /**
      * Read podcast chat
      *
      * @psalm-return ChatObject
      */
-    public static function readChat(DOMElement $item): \stdClass
+    public static function read_chat(Dom_Element $item): \stdClass
     {
-        $object            = new stdClass();
-        $object->server    = $item->getAttribute('server');
-        $object->protocol  = $item->getAttribute('protocol');
-        $object->accountId = $item->getAttribute('accountId');
-        $object->space     = $item->getAttribute('space');
+        $object = new stdClass();
+        $object->server = $item->get_attribute('server');
+        $object->protocol = $item->get_attribute('protocol');
+        $object->account_id = $item->get_attribute('accountId');
+        $object->space = $item->get_attribute('space');
         return $object;
     }
 }

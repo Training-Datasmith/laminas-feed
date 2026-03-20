@@ -1,24 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader;
 
 use function array_key_exists;
 use function call_user_func_array;
-
-use DOMDocument;
-
-use DOMElement;
-use DOMXPath;
-
+use Dom_Document;
+use Dom_Element;
+use Domx_Path;
 use function in_array;
 use function method_exists;
-
 /**
  * @deprecated This (abstract) class is deprecated. Use Laminas\Feed\Reader\Entry\AbstractEntry instead.
  */
-abstract class AbstractEntry
+abstract class Abstract_Entry
 {
     /**
      * Feed entry data
@@ -26,153 +21,141 @@ abstract class AbstractEntry
      * @var array
      */
     protected $data = [];
-
     /**
      * DOM document object
      */
-    protected ?\DOMDocument $domDocument;
-
+    protected ?\Dom_Document $dom_document;
     /**
      * XPath object
      *
      * @var DOMXPath
      */
     protected $xpath;
-
     /**
      * Registered extensions
      *
      * @var array
      */
     protected $extensions = [];
-
     /**
      * @param int $entryKey
      * @param null|string $type
      */
-    public function __construct(/**
-     * Entry instance
-     */
-        protected \DOMElement $entry, /**
-     * Pointer to the current entry
-     */
-        protected $entryKey,
+    public function __construct(
+        /**
+         * Entry instance
+         */
+        protected \Dom_Element $entry,
+        /**
+         * Pointer to the current entry
+         */
+        protected $entry_key,
         $type = null
-    ) {
-        $this->domDocument = $this->entry->ownerDocument;
+    )
+    {
+        $this->dom_document = $this->entry->owner_document;
         if ($type !== null) {
             $this->data['type'] = $type;
         } else {
-            $this->data['type'] = Reader::detectType($this->entry);
+            $this->data['type'] = Reader::detect_type($this->entry);
         }
-        $this->_loadExtensions();
+        $this->_load_extensions();
     }
-
     /**
      * Get the DOM
      *
      * @return DOMDocument
      */
-    public function getDomDocument()
+    public function get_dom_document()
     {
-        return $this->domDocument;
+        return $this->dom_document;
     }
-
     /**
      * Get the entry element
      *
      * @return DOMElement
      */
-    public function getElement()
+    public function get_element()
     {
         return $this->entry;
     }
-
     /**
      * Get the Entry's encoding
      *
      * @return string
      */
-    public function getEncoding()
+    public function get_encoding()
     {
-        $assumed = $this->getDomDocument()->encoding;
+        $assumed = $this->get_dom_document()->encoding;
         if (empty($assumed)) {
             return 'UTF-8';
         }
         return $assumed;
     }
-
     /**
      * Get entry as xml
      *
      * @return string
      */
-    public function saveXml()
+    public function save_xml()
     {
-        $dom   = new DOMDocument('1.0', $this->getEncoding());
-        $entry = $dom->importNode($this->getElement(), true);
-        $dom->appendChild($entry);
-        return $dom->saveXML();
+        $dom = new Dom_Document('1.0', $this->get_encoding());
+        $entry = $dom->import_node($this->get_element(), true);
+        $dom->append_child($entry);
+        return $dom->save_xml();
     }
-
     /**
      * Get the entry type
      *
      * @return string
      */
-    public function getType()
+    public function get_type()
     {
         return $this->data['type'];
     }
-
     /**
      * Get the XPath query object
      *
      * @return DOMXPath
      */
-    public function getXpath()
+    public function get_xpath()
     {
-        if (! $this->xpath) {
-            $this->setXpath(new DOMXPath($this->getDomDocument()));
+        if (!$this->xpath) {
+            $this->set_xpath(new Domx_Path($this->get_dom_document()));
         }
         return $this->xpath;
     }
-
     /**
      * Set the XPath query
      *
      * @return $this
      */
-    public function setXpath(DOMXPath $xpath)
+    public function set_xpath(Domx_Path $xpath)
     {
         $this->xpath = $xpath;
         return $this;
     }
-
     /**
      * Get registered extensions
      *
      * @return array
      */
-    public function getExtensions()
+    public function get_extensions()
     {
         return $this->extensions;
     }
-
     /**
      * Return an Extension object with the matching name (postfixed with _Entry)
      *
      * @return null|Extension\AbstractEntry
      */
-    public function getExtension(string $name)
+    public function get_extension(string $name)
     {
         if (array_key_exists($name . '\Entry', $this->extensions)) {
             return $this->extensions[$name . '\Entry'];
         }
-
         return null;
     }
-
     /**
      * Method overloading: call given method on first extension implementing it
      *
@@ -187,31 +170,24 @@ abstract class AbstractEntry
                 return call_user_func_array([$extension, $method], $args);
             }
         }
-        throw new Exception\BadMethodCallException(
-            'Method: ' . $method . ' does not exist and could not be located on a registered Extension'
-        );
+        throw new Exception\BadMethodCallException('Method: ' . $method . ' does not exist and could not be located on a registered Extension');
     }
-
     /**
      * Load extensions from Laminas\Feed\Reader\Reader
      *
      * @return void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _loadExtensions()
+    protected function _load_extensions()
     {
-        $all  = Reader::getExtensions();
+        $all = Reader::get_extensions();
         $feed = $all['entry'];
         foreach ($feed as $extension) {
             if (in_array($extension, $all['core'])) {
                 continue;
             }
-            $className                    = Reader::getPluginLoader()->getClassName($extension);
-            $this->extensions[$extension] = new $className(
-                $this->getElement(),
-                $this->entryKey,
-                $this->data['type']
-            );
+            $class_name = Reader::get_plugin_loader()->get_class_name($extension);
+            $this->extensions[$extension] = new $class_name($this->get_element(), $this->entry_key, $this->data['type']);
         }
     }
 }

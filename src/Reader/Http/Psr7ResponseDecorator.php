@@ -1,52 +1,46 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Reader\Http;
 
-use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
-
+use Psr\Http\Message\Response_Interface as Psr7ResponseInterface;
 /**
  * ResponseInterface wrapper for a PSR-7 response.
  */
-class Psr7ResponseDecorator implements HeaderAwareResponseInterface
+class Psr7response_Decorator implements Header_Aware_Response_Interface
 {
-    public function __construct(private readonly Psr7ResponseInterface $decoratedResponse)
+    public function __construct(private readonly Psr7response_Interface $decorated_response)
     {
     }
-
     /**
      * Return the original PSR-7 response being decorated.
      */
-    public function getDecoratedResponse(): \Psr\Http\Message\ResponseInterface
+    public function get_decorated_response(): \Psr\Http\Message\Response_Interface
     {
-        return $this->decoratedResponse;
+        return $this->decorated_response;
     }
-
     /**
      * {@inheritDoc}
      */
-    public function getBody(): string
+    public function get_body(): string
     {
-        return (string) $this->decoratedResponse->getBody();
+        return (string) $this->decorated_response->get_body();
     }
-
     /**
      * {@inheritDoc}
      */
-    public function getStatusCode()
+    public function get_status_code()
     {
-        return $this->decoratedResponse->getStatusCode();
+        return $this->decorated_response->get_status_code();
     }
-
     /**
      * {@inheritDoc}
      */
-    public function getHeaderLine($name, $default = null)
+    public function get_header_line($name, $default = null)
     {
-        if (! $this->decoratedResponse->hasHeader($name)) {
+        if (!$this->decorated_response->has_header($name)) {
             return $default;
         }
-        return $this->decoratedResponse->getHeaderLine($name);
+        return $this->decorated_response->get_header_line($name);
     }
 }

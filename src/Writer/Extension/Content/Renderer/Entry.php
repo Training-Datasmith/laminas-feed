@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laminas\Feed\Writer\Extension\Content\Renderer;
 
-use DOMDocument;
-use DOMElement;
+use Dom_Document;
+use Dom_Element;
 use Laminas\Feed\Writer\Extension;
-
 use function strtolower;
-
-class Entry extends Extension\AbstractRenderer
+class Entry extends Extension\Abstract_Renderer
 {
     /**
      * Set to TRUE if a rendering method actually renders something. This
@@ -20,53 +17,45 @@ class Entry extends Extension\AbstractRenderer
      * @var bool
      */
     protected $called = false;
-
     /**
      * Render entry
      */
     public function render(): void
     {
-        if (strtolower($this->getType()) === 'atom') {
+        if (strtolower($this->get_type()) === 'atom') {
             return;
         }
-        $this->_setContent($this->dom, $this->base);
+        $this->_set_content($this->dom, $this->base);
         if ($this->called) {
-            $this->_appendNamespaces();
+            $this->_append_namespaces();
         }
     }
-
     // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
     /**
      * Append namespaces to root element
      *
      * @return void
      */
-    protected function _appendNamespaces()
+    protected function _append_namespaces()
     {
-        $this->getRootElement()->setAttribute(
-            'xmlns:content',
-            'http://purl.org/rss/1.0/modules/content/'
-        );
+        $this->get_root_element()->set_attribute('xmlns:content', 'http://purl.org/rss/1.0/modules/content/');
     }
-
     /**
      * Set entry content
      *
      * @return void
      */
-    protected function _setContent(DOMDocument $dom, DOMElement $root)
+    protected function _set_content(Dom_Document $dom, Dom_Element $root)
     {
-        $content = $this->getDataContainer()->getContent();
-        if (! $content) {
+        $content = $this->get_data_container()->get_content();
+        if (!$content) {
             return;
         }
-        $element = $dom->createElement('content:encoded');
-        $root->appendChild($element);
-        $cdata = $dom->createCDATASection($content);
-        $element->appendChild($cdata);
+        $element = $dom->create_element('content:encoded');
+        $root->append_child($element);
+        $cdata = $dom->create_cdata_section($content);
+        $element->append_child($cdata);
         $this->called = true;
     }
-
     // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
 }

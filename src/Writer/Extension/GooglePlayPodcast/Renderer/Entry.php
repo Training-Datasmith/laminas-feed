@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Feed\Writer\Extension\Google_Play_Podcast\Renderer;
 
-namespace Laminas\Feed\Writer\Extension\GooglePlayPodcast\Renderer;
-
-use DOMDocument;
-use DOMElement;
+use Dom_Document;
+use Dom_Element;
 use Laminas\Feed\Writer\Extension;
-
-class Entry extends Extension\AbstractRenderer
+class Entry extends Extension\Abstract_Renderer
 {
     /**
      * Set to TRUE if a rendering method actually renders something. This
@@ -18,88 +16,78 @@ class Entry extends Extension\AbstractRenderer
      * @var bool
      */
     protected $called = false;
-
     /**
      * Render entry
      */
     public function render(): void
     {
-        $this->_setBlock($this->dom, $this->base);
-        $this->_setExplicit($this->dom, $this->base);
-        $this->_setDescription($this->dom, $this->base);
+        $this->_set_block($this->dom, $this->base);
+        $this->_set_explicit($this->dom, $this->base);
+        $this->_set_description($this->dom, $this->base);
         if ($this->called) {
-            $this->_appendNamespaces();
+            $this->_append_namespaces();
         }
     }
-
     // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
     /**
      * Append namespaces to entry root
      *
      * @return void
      */
-    protected function _appendNamespaces()
+    protected function _append_namespaces()
     {
-        $this->getRootElement()->setAttribute(
-            'xmlns:googleplay',
-            'http://www.google.com/schemas/play-podcasts/1.0'
-        );
+        $this->get_root_element()->set_attribute('xmlns:googleplay', 'http://www.google.com/schemas/play-podcasts/1.0');
     }
-
     /**
      * Set itunes block
      *
      * @return void
      */
-    protected function _setBlock(DOMDocument $dom, DOMElement $root)
+    protected function _set_block(Dom_Document $dom, Dom_Element $root)
     {
-        $block = $this->getDataContainer()->getPlayPodcastBlock();
+        $block = $this->get_data_container()->get_play_podcast_block();
         if ($block === null) {
             return;
         }
-        $el   = $dom->createElement('googleplay:block');
-        $text = $dom->createTextNode((string) $block);
-        $el->appendChild($text);
-        $root->appendChild($el);
+        $el = $dom->create_element('googleplay:block');
+        $text = $dom->create_text_node((string) $block);
+        $el->append_child($text);
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set explicit flag
      *
      * @return void
      */
-    protected function _setExplicit(DOMDocument $dom, DOMElement $root)
+    protected function _set_explicit(Dom_Document $dom, Dom_Element $root)
     {
-        $explicit = $this->getDataContainer()->getPlayPodcastExplicit();
+        $explicit = $this->get_data_container()->get_play_podcast_explicit();
         if ($explicit === null) {
             return;
         }
-        $el   = $dom->createElement('googleplay:explicit');
-        $text = $dom->createTextNode((string) $explicit);
-        $el->appendChild($text);
-        $root->appendChild($el);
+        $el = $dom->create_element('googleplay:explicit');
+        $text = $dom->create_text_node((string) $explicit);
+        $el->append_child($text);
+        $root->append_child($el);
         $this->called = true;
     }
-
     /**
      * Set episode description
      *
      * @return void
      */
-    protected function _setDescription(DOMDocument $dom, DOMElement $root)
+    protected function _set_description(Dom_Document $dom, Dom_Element $root)
     {
-        $description = $this->getDataContainer()->getPlayPodcastDescription();
-        if (! $description) {
+        $description = $this->get_data_container()->get_play_podcast_description();
+        if (!$description) {
             return;
         }
-        $el   = $dom->createElement('googleplay:description');
-        $text = $dom->createTextNode((string) $description);
-        $el->appendChild($text);
-        $root->appendChild($el);
+        $el = $dom->create_element('googleplay:description');
+        $text = $dom->create_text_node((string) $description);
+        $el->append_child($text);
+        $root->append_child($el);
         $this->called = true;
     }
-
     // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
 }

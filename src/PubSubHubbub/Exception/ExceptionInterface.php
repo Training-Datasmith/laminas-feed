@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Feed\Pub_Sub_Hubbub\Exception;
 
-namespace Laminas\Feed\PubSubHubbub\Exception;
-
-use Laminas\Feed\Exception\ExceptionInterface as Exception;
-
-interface ExceptionInterface extends Exception
+use Laminas\Feed\Exception\Exception_Interface as Exception;
+interface Exception_Interface extends Exception
 {
 }
